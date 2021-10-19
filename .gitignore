@@ -1,0 +1,40 @@
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.vi
+*~
+*.sass-cache
+*.lock
+
+# OS or Editor folders
+.DS_Store
+Thumbs.db
+.cache
+.project
+.padawan
+.settings
+.tmproj
+*.esproj
+.netbeans.xml
+nbproject
+*.sublime-project
+*.sublime-workspace
+node_modules
+package-lock.json
+
+# Folders to ignore
+.hg
+.svn
+.CVS
+intermediate
+.idea
+cache
+vendor
+tests/_output
+/ezpz-tweaks/vendor/
+tests/_support/_generated

@@ -1,0 +1,42 @@
+{
+    "name": "wordressezpz/tweaks",
+    "type": "wordpress-plugin",
+    "description": "Take the control of your WordPress Customized, Efficient, and Secure",
+    "homepage": "https:\/\/wpezpzdev.com",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "WordPress EzPz",
+            "email": "info@wpezpzdev.com",
+            "homepage": "https://wpezpzdev.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "cmb2\/cmb2": "2.9.0",
+        "composer\/installers": "1.x",
+        "wpbp\/template": "1.0.*",
+        "micropackage\/requirements": "^1.0"
+    },
+    "require-dev": {
+        "ergebnis\/composer-normalize": "^2.6"
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor\/{$name}\/": [
+                "cmb2\/cmb2"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "EZPZ_TWEAKS\\Backend\\": "backend\/",
+            "EZPZ_TWEAKS\\Frontend\\": "frontend\/",
+            "EZPZ_TWEAKS\\Internals\\": "internals\/",
+            "EZPZ_TWEAKS\\Integrations\\": "integrations\/",
+            "EZPZ_TWEAKS\\Engine\\": "engine\/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

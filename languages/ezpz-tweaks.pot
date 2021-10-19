@@ -1,0 +1,403 @@
+# Copyright (C) 2021 WordPress EzPz
+# This file is distributed under the same license as the WordPress EzPz Tweaks plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WordPress EzPz Tweaks 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-ezpz-tweaks\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-08-23T14:40:07+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+
+#. Plugin Name of the plugin
+#: wordpress-ezpz-tweaks.php:33
+msgid "WordPress EzPz Tweaks"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://wpezpzdev.com//"
+msgstr ""
+
+#. Description of the plugin
+msgid "EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the admin panel appearances, clean your site code and remove unwanted features to increase its security and improve performance."
+msgstr ""
+
+#. Author of the plugin
+#: backend/Settings_Page.php:73
+msgid "WordPress EzPz"
+msgstr ""
+
+#: backend/Admin_Menu_Editor.php:68
+#: backend/Settings_Page.php:78
+msgid "Edit Menu"
+msgstr ""
+
+#: backend/Admin_Menu_Editor.php:69
+msgid "Save"
+msgstr ""
+
+#: backend/Admin_Menu_Editor.php:70
+msgid "Saving&hellip;"
+msgstr ""
+
+#: backend/Admin_Menu_Editor.php:71
+msgid "Saved!"
+msgstr ""
+
+#: backend/ImpExp.php:90
+msgid "Please upload a valid .json file"
+msgstr ""
+
+#: backend/ImpExp.php:96
+msgid "Please upload a file to import"
+msgstr ""
+
+#: backend/ImpExp.php:114
+msgid "Failed to import the settings."
+msgstr ""
+
+#: backend/Settings_Page.php:75
+msgid "Tweaks"
+msgstr ""
+
+#: backend/Settings_Page.php:113
+msgid "Edit this page from: Settings > EzPz Tweaks > Branding tab > Page Content."
+msgstr ""
+
+#: backend/Settings_Page.php:116
+msgid "Edit Page"
+msgstr ""
+
+#: backend/Settings_Page.php:144
+msgid "Settings"
+msgstr ""
+
+#: backend/Settings_Page.php:317
+msgid "Your login page is now here: <strong><a href=\"%1$s\">%2$s</a></strong>. Bookmark this page!"
+msgstr ""
+
+#: backend/views/settings.php:8
+msgid "Customizing & Branding"
+msgstr ""
+
+#: backend/views/settings.php:9
+msgid "Performance"
+msgstr ""
+
+#: backend/views/settings.php:10
+msgid "Security"
+msgstr ""
+
+#: backend/views/settings.php:11
+msgid "Import & Export"
+msgstr ""
+
+#: backend/views/settings.php:12
+msgid "About"
+msgstr ""
+
+#: backend/views/settings.php:34
+#: backend/views/settings.php:56
+msgid "Admin Font"
+msgstr ""
+
+#: backend/views/settings.php:35
+#: backend/views/settings.php:57
+msgid "Change WordPress admin font"
+msgstr ""
+
+#: backend/views/settings.php:45
+#: backend/views/settings.php:66
+msgid "Editor Font"
+msgstr ""
+
+#: backend/views/settings.php:46
+#: backend/views/settings.php:67
+msgid "Change WordPress editor font"
+msgstr ""
+
+#: backend/views/settings.php:60
+#: backend/views/settings.php:70
+msgid "Choose a font"
+msgstr ""
+
+#: backend/views/settings.php:60
+#: backend/views/settings.php:70
+msgid "Type to search..."
+msgstr ""
+
+#: backend/views/settings.php:77
+msgid "Change WordPress Logo"
+msgstr ""
+
+#: backend/views/settings.php:78
+#: backend/views/settings.php:209
+msgid "Upload an image or enter an URL."
+msgstr ""
+
+#: backend/views/settings.php:85
+#: backend/views/settings.php:221
+msgid "Add File"
+msgstr ""
+
+#: backend/views/settings.php:99
+msgid "Login Page Custom Text"
+msgstr ""
+
+#: backend/views/settings.php:100
+msgid "Add custom text to wordpress admin login page"
+msgstr ""
+
+#: backend/views/settings.php:108
+msgid "Remove Welcome Panel"
+msgstr ""
+
+#: backend/views/settings.php:109
+msgid "The welcome panel is a meta box added to the dashboard screen of the admin area. It shows shortcuts to different sections of your WordPress website"
+msgstr ""
+
+#: backend/views/settings.php:119
+msgid "Hide Admin Bar"
+msgstr ""
+
+#: backend/views/settings.php:120
+msgid "Hide admin bar for user roles"
+msgstr ""
+
+#: backend/views/settings.php:129
+msgid "Remove Dashboard Widgets"
+msgstr ""
+
+#: backend/views/settings.php:130
+msgid "Check widgets to remove from dashboard"
+msgstr ""
+
+#: backend/views/settings.php:134
+msgid "Dashboard Activity"
+msgstr ""
+
+#: backend/views/settings.php:135
+msgid "Dashboard Site Health"
+msgstr ""
+
+#: backend/views/settings.php:136
+msgid "Dashboard Quick Press"
+msgstr ""
+
+#: backend/views/settings.php:137
+msgid "Dashboard Incoming Links"
+msgstr ""
+
+#: backend/views/settings.php:138
+msgid "Dashboard Right Now"
+msgstr ""
+
+#: backend/views/settings.php:139
+msgid "Dashboard Plugins"
+msgstr ""
+
+#: backend/views/settings.php:140
+msgid "Dashboard Recent Drafts"
+msgstr ""
+
+#: backend/views/settings.php:141
+msgid "Dashboard Recent Comments"
+msgstr ""
+
+#: backend/views/settings.php:142
+msgid "Dashboard Primary"
+msgstr ""
+
+#: backend/views/settings.php:149
+msgid "Admin Footer"
+msgstr ""
+
+#: backend/views/settings.php:150
+msgid "Footer Text"
+msgstr ""
+
+#: backend/views/settings.php:151
+msgid "Change footer text"
+msgstr ""
+
+#: backend/views/settings.php:163
+msgid "Visibility"
+msgstr ""
+
+#: backend/views/settings.php:164
+msgid "Hide the entire admin footer"
+msgstr ""
+
+#: backend/views/settings.php:172
+msgid "Brand Custom Menu"
+msgstr ""
+
+#: backend/views/settings.php:173
+msgid "Enable Branding"
+msgstr ""
+
+#: backend/views/settings.php:174
+msgid "By selecting this option, you can add your brand to the WordPress menu and customize how it displays."
+msgstr ""
+
+#: backend/views/settings.php:182
+msgid "Menu Title"
+msgstr ""
+
+#: backend/views/settings.php:195
+msgid "Menu Slug"
+msgstr ""
+
+#: backend/views/settings.php:208
+msgid "Menu Logo"
+msgstr ""
+
+#: backend/views/settings.php:235
+msgid "Page Content"
+msgstr ""
+
+#: backend/views/settings.php:236
+msgid "You can use HTML to design branding page"
+msgstr ""
+
+#: backend/views/settings.php:251
+msgid "Custom CSS"
+msgstr ""
+
+#: backend/views/settings.php:252
+msgid "Apply custom css to admin area"
+msgstr ""
+
+#: backend/views/settings.php:277
+msgid "Disable Comment Website Field"
+msgstr ""
+
+#: backend/views/settings.php:278
+msgid "Remove the website field from the comment form"
+msgstr ""
+
+#: backend/views/settings.php:285
+msgid "Disable Emojis"
+msgstr ""
+
+#: backend/views/settings.php:286
+msgid "Remove wp-emoji-release.min.js file"
+msgstr ""
+
+#: backend/views/settings.php:293
+msgid "Disable Embeds"
+msgstr ""
+
+#: backend/views/settings.php:294
+msgid "Remove wp-embed.min.js file and reduce HTTP requests"
+msgstr ""
+
+#: backend/views/settings.php:301
+msgid "Remove Shortlink"
+msgstr ""
+
+#: backend/views/settings.php:302
+msgid "Use this to create a shortlink to your pages and posts. However, if you are already using pretty permalinks, then there is no reason to keep this"
+msgstr ""
+
+#: backend/views/settings.php:330
+msgid "Change WP Login URL"
+msgstr ""
+
+#: backend/views/settings.php:331
+msgid "Change the WordPress Login URL and prevent access to the \"/wp-admin\" and \"/wp-login.php\" and \"/wp-login.php?action=register\" to protect your website from hackers and strangers."
+msgstr ""
+
+#: backend/views/settings.php:342
+msgid "Who can access this plugin"
+msgstr ""
+
+#: backend/views/settings.php:346
+msgid "Super Admin"
+msgstr ""
+
+#: backend/views/settings.php:347
+msgid "Anyone with the \"mange_options\" capability"
+msgstr ""
+
+#: backend/views/settings.php:348
+msgid "Only the current user"
+msgstr ""
+
+#: backend/views/settings.php:358
+msgid "Disable Public Access to WP REST API"
+msgstr ""
+
+#: backend/views/settings.php:359
+msgid " API consumers be authenticated, which effectively prevents anonymous external access."
+msgstr ""
+
+#: backend/views/settings.php:368
+msgid "Disable XML-RPC"
+msgstr ""
+
+#: backend/views/settings.php:369
+msgid "Disabling this feature makes your site more secure"
+msgstr ""
+
+#: backend/views/settings.php:378
+msgid "Remove WP Version"
+msgstr ""
+
+#: backend/views/settings.php:379
+msgid "Remove the WordPress version number from different sections of your WordPress website"
+msgstr ""
+
+#: backend/views/settings.php:387
+msgid "Hide Update Notifications"
+msgstr ""
+
+#: backend/views/settings.php:388
+msgid "Hide update notifications for user roles"
+msgstr ""
+
+#: backend/views/settings.php:401
+msgid "Export Settings"
+msgstr ""
+
+#: backend/views/settings.php:403
+msgid "Export the plugin's settings for this site as a .json file. This will allows you to easily import the configuration to another installation."
+msgstr ""
+
+#: backend/views/settings.php:408
+msgid "Export"
+msgstr ""
+
+#: backend/views/settings.php:415
+msgid "Import Settings"
+msgstr ""
+
+#: backend/views/settings.php:417
+msgid "Import the plugin's settings from a .json file. This file can be retrieved by exporting the settings from another installation."
+msgstr ""
+
+#: backend/views/settings.php:425
+msgid "Import"
+msgstr ""
+
+#: backend/views/settings.php:433
+msgid ""
+"EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the admin panel appearances, clean your site code and remove unwanted features to increase its security and improve performance.\nLearn more at <a href='https://wpezpzdev.com/' target='_blank'>WPEzPzdev.com</a>"
+msgstr ""
+
+#: frontend/Settings.php:88
+msgid "Public access to the REST API has been limited."
+msgstr ""
+
+#: integrations/Custom_Login_Url.php:104
+msgid "This feature is not enabled."
+msgstr ""
+
+#: wordpress-ezpz-tweaks.php:60
+msgid "\"WordPress EzPz Tweaks\" requires PHP 7 or newer."
+msgstr ""

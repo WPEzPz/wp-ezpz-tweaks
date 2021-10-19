@@ -1,0 +1,48 @@
+/* vazir Font v28.0.0 */
+@font-face {
+	font-family: Vazir;
+	src: url('../fonts/vazir/Vazir-Regular.eot');
+	src: url('../fonts/vazir/Vazir-Regular.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/vazir/Vazir-Regular.woff2') format('woff2'),
+	url('../fonts/vazir/Vazir-Regular.woff') format('woff'),
+	url('../fonts/vazir/Vazir-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Shabnam Font v5.0.1 */
+@font-face {
+	font-family: Shabnam;
+	src: url('../fonts/shabnam/Shabnam.eot');
+	src: url('../fonts/shabnam/Shabnam.eot?#iefix') format('embedded-opentype'),
+		 url('../fonts/shabnam/Shabnam.woff2') format('woff2'),
+		 url('../fonts/shabnam/Shabnam.woff') format('woff'),
+		 url('../fonts/shabnam/Shabnam.ttf') format('truetype');
+	font-weight: normal;
+  }
+
+/* Samim Font v4.0.5 */
+@font-face {
+	font-family: Samim;
+	src: url('../fonts/samim/Samim.eot');
+	src: url('../fonts/samim/Samim.eot?#iefix') format('embedded-opentype'),
+		 url('../fonts/samim/Samim.woff2') format('woff2'),
+		 url('../fonts/samim/Samim.woff') format('woff'),
+		 url('../fonts/samim/Samim.ttf') format('truetype');
+	font-weight: normal;
+  }
+
+/* Estedad Font */
+@font-face {
+	font-family: Estedad;
+	src: url('../fonts/estedad/Estedad-Medium.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: Estedad;
+	src: url('../fonts/estedad/Estedad-Bold.woff2') format('woff2');
+	font-weight: bold;
+	font-style: normal;
+}
