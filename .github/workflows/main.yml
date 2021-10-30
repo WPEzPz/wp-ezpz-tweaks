@@ -31,17 +31,17 @@ jobs:
       - name: Create artifact
         uses: montudor/action-zip@v0.1.0
         with:
-          args: zip -X -r build/wordpress-ezpz-tweaks.zip . -x *.git* node_modules/\* .* "*/\.*" *.dist composer.* build**
+          args: zip -X -r build/wp-ezpz-tweaks.zip . -x *.git* node_modules/\* .* "*/\.*" *.dist composer.* build**
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: wordpress-ezpz-tweaks
-          path: build/wordpress-ezpz-tweaks.zip
+          name: wp-ezpz-tweaks
+          path: build/wp-ezpz-tweaks.zip
       - name: Upload to release
         uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "build/wordpress-ezpz-tweaks.zip"
+          file: "build/wp-ezpz-tweaks.zip"
           tags: true
           draft: false

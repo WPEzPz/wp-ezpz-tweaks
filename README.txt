@@ -1,4 +1,4 @@
-=== WordPress EzPz Tweaks ===
+=== WP EzPz Tweaks ===
 Contributors: wpezpz
 Tags: optimization, performance, customization, admin menu editor, security, tweaks, custom login url, wp login, branding
 Requires at least: 5.6
@@ -19,7 +19,7 @@ EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the adm
 = Using The WordPress Dashboard =
 
 1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'WordPress EzPz Tweaks'
+2. Search for 'WP EzPz Tweaks'
 3. Click 'Install Now'
 4. Activate the plugin on the Plugin dashboard
 
@@ -27,15 +27,15 @@ EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the adm
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Navigate to the 'Upload' area
-3. Select `wordpress-ezpz-tweaks.zip` from your computer
+3. Select `wp-ezpz-tweaks.zip` from your computer
 4. Click 'Install Now'
 5. Activate the plugin in the Plugin dashboard
 
 = Using FTP =
 
-1. Download `wordpress-ezpz-tweaks.zip`
-2. Extract the `wordpress-ezpz-tweaks` directory to your computer
-3. Upload the `wordpress-ezpz-tweaks` directory to the `/wp-content/plugins/` directory
+1. Download `wp-ezpz-tweaks.zip`
+2. Extract the `wp-ezpz-tweaks` directory to your computer
+3. Upload the `wp-ezpz-tweaks` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 
 == Screenshots ==

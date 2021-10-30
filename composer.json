@@ -1,12 +1,12 @@
 {
-    "name": "wordressezpz/tweaks",
+    "name": "wpezpz/tweaks",
     "type": "wordpress-plugin",
     "description": "Take the control of your WordPress Customized, Efficient, and Secure",
     "homepage": "https:\/\/wpezpzdev.com",
     "license": "GPL-3.0",
     "authors": [
         {
-            "name": "WordPress EzPz",
+            "name": "WP EzPz",
             "email": "info@wpezpzdev.com",
             "homepage": "https://wpezpzdev.com"
         }

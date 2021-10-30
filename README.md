@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to WordPress EzPz Tweaks 👋</h1>
+<h1 align="center">Welcome to WP EzPz Tweaks 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="http://www.gnu.org/licenses/gpl-3.0.txt" target="_blank">
@@ -21,7 +21,7 @@ composer update
 
 ## Author
 
-👤 **WordPress EzPz**
+👤 **WP EzPz**
 
 * Website: https://wpezpzdev.com/
 * Twitter: [@WordpressEzPz](https://twitter.com/wordpressezpz)
