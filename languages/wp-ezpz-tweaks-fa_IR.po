@@ -1,10 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-ezpz-"
-"tweaks\n"
-"POT-Creation-Date: 2021-08-23T14:40:07+00:00\n"
-"PO-Revision-Date: 2021-10-16 13:57+0330\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-ezpz-tweaks\n"
+"POT-Creation-Date: 2021-10-30T06:56:08+00:00\n"
+"PO-Revision-Date: 2021-10-30 10:32+0330\n"
 "Last-Translator: \n"
 "Language-Team: Persian (Iran)\n"
 "Language: fa_IR\n"
@@ -18,13 +17,13 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #. Plugin Name of the plugin
-#: wordpress-ezpz-tweaks.php:33
-msgid "WordPress EzPz Tweaks"
+#: wp-ezpz-tweaks.php:33
+msgid "WP EzPz Tweaks"
 msgstr "وردپرس ایزی‌پیزی توییکس"
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-msgid "https://wpezpzdev.com//"
+msgid "https://wpezpzdev.com/"
 msgstr ""
 
 #. Description of the plugin
@@ -39,7 +38,7 @@ msgstr ""
 
 #. Author of the plugin
 #: backend/Settings_Page.php:73
-msgid "WordPress EzPz"
+msgid "WP EzPz"
 msgstr "وردپرس ایزی‌پیزی"
 
 #: backend/Admin_Menu_Editor.php:68 backend/Settings_Page.php:78
@@ -58,15 +57,15 @@ msgstr "در حال ذخیره&hellip;"
 msgid "Saved!"
 msgstr "ذخیره شد!"
 
-#: backend/ImpExp.php:90
+#: backend/ImpExp.php:91
 msgid "Please upload a valid .json file"
-msgstr ""
+msgstr "لطفا یک فایل معتبر .json آپلود کنید"
 
-#: backend/ImpExp.php:96
+#: backend/ImpExp.php:97
 msgid "Please upload a file to import"
-msgstr ""
+msgstr "لطفا فایل درون‌ریزی را آپلود کنید"
 
-#: backend/ImpExp.php:114
+#: backend/ImpExp.php:116
 msgid "Failed to import the settings."
 msgstr "خطا در درون‌ریزی تنظیمات."
 
@@ -88,7 +87,7 @@ msgstr "ویرایش صفحه"
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: backend/Settings_Page.php:317
+#: backend/Settings_Page.php:330
 msgid ""
 "Your login page is now here: <strong><a href=\"%1$s\">%2$s</a></strong>. "
 "Bookmark this page!"
@@ -138,17 +137,17 @@ msgstr "یک فونت را انتخاب کنید"
 
 #: backend/views/settings.php:60 backend/views/settings.php:70
 msgid "Type to search..."
-msgstr ""
+msgstr "برای جستجو تایپ کنید..."
 
 #: backend/views/settings.php:77
 msgid "Change WordPress Logo"
 msgstr "تغییر لوگو وردپرس"
 
-#: backend/views/settings.php:78 backend/views/settings.php:209
+#: backend/views/settings.php:78 backend/views/settings.php:203
 msgid "Upload an image or enter an URL."
 msgstr "تصویر را آپلود کنید یا URL تصویر را وارد کنید."
 
-#: backend/views/settings.php:85 backend/views/settings.php:221
+#: backend/views/settings.php:85 backend/views/settings.php:215
 msgid "Add File"
 msgstr "انتخاب فایل"
 
@@ -188,71 +187,35 @@ msgstr "حذف ویجت‌های داشبورد"
 msgid "Check widgets to remove from dashboard"
 msgstr "برای حذف شدن ویجت ها از داشبورد آن‌ها را انتخاب کنید"
 
-#: backend/views/settings.php:134
-msgid "Dashboard Activity"
-msgstr "فعالیت"
-
-#: backend/views/settings.php:135
-msgid "Dashboard Site Health"
-msgstr "وضعیت سلامت سایت"
-
-#: backend/views/settings.php:136
-msgid "Dashboard Quick Press"
-msgstr "پیش‌نویس سریع"
-
-#: backend/views/settings.php:137
-msgid "Dashboard Incoming Links"
-msgstr "اخبار و رویداد های وردپرس"
-
-#: backend/views/settings.php:138
-msgid "Dashboard Right Now"
-msgstr "در یک نگاه"
-
 #: backend/views/settings.php:139
-msgid "Dashboard Plugins"
-msgstr "پلاگین ها"
-
-#: backend/views/settings.php:140
-msgid "Dashboard Recent Drafts"
-msgstr "آخرین نوشته ها"
-
-#: backend/views/settings.php:141
-msgid "Dashboard Recent Comments"
-msgstr "دیدگاه‌های اخیر"
-
-#: backend/views/settings.php:142
-msgid "Dashboard Primary"
-msgstr "اصلی"
-
-#: backend/views/settings.php:149
 msgid "Admin Footer"
 msgstr "فوتر بخش مدیریت"
 
-#: backend/views/settings.php:150
+#: backend/views/settings.php:140
 msgid "Footer Text"
 msgstr "محتوای فوتر"
 
-#: backend/views/settings.php:151
+#: backend/views/settings.php:141
 msgid "Change footer text"
 msgstr "محتوای فوتر مدیریت را تغییر دهید"
 
-#: backend/views/settings.php:163
+#: backend/views/settings.php:153
 msgid "Visibility"
 msgstr "قابلیت نمایش"
 
-#: backend/views/settings.php:164
+#: backend/views/settings.php:154
 msgid "Hide the entire admin footer"
 msgstr "مخفی کردن فوتر"
 
-#: backend/views/settings.php:172
+#: backend/views/settings.php:162
 msgid "Brand Custom Menu"
 msgstr "منوی اختصاصی برند"
 
-#: backend/views/settings.php:173
+#: backend/views/settings.php:163
 msgid "Enable Branding"
 msgstr "فعالسازی برندینگ"
 
-#: backend/views/settings.php:174
+#: backend/views/settings.php:164
 msgid ""
 "By selecting this option, you can add your brand to the WordPress menu and "
 "customize how it displays."
@@ -260,63 +223,63 @@ msgstr ""
 "با انتخاب این گزینه شما می‌توانید برند خود را به منوی وردپرس اضافه و نمایش آن "
 "را سفارشی‌سازی کنید."
 
-#: backend/views/settings.php:182
+#: backend/views/settings.php:176
 msgid "Menu Title"
 msgstr "عنوان منو"
 
-#: backend/views/settings.php:195
+#: backend/views/settings.php:189
 msgid "Menu Slug"
 msgstr "نامک منو"
 
-#: backend/views/settings.php:208
+#: backend/views/settings.php:202
 msgid "Menu Logo"
 msgstr "لوگو منو"
 
-#: backend/views/settings.php:235
+#: backend/views/settings.php:229
 msgid "Page Content"
 msgstr "محتوای صفحه"
 
-#: backend/views/settings.php:236
+#: backend/views/settings.php:230
 msgid "You can use HTML to design branding page"
 msgstr "شما می توانید از HTML برای طراحی صفحه برندینگ استفاده کنید"
 
-#: backend/views/settings.php:251
+#: backend/views/settings.php:245
 msgid "Custom CSS"
 msgstr "استایل سفارشی"
 
-#: backend/views/settings.php:252
+#: backend/views/settings.php:246
 msgid "Apply custom css to admin area"
 msgstr "اعمال CSS سفارشی به بخش مدیریت"
 
-#: backend/views/settings.php:277
+#: backend/views/settings.php:271
 msgid "Disable Comment Website Field"
 msgstr "غیرفعال کردن فیلد وب‌سایت در دیدگاه‌ها"
 
-#: backend/views/settings.php:278
+#: backend/views/settings.php:272
 msgid "Remove the website field from the comment form"
 msgstr "حذف فیلد آدرس وب‌سایت از فرم درج دیدگاه"
 
-#: backend/views/settings.php:285
+#: backend/views/settings.php:279
 msgid "Disable Emojis"
 msgstr "غیرفعال کردن ایموجی‌ها"
 
-#: backend/views/settings.php:286
+#: backend/views/settings.php:280
 msgid "Remove wp-emoji-release.min.js file"
 msgstr "حذف فایل wp-emoji-release.min.js و کاهش درخواست‌های HTTP"
 
-#: backend/views/settings.php:293
+#: backend/views/settings.php:287
 msgid "Disable Embeds"
 msgstr "غیرفعال کردن Embeds"
 
-#: backend/views/settings.php:294
+#: backend/views/settings.php:288
 msgid "Remove wp-embed.min.js file and reduce HTTP requests"
 msgstr "حذف فایل wp-embed.min.js و کاهش درخواست‌های HTTP"
 
-#: backend/views/settings.php:301
+#: backend/views/settings.php:295
 msgid "Remove Shortlink"
 msgstr "حذف لینک های کوتاه"
 
-#: backend/views/settings.php:302
+#: backend/views/settings.php:296
 msgid ""
 "Use this to create a shortlink to your pages and posts. However, if you are "
 "already using pretty permalinks, then there is no reason to keep this"
@@ -324,11 +287,11 @@ msgstr ""
 "این گزینه برای لینک‌های کوتاه صفحات و پست‌های شما استفاده می‌شود. اگر از "
 "پیوندهای یکتا استفاده می‌کنید نیازی به استفاده از این گزینه ندارید."
 
-#: backend/views/settings.php:330
+#: backend/views/settings.php:324
 msgid "Change WP Login URL"
 msgstr "تغییر آدرس مدیریت وردپرس"
 
-#: backend/views/settings.php:331
+#: backend/views/settings.php:325
 msgid ""
 "Change the WordPress Login URL and prevent access to the \"/wp-admin\" and \"/"
 "wp-login.php\" and \"/wp-login.php?action=register\" to protect your website "
@@ -337,27 +300,27 @@ msgstr ""
 "با تغییر آدرس ورود و جلوگیری از دسترسی مستقیم به صفحه wp-login.php و wp-"
 "admin، از وبسایت خود در مقابل هکر‌ها و غریبه‌ها محافظت کنید."
 
-#: backend/views/settings.php:342
+#: backend/views/settings.php:336
 msgid "Who can access this plugin"
 msgstr "تعیین سطح دسترسی به صفحه تنظیمات پلاگین"
 
-#: backend/views/settings.php:346
+#: backend/views/settings.php:340
 msgid "Super Admin"
 msgstr "مدیر کل"
 
-#: backend/views/settings.php:347
+#: backend/views/settings.php:341
 msgid "Anyone with the \"mange_options\" capability"
 msgstr "هر کسی با قابلیت \"mange_options\""
 
-#: backend/views/settings.php:348
+#: backend/views/settings.php:342
 msgid "Only the current user"
 msgstr "فقط کاربر فعلی"
 
-#: backend/views/settings.php:358
+#: backend/views/settings.php:352
 msgid "Disable Public Access to WP REST API"
 msgstr "غیر فعال کردن API"
 
-#: backend/views/settings.php:359
+#: backend/views/settings.php:353
 msgid ""
 " API consumers be authenticated, which effectively prevents anonymous "
 "external access."
@@ -365,37 +328,37 @@ msgstr ""
 "دسترسی عمومی به WP Rest API غیرفعال می‌شود اما همچنان برای سایر کاربران سایت "
 "در دسترس خواهد بود."
 
-#: backend/views/settings.php:368
+#: backend/views/settings.php:362
 msgid "Disable XML-RPC"
 msgstr "غیرفعال کردن XML-RPC"
 
-#: backend/views/settings.php:369
+#: backend/views/settings.php:363
 msgid "Disabling this feature makes your site more secure"
 msgstr "غیرفعال کردن این امکان وب‌سایت شما را امن‌تر می‌کند."
 
-#: backend/views/settings.php:378
+#: backend/views/settings.php:372
 msgid "Remove WP Version"
 msgstr "مخفی کردن ورژن وردپرس"
 
-#: backend/views/settings.php:379
+#: backend/views/settings.php:373
 msgid ""
 "Remove the WordPress version number from different sections of your WordPress "
 "website"
 msgstr "عدم نمایش ورژن وردپرس در مکان‌های مختلف وب‌سایت"
 
-#: backend/views/settings.php:387
+#: backend/views/settings.php:381
 msgid "Hide Update Notifications"
 msgstr "مخفی کردن پیغام های به روز رسانی"
 
-#: backend/views/settings.php:388
+#: backend/views/settings.php:382
 msgid "Hide update notifications for user roles"
 msgstr "پیغام‌های به‌روزرسانی را برای نقش‌های کاربری مختلف مخفی کنید."
 
-#: backend/views/settings.php:401
+#: backend/views/settings.php:395
 msgid "Export Settings"
 msgstr "برون‌بری تنظیمات"
 
-#: backend/views/settings.php:403
+#: backend/views/settings.php:397
 msgid ""
 "Export the plugin's settings for this site as a .json file. This will allows "
 "you to easily import the configuration to another installation."
@@ -404,15 +367,15 @@ msgstr ""
 "تنظیمات خود را به آسانی در یک سایت دیگر درون‌ریزی کنید و همچنین یک نسخه "
 "پشتیبان از این تغییرات داشته باشید."
 
-#: backend/views/settings.php:408
+#: backend/views/settings.php:402
 msgid "Export"
 msgstr "برون‌بری"
 
-#: backend/views/settings.php:415
+#: backend/views/settings.php:409
 msgid "Import Settings"
 msgstr "درون‌ریزی تنظیمات"
 
-#: backend/views/settings.php:417
+#: backend/views/settings.php:411
 msgid ""
 "Import the plugin's settings from a .json file. This file can be retrieved by "
 "exporting the settings from another installation."
@@ -420,11 +383,11 @@ msgstr ""
 "تنظیمات پلاگین را از طریق بارگذاری فایل JSON درون‌ریزی کنید. این فایل را "
 "می‌توانید از طریق برون‌بری تنظیمات ایجاد کنید."
 
-#: backend/views/settings.php:425
+#: backend/views/settings.php:419
 msgid "Import"
 msgstr "درون‌ریزی"
 
-#: backend/views/settings.php:433
+#: backend/views/settings.php:427
 msgid ""
 "EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the "
 "admin panel appearances, clean your site code and remove unwanted features to "
@@ -442,13 +405,40 @@ msgstr ""
 msgid "Public access to the REST API has been limited."
 msgstr "دسترسی عمومی به REST API محدود شده است."
 
-#: integrations/Custom_Login_Url.php:104
+#: integrations/Custom_Login_Url.php:110
 msgid "This feature is not enabled."
 msgstr "این ویژگی فعال نیست."
 
-#: wordpress-ezpz-tweaks.php:60
-msgid "\"WordPress EzPz Tweaks\" requires PHP 7 or newer."
-msgstr ""
+#: wp-ezpz-tweaks.php:60
+msgid "\"WP EzPz Tweaks\" requires PHP 7 or newer."
+msgstr "\"WP EzPz Tweaks\" نیاز به PHP 7 یا جدیدتر دارد."
+
+#~ msgid "Dashboard Activity"
+#~ msgstr "فعالیت"
+
+#~ msgid "Dashboard Site Health"
+#~ msgstr "وضعیت سلامت سایت"
+
+#~ msgid "Dashboard Quick Press"
+#~ msgstr "پیش‌نویس سریع"
+
+#~ msgid "Dashboard Incoming Links"
+#~ msgstr "اخبار و رویداد های وردپرس"
+
+#~ msgid "Dashboard Right Now"
+#~ msgstr "در یک نگاه"
+
+#~ msgid "Dashboard Plugins"
+#~ msgstr "پلاگین ها"
+
+#~ msgid "Dashboard Recent Drafts"
+#~ msgstr "آخرین نوشته ها"
+
+#~ msgid "Dashboard Recent Comments"
+#~ msgstr "دیدگاه‌های اخیر"
+
+#~ msgid "Dashboard Primary"
+#~ msgstr "اصلی"
 
 #, fuzzy
 #~| msgid "Add File"
