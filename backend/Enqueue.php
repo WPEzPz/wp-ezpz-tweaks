@@ -4,8 +4,8 @@
  * EZPZ_TWEAKS
  *
  * @package   EZPZ_TWEAKS
- * @author    WordPress EzPz <info@wpezpz.dev>
- * @copyright 2020 WordPress EzPz
+ * @author    WP EzPz <info@wpezpz.dev>
+ * @copyright 2020 WP EzPz
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */
@@ -53,7 +53,7 @@ class Enqueue {
 	 * @since 1.0.0
 	 */
 	public function enqueue_admin_scripts($hook_suffix) {
-		if( $hook_suffix == 'toplevel_page_ezpz-tweaks' ) {
+		if( $hook_suffix == 'toplevel_page_' . EZPZ_TWEAKS_TEXTDOMAIN ) {
 			wp_enqueue_script( EZPZ_TWEAKS_TEXTDOMAIN . 'cmb2_conditional_logic', plugins_url( 'assets/js/cmb2-conditional-logic.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ), array( 'jquery' ), '1.0.0' );
 		}
 

@@ -4,8 +4,8 @@
  * EZPZ_TWEAKS
  *
  * @package   EZPZ_TWEAKS
- * @author    WordPress EzPz <info@wpezpz.dev>
- * @copyright 2020 WordPress EzPz
+ * @author    WP EzPz <info@wpezpz.dev>
+ * @copyright 2020 WP EzPz
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */
@@ -67,10 +67,10 @@ class Settings_Page {
 		$capability	   = $plugin_access == 'super_admin' ? 'delete_users' : 'manage_options';
 
 		if( $plugin_access == 'super_admin' || $plugin_access == 'manage_options' || $plugin_access == get_current_user_id() ) {
-			$ezpz_menu = menu_page_url( 'wordpress-ezpz', false );
+			$ezpz_menu = menu_page_url( 'wp-ezpz', false );
 
 			if ( !$ezpz_menu ) {
-				add_menu_page( __( 'WordPress EzPz', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'WordPress EzPz', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN, [ $this, 'display_plugin_settings_page' ], EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/img/EzPzTweaks-icon.png' );
+				add_menu_page( __( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN, [ $this, 'display_plugin_settings_page' ], EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/img/EzPzTweaks-icon.png' );
 
 				add_submenu_page( EZPZ_TWEAKS_TEXTDOMAIN, __( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN, [ $this, 'display_plugin_settings_page' ] );
 			}

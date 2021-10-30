@@ -2,18 +2,18 @@
 
 /**
  * @package   WPEzPz Tweaks
- * @author    WordPress EzPz <info@wordpressezpz.com/>
- * @copyright 2020 WordPress EzPz
+ * @author    WP EzPz <info@wpezpzdev.com/>
+ * @copyright 2020 WP EzPz
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  *
- * Plugin Name:     WordPress EzPz Tweaks
+ * Plugin Name:     WP EzPz Tweaks
  * Plugin URI:      https://wpezpzdev.com/
  * Description:     EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the admin panel appearances, clean your site code and remove unwanted features to increase its security and improve performance.
  * Version:         0.9.7
- * Author:          WordPress EzPz
+ * Author:          WP EzPz
  * Author URI:      https://wpezpzdev.com/
- * Text Domain:     ezpz-tweaks
+ * Text Domain:     wp-ezpz-tweaks
  * License:         GPL 2.0+
  * License URI:     http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:     /languages
@@ -29,8 +29,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'EZPZ_TWEAKS_VERSION', '0.9.7' );
-define( 'EZPZ_TWEAKS_TEXTDOMAIN', 'ezpz-tweaks' );
-define( 'EZPZ_TWEAKS_NAME', __( 'WordPress EzPz Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ) );
+define( 'EZPZ_TWEAKS_TEXTDOMAIN', 'wp-ezpz-tweaks' );
+define( 'EZPZ_TWEAKS_NAME', __( 'WP EzPz Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ) );
 define( 'EZPZ_TWEAKS_PLUGIN_ROOT', plugin_dir_path( __FILE__ ) );
 define( 'EZPZ_TWEAKS_PLUGIN_ROOT_URL', plugin_dir_url( __FILE__ ) );
 define( 'EZPZ_TWEAKS_PLUGIN_ABSOLUTE', __FILE__ );
@@ -57,7 +57,7 @@ if ( version_compare( PHP_VERSION, '7.0.0', '<=' ) ) {
 			echo wp_kses_post(
 				sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
-					__( '"WordPress EzPz Tweaks" requires PHP 7 or newer.', EZPZ_TWEAKS_TEXTDOMAIN )
+					__( '"WP EzPz Tweaks" requires PHP 7 or newer.', EZPZ_TWEAKS_TEXTDOMAIN )
 				)
 			);
 		}
@@ -72,8 +72,6 @@ $ezpz_tweaks_libraries = require_once EZPZ_TWEAKS_PLUGIN_ROOT . 'vendor/autoload
 require_once EZPZ_TWEAKS_PLUGIN_ROOT . 'vendor/cmb2/init.php';
 
 require_once EZPZ_TWEAKS_PLUGIN_ROOT . 'functions/functions.php';
-
-// Add your new plugin on the wiki: https://github.com/WPBP/WordPress-Plugin-Boilerplate-Powered/wiki/Plugin-made-with-this-Boilerplate
 
 $requirements = new \Micropackage\Requirements\Requirements(
 	EZPZ_TWEAKS_TEXTDOMAIN,
