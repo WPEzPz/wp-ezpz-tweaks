@@ -4,7 +4,7 @@
  * @package   WPEzPz Tweaks
  * @author    WP EzPz <info@wpezpzdev.com/>
  * @copyright 2020 WP EzPz
- * @license   GPL 2.0+
+ * @license   GPL 3.0
  * @link      https://wpezpzdev.com/
  *
  * Plugin Name:     WPEzPz Tweaks
@@ -13,8 +13,8 @@
  * Author:          WP EzPz
  * Author URI:      https://wpezpzdev.com/
  * Text Domain:     wpezpz-tweaks
- * License:         GPL 2.0+
- * License URI:     http://www.gnu.org/licenses/gpl-2.0.txt
+ * License:         GPL 3.0
+ * License URI:     http://www.gnu.org/licenses/gpl-3.0.txt
  * Domain Path:     /languages
  * Requires PHP:    7.0
  * WordPress-Plugin-Boilerplate-Powered: v3.2.0
