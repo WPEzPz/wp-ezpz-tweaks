@@ -147,14 +147,14 @@ class Settings_Page {
 	public function custom_footer( $text ) {
 		
 		if( isset( $_POST['submit-cmb'] ) ) {
-			$this->customizing_option['footer_visibility'] = $_POST['footer_visibility'];
+			$this->customizing_option['footer_visibility'] = esc_attr( $_POST['footer_visibility'] );
 		}
 
 		if( isset( $this->customizing_option['footer_visibility'] ) && $this->customizing_option['footer_visibility'] == 'on' ) {
 			return;
 		} else {
 			if ( ( isset( $this->customizing_option['footer_text'] ) && !isset( $_POST['footer_text'] ) ) || ( isset( $_POST['footer_text'] ) && !empty( $_POST['footer_text'] ) ) ) {
-				$footer_text = isset( $_POST['footer_text'] ) ? $_POST['footer_text'] : $this->customizing_option['footer_text'];
+				$footer_text = isset( $_POST['footer_text'] ) ? esc_attr( $_POST['footer_text'] ) : $this->customizing_option['footer_text'];
 				return $footer_text;
 			} else {
 				return $text;
