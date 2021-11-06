@@ -239,16 +239,6 @@
 			)
 		);
 
-		
-		$cmb->add_field(
-			array(
-				'name' => __( 'Custom CSS', EZPZ_TWEAKS_TEXTDOMAIN ),
-				'desc' => __( 'Apply custom css to admin area', EZPZ_TWEAKS_TEXTDOMAIN ),
-				'id'   => 'custom_css',
-				'type' => 'textarea',
-			)
-		);
-
 		cmb2_metabox_form( EZPZ_TWEAKS_TEXTDOMAIN . '_options_customizing_branding', EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
 		?>
 	</div>

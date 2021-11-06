@@ -36,7 +36,6 @@ class Settings_Page {
 		$this->performance_option = get_option( 'ezpz-tweaks-performance' );
 		$this->security_option 	  = get_option( 'ezpz-tweaks-security' );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'apply_admin_custom_css' ), 30 );
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 		add_action( 'wp_before_admin_bar_render', array( $this, 'adminbar_logo' ) );
 		add_action( 'admin_head', array( $this, 'hide_core_update_notifications_from_users' ), 1 );
@@ -314,13 +313,6 @@ class Settings_Page {
 		);
 
 		return $fonts;
-	}
-
-	public function apply_admin_custom_css() {
-		if( isset( $this->customizing_option['custom_css'] ) || isset( $_POST['custom_css'] ) ) {
-			$custom_css = isset( $_POST['custom_css'] ) ? sanitize_text_field( $_POST['custom_css'] ) : $this->customizing_option['custom_css'];
-			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', $custom_css );
-		}
 	}
 
 	public function show_notices_on_custom_url_change( $object_id, $updated, $cmb ) {
