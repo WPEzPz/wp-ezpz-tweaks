@@ -110,10 +110,10 @@ function ezpz_tweaks_deactivate() {
 register_deactivation_hook( __FILE__, 'ezpz_tweaks_deactivate' );
 
 function change_login_logo() {
-	$customizing_option = get_option( 'ezpz-tweaks-customizing-branding' );
+	$customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
 
 	if ( isset( $customizing_option['custom_logo'] ) ) {
-		echo '<style type="text/css">h1 a {background-image: url( "' . $customizing_option['custom_logo'] . '" ) !important; }</style>';
+		echo '<style type="text/css">h1 a {background-image: url( "' . esc_url( $customizing_option['custom_logo'] ) . '" ) !important; }</style>';
 	}
 }
 

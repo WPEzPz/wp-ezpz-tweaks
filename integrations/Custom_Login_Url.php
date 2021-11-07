@@ -80,7 +80,7 @@ class Custom_Login_Url {
 
 	private function new_login_slug() {
 		if( isset( $_POST['submit-cmb'] ) ) {
-			$this->security_option['custom_login_url'] = esc_url( $_POST['custom_login_url'] );
+			$this->security_option['custom_login_url'] = sanitize_text_field( $_POST['custom_login_url'] );
 		}
 
 		if ( !empty( $this->security_option['custom_login_url'] ) ) {

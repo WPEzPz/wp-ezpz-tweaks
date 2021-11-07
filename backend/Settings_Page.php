@@ -32,9 +32,9 @@ class Settings_Page {
 	 */
 	public function initialize() {
 		$this->get_locale         = get_locale();
-		$this->customizing_option = get_option( 'ezpz-tweaks-customizing-branding' );
-		$this->performance_option = get_option( 'ezpz-tweaks-performance' );
-		$this->security_option 	  = get_option( 'ezpz-tweaks-security' );
+		$this->customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
+		$this->performance_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-performance' );
+		$this->security_option 	  = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
 
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 		add_action( 'wp_before_admin_bar_render', array( $this, 'adminbar_logo' ) );
@@ -44,8 +44,8 @@ class Settings_Page {
 		add_action( 'wp_dashboard_setup', array( $this, 'remove_dashboard_widgets' ) );
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_custom_url_change' ), 30, 3 );
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
-		add_action( 'admin_head', array( $this, 'change_admin_font' ), 30 );
-		add_action( 'admin_head', array( $this, 'change_editor_font' ), 30 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 	}
@@ -147,15 +147,15 @@ class Settings_Page {
 	public function custom_footer( $text ) {
 		
 		if( isset( $_POST['submit-cmb'] ) ) {
-			$this->customizing_option['footer_visibility'] = esc_attr( $_POST['footer_visibility'] );
+			$this->customizing_option['footer_visibility'] = sanitize_text_field( $_POST['footer_visibility'] );
 		}
 
 		if( isset( $this->customizing_option['footer_visibility'] ) && $this->customizing_option['footer_visibility'] == 'on' ) {
 			return;
 		} else {
 			if ( ( isset( $this->customizing_option['footer_text'] ) && !isset( $_POST['footer_text'] ) ) || ( isset( $_POST['footer_text'] ) && !empty( $_POST['footer_text'] ) ) ) {
-				$footer_text = isset( $_POST['footer_text'] ) ? esc_attr( $_POST['footer_text'] ) : $this->customizing_option['footer_text'];
-				return $footer_text;
+				$footer_text = isset( $_POST['footer_text'] ) ? sanitize_text_field( $_POST['footer_text'] ) : $this->customizing_option['footer_text'];
+				return esc_html( $footer_text );
 			} else {
 				return $text;
 			}
@@ -176,9 +176,9 @@ class Settings_Page {
 				$admin_font   = ezpz_tweaks_get_google_font_name( $admin_font );
 			}
 
-			$font_styles .= '<style>body, h1, h2, h3, h4, h5, h6, label, input, textarea, .components-notice, #wpadminbar *:not([class="ab-icon"]), .wp-core-ui, .media-menu, .media-frame *, .media-modal * {font-family:"' . $admin_font . '" !important;}</style>';
+			$font_styles .= 'body, h1, h2, h3, h4, h5, h6, label, input, textarea, .components-notice, #wpadminbar *:not([class="ab-icon"]), .wp-core-ui, .media-menu, .media-frame *, .media-modal * {font-family:"' . $admin_font . '" !important;}';
 
-			echo $font_styles;
+			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', $font_styles );
 		}
 	}
 
@@ -192,13 +192,13 @@ class Settings_Page {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 			} else {
-				$font_styles .= '<style>@import url("https://fonts.googleapis.com/css?family=' . $editor_font . '");</style>';
+				$font_styles .= '<st>@import url("https://fonts.googleapis.com/css?family=' . $editor_font . '");</style>';
 				$editor_font   = ezpz_tweaks_get_google_font_name( $editor_font );
 			}
 
-			$font_styles .= '<style>body#tinymce, #editorcontainer #content, #wp_mce_fullscreen, .block-editor-writing-flow input, .block-editor-writing-flow textarea, .block-editor-writing-flow p {font-family:"' . $editor_font . '" !important;}</style>';
+			$font_styles .= 'body#tinymce, #editorcontainer #content, #wp_mce_fullscreen, .block-editor-writing-flow input, .block-editor-writing-flow textarea, .block-editor-writing-flow p {font-family:"' . $editor_font . '" !important;}';
 
-			echo $font_styles;
+			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', $font_styles );
 		}
 	}
 
