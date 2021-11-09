@@ -37,7 +37,6 @@ class Settings_Page {
 		$this->security_option 	  = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
 
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		add_action( 'wp_before_admin_bar_render', array( $this, 'adminbar_logo' ) );
 		add_action( 'admin_head', array( $this, 'hide_core_update_notifications_from_users' ), 1 );
 		add_action( 'admin_init', array( $this, 'remove_welcome_panel' ) );
 		add_action( 'admin_init', array( $this, 'dashboard_widgets_options' ) );
@@ -207,27 +206,6 @@ class Settings_Page {
 		wp_deregister_style( 'open-sans' );
 		wp_register_style( 'open-sans', false );
 
-	}
-
-	public function adminbar_logo() {
-		if ( ( isset( $this->customizing_option['custom_logo'] ) && !isset( $_POST['custom_logo'] ) ) || ( isset( $_POST['custom_logo'] ) && !empty( $_POST['custom_logo'] ) ) ) {
-			$custom_logo = isset( $_POST['custom_logo'] ) ? sanitize_text_field( $_POST['custom_logo'] ) : $this->customizing_option['custom_logo'];
-
-			echo '<style type="text/css">
-			#wpadminbar #wp-admin-bar-wp-logo>.ab-item {
-			    padding: 0 7px;
-			    background-image: url(' . $custom_logo . ') !important;
-			    background-size: 50%;
-			    background-position: center;
-			    background-repeat: no-repeat;
-			    opacity: 1;
-			}
-			#wpadminbar #wp-admin-bar-wp-logo>.ab-item .ab-icon:before {
-			    content: " ";
-			    top: 2px;
-			}
-        </style>';
-		}
 	}
 
 	public function hide_core_update_notifications_from_users() {

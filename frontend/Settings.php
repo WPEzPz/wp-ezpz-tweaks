@@ -37,6 +37,7 @@ class Settings {
 		add_action( 'init', array( $this, 'disable_xmlrpc' ) );
 		add_action( 'init', array( $this, 'hide_admin_bar' ), 9999 );
 		add_action( 'wp_head', array( $this, 'change_adminbar_font' ), 30 );
+		add_action( 'wp_before_admin_bar_render', array( $this, 'adminbar_logo' ) );
 		add_action( 'login_head', array( $this, 'change_login_font' ), 999 );
 		add_action( 'after_setup_theme', array( $this, 'remove_shortlink' ) );
 		add_filter( 'after_setup_theme', array( $this, 'remove_wp_version_from_head' ) );
@@ -229,6 +230,27 @@ class Settings {
 	
 				echo '<style>#wpadminbar *:not([class="ab-icon"]) {font-family:"' . esc_attr( $admin_font ) . '" !important;}</style>';
 			}
+		}
+	}
+
+	public function adminbar_logo() {
+		if ( ( isset( $this->customizing_option['custom_logo'] ) && !isset( $_POST['custom_logo'] ) ) || ( isset( $_POST['custom_logo'] ) && !empty( $_POST['custom_logo'] ) ) ) {
+			$custom_logo = isset( $_POST['custom_logo'] ) ? sanitize_text_field( $_POST['custom_logo'] ) : $this->customizing_option['custom_logo'];
+
+			echo '<style type="text/css">
+			#wpadminbar #wp-admin-bar-wp-logo>.ab-item {
+			    padding: 0 7px;
+			    background-image: url(' . $custom_logo . ') !important;
+			    background-size: 50%;
+			    background-position: center;
+			    background-repeat: no-repeat;
+			    opacity: 1;
+			}
+			#wpadminbar #wp-admin-bar-wp-logo>.ab-item .ab-icon:before {
+			    content: " ";
+			    top: 2px;
+			}
+        	</style>';
 		}
 	}
 
