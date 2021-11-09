@@ -218,19 +218,16 @@ class Settings {
 
 	public function change_adminbar_font() {
 		if( is_admin_bar_showing() ) {
-			$font_styles = '';
 			$field_name  = $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font';
 			$admin_font  = $this->customizing_option[ $field_name ] ?? false;
 
 			if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
 				if ( $this->get_locale != 'fa_IR' ) {
-					$font_styles .= '<style>@import url("https://fonts.googleapis.com/css?family=' . $admin_font . '");</style>';
+					echo '<style>@import url("https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) . '");</style>';
 					$admin_font   = ezpz_tweaks_get_google_font_name( $admin_font );
 				}
 	
-				$font_styles .= '<style>#wpadminbar *:not([class="ab-icon"]) {font-family:"' . $admin_font . '" !important;}</style>';
-	
-				echo htmlspecialchars( $font_styles );
+				echo '<style>#wpadminbar *:not([class="ab-icon"]) {font-family:"' . esc_attr( $admin_font ) . '" !important;}</style>';
 			}
 		}
 	}
