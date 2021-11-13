@@ -1,5 +1,4 @@
 <?php
-
 /**
  * EZPZ_TWEAKS
  *
@@ -27,7 +26,7 @@ class Settings {
 	 */
 	public function initialize() {
 
-		$this->get_locale      = get_locale();
+		$this->get_locale		  = get_locale();
 		$this->customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
 		$this->performance_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-performance' );
 		$this->security_option 	  = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
@@ -223,12 +222,15 @@ class Settings {
 			$admin_font  = $this->customizing_option[ $field_name ] ?? false;
 
 			if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
-				if ( $this->get_locale != 'fa_IR' ) {
-					echo '<style>@import url("https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) . '");</style>';
-					$admin_font   = ezpz_tweaks_get_google_font_name( $admin_font );
+				if ( $this->get_locale == 'fa_IR' ) {
+					wp_register_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '' );
+					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name );
+				} else {
+					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, 'https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) );
+					$admin_font = ezpz_tweaks_get_google_font_name( $admin_font );
 				}
-	
-				echo '<style>#wpadminbar *:not([class="ab-icon"]) {font-family:"' . esc_attr( $admin_font ) . '" !important;}</style>';
+
+				wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '#wpadminbar *:not([class="ab-icon"]) {font-family:"' . esc_html( $admin_font ) . '" !important;}' );
 			}
 		}
 	}
@@ -237,20 +239,22 @@ class Settings {
 		if ( ( isset( $this->customizing_option['custom_logo'] ) && !isset( $_POST['custom_logo'] ) ) || ( isset( $_POST['custom_logo'] ) && !empty( $_POST['custom_logo'] ) ) ) {
 			$custom_logo = isset( $_POST['custom_logo'] ) ? sanitize_text_field( $_POST['custom_logo'] ) : $this->customizing_option['custom_logo'];
 
-			echo '<style type="text/css">
-			#wpadminbar #wp-admin-bar-wp-logo>.ab-item {
-			    padding: 0 7px;
-			    background-image: url(' . $custom_logo . ') !important;
-			    background-size: 50%;
-			    background-position: center;
-			    background-repeat: no-repeat;
-			    opacity: 1;
-			}
-			#wpadminbar #wp-admin-bar-wp-logo>.ab-item .ab-icon:before {
-			    content: " ";
-			    top: 2px;
-			}
-        	</style>';
+			wp_register_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo', '' );
+			wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo' );
+			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo', 
+				'#wpadminbar #wp-admin-bar-wp-logo>.ab-item {
+					padding: 0 7px;
+					background-image: url(' . esc_url( $custom_logo ) . ') !important;
+					background-size: 50%;
+					background-position: center;
+					background-repeat: no-repeat;
+					opacity: 1;
+				}
+				#wpadminbar #wp-admin-bar-wp-logo>.ab-item .ab-icon:before {
+					content: " ";
+					top: 2px;
+				}' 
+			);
 		}
 	}
 
@@ -260,14 +264,14 @@ class Settings {
 			$admin_font  = $this->customizing_option[ $field_name ];
 
 			if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
-				if ( $this->get_locale != 'fa_IR' ) {
-					echo '<style>@import url("https://fonts.googleapis.com/css?family=' . esc_url( $admin_font ) . '");</style>';
-					$admin_font   = ezpz_tweaks_get_google_font_name( $admin_font );
+				if ( $this->get_locale == 'fa_IR' ) {
+					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/css/persianfonts.css' );
 				} else {
-					echo '<style>@import url("' . EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/css/persianfonts.css");</style>';
+					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, 'https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) );
+					$admin_font = ezpz_tweaks_get_google_font_name( $admin_font );
 				}
 	
-				echo '<style>* {font-family:"' . esc_html( $admin_font ) . '" !important;}</style>';
+				wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '* {font-family:"' . esc_html( $admin_font ) . '" !important;}' );
 			}
 		}
 	}

@@ -162,7 +162,6 @@ class Settings_Page {
 	}
 
 	public function change_admin_font() {
-		$font_styles = '';
 		$field_name  = ( $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font' );
 		$admin_font  = $_POST[ $field_name ] ?? $this->customizing_option[ $field_name ] ?? false;
 
@@ -171,20 +170,16 @@ class Settings_Page {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 			} else {
-				$font_styles .= '<style>@import url("https://fonts.googleapis.com/css?family=' . $admin_font . '");</style>';
+				wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-google-fonts', 'https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) );
 				$admin_font   = ezpz_tweaks_get_google_font_name( $admin_font );
 			}
 
-			$font_styles .= 'body, h1, h2, h3, h4, h5, h6, label, input, textarea, .components-notice, #wpadminbar *:not([class="ab-icon"]), .wp-core-ui, .media-menu, .media-frame *, .media-modal * {font-family:"' . $admin_font . '" !important;}';
-
-			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', $font_styles );
+			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', 'body, h1, h2, h3, h4, h5, h6, label, input, textarea, .components-notice, #wpadminbar *:not([class="ab-icon"]), .wp-core-ui, .media-menu, .media-frame *, .media-modal * {font-family:"' . esc_html( $admin_font ) . '" !important;}' );
 		}
 	}
 
 	public function change_editor_font() {
-		$font_styles = '';
 		$field_name  = ( $this->get_locale == 'fa_IR' ? 'editor-font-fa': 'editor-font' );
-
 		$editor_font = $this->customizing_option[ $field_name ] ?? false;
 
 		if ( isset( $editor_font ) && $editor_font != 'wp-default' ) {
@@ -192,13 +187,11 @@ class Settings_Page {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 			} else {
-				$font_styles .= '<style>@import url("https://fonts.googleapis.com/css?family=' . $editor_font . '");</style>';
+				wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-editor-google-fonts', 'https://fonts.googleapis.com/css?family=' . esc_attr( $editor_font ) );
 				$editor_font   = ezpz_tweaks_get_google_font_name( $editor_font );
 			}
 
-			$font_styles .= 'body#tinymce, #editorcontainer #content, #wp_mce_fullscreen, .block-editor-writing-flow input, .block-editor-writing-flow textarea, .block-editor-writing-flow p {font-family:"' . $editor_font . '" !important;}';
-
-			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', $font_styles );
+			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', 'body#tinymce.wp-editor, #editorcontainer #content, #wp_mce_fullscreen, .block-editor-writing-flow input, .block-editor-writing-flow textarea, .block-editor-writing-flow p {font-family:"' . esc_html( $editor_font ) . '" !important;}' );
 		}
 	}
 

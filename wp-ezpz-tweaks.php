@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @package   WPEzPz Tweaks
- * @author    WP EzPz <info@wpezpzdev.com/>
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @copyright 2020 WP EzPz
  * @license   GPL 3.0
  * @link      https://wpezpzdev.com/
@@ -34,7 +33,6 @@ define( 'EZPZ_TWEAKS_PLUGIN_ROOT', plugin_dir_path( __FILE__ ) );
 define( 'EZPZ_TWEAKS_PLUGIN_ROOT_URL', plugin_dir_url( __FILE__ ) );
 define( 'EZPZ_TWEAKS_PLUGIN_ABSOLUTE', __FILE__ );
 define( 'EZPZ_TWEAKS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-
 
 add_action(
 	'init',

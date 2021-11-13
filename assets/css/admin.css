@@ -176,6 +176,10 @@
 	cursor: move !important;
 }
 
+#adminmenu:not(.ui-sortable-disabled) .ui-sortable-handle a[href="wpezpz-tweaks-edit-menu"] {
+	cursor: pointer !important;
+}
+
 #adminmenu:not(.ui-sortable-disabled) .wp-menu-separator.ui-sortable-handle {
 	height: 26px;
 	border: 2px dashed;

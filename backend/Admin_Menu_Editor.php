@@ -1,5 +1,4 @@
 <?php
-
 /**
  * EZPZ_TWEAKS
  *

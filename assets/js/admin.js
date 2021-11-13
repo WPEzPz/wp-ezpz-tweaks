@@ -75,7 +75,7 @@
 			var isEditing = false;
 
 			// Edit Button
-			$('a[href="ezpz-tweaks-edit-menu"]').click(function (e) {
+			$('a[href="wpezpz-tweaks-edit-menu"]').click(function (e) {
 				e.preventDefault();
 
 				var button = $(this);
