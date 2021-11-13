@@ -18,7 +18,7 @@ class Custom_Login_Url {
 
 	public function initialize() {
 
-		$this->security_option = get_option( 'ezpz-tweaks-security' );
+		$this->security_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
 
 		if( isset( $this->security_option['custom_login_url'] ) ) {
 			if ( is_multisite() && ! function_exists( 'is_plugin_active_for_network' ) || ! function_exists( 'is_plugin_active' ) ) {

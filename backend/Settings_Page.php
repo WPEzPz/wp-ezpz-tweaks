@@ -163,7 +163,7 @@ class Settings_Page {
 
 	public function change_admin_font() {
 		$font_styles = '';
-		$field_name  = $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font';
+		$field_name  = ( $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font' );
 		$admin_font  = $_POST[ $field_name ] ?? $this->customizing_option[ $field_name ] ?? false;
 
 		if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
@@ -183,7 +183,8 @@ class Settings_Page {
 
 	public function change_editor_font() {
 		$font_styles = '';
-		$field_name  = $this->get_locale == 'fa_IR' ? 'editor-font-fa': 'editor-font';
+		$field_name  = ( $this->get_locale == 'fa_IR' ? 'editor-font-fa': 'editor-font' );
+
 		$editor_font = $this->customizing_option[ $field_name ] ?? false;
 
 		if ( isset( $editor_font ) && $editor_font != 'wp-default' ) {
@@ -191,7 +192,7 @@ class Settings_Page {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 			} else {
-				$font_styles .= '<st>@import url("https://fonts.googleapis.com/css?family=' . $editor_font . '");</style>';
+				$font_styles .= '<style>@import url("https://fonts.googleapis.com/css?family=' . $editor_font . '");</style>';
 				$editor_font   = ezpz_tweaks_get_google_font_name( $editor_font );
 			}
 
