@@ -113,7 +113,7 @@ class Admin_Menu_Editor {
 	 * just like WordPress uses it in the backend.
 	 */
 	public function update_menu() {
-		$menu    = $_REQUEST['adminMenu'];
+		$menu    = ezpz_tweaks_recursive_sanitize( $_REQUEST['adminMenu'] );
 		$items   = array();
 		$submenu = array();
 
