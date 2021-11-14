@@ -36,9 +36,28 @@ function ezpz_tweaks_wp_roles_array(): array {
 	return $roles;
 }
 
-function ezpz_tweaks_get_google_font_name($font) {
+function ezpz_tweaks_get_google_font_name( $font ) {
 	$font 		 = str_replace( '+', ' ', $font );
 	$font 		 = explode( ':', $font );
 	
 	return $font[0];
+}
+
+/**
+ * Recursive sanitation for an array
+ * 
+ * @param $array
+ *
+ * @return mixed
+ */
+function ezpz_tweaks_recursive_sanitize( $array ) {
+    foreach ( $array as $key => &$value ) {
+        if ( is_array( $value ) ) {
+            $value = ezpz_tweaks_recursive_sanitize( $value );
+        } else {
+            $value = sanitize_text_field( $value );
+        }
+    }
+
+    return $array;
 }
