@@ -1,4 +1,4 @@
-<?php $fragment = isset( $_GET['tab'] ) ? $_GET['tab'] : 'customizing-branding'; ?>
+<?php $fragment = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'customizing-branding'; ?>
 
 <div class="wrap ezpz-tweaks-tabs">
 	<h2><img src="<?php echo EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/img/EzPzTweaks-logo.svg' ?>" style="width: 50px;vertical-align: middle;padding: 15px;"><?php echo EZPZ_TWEAKS_NAME ?></h2>
