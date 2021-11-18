@@ -38,3 +38,5 @@ vendor
 tests/_output
 /ezpz-tweaks/vendor/
 tests/_support/_generated
+
+.distignore
