@@ -3,7 +3,7 @@ Contributors: wpezpz
 Tags: optimization, performance, customization, admin menu editor, security, tweaks, custom login url, wp login, branding
 Requires at least: 5.6
 Tested up to: 5.8
-Stable tag: 1.0.14
+Stable tag: 1.0.15
 License: GPL-3.0 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 Requires PHP: 7.0
