@@ -1,11 +1,11 @@
 <h1 align="center">Welcome to WP EzPz Tweaks 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/WPEzPz/wp-ezpz-tweaks?include_prereleases&label=version)
   <a href="http://www.gnu.org/licenses/gpl-3.0.txt" target="_blank">
     <img alt="License: GPL 3.0" src="https://img.shields.io/badge/License-GPL 3.0-yellow.svg" />
   </a>
-  <a href="https://twitter.com/wordpressezpz" target="_blank">
-    <img alt="Twitter: khorshidlab" src="https://img.shields.io/twitter/follow/WordpressEzPz.svg?style=social" />
+  <a href="https://twitter.com/WPEzPzDev" target="_blank">
+    <img alt="Twitter: khorshidlab" src="https://img.shields.io/twitter/follow/WPEzPzDev.svg?style=social" />
   </a>
 </p>
 
@@ -24,8 +24,8 @@ composer update
 👤 **WP EzPz**
 
 * Website: https://wpezpzdev.com/
-* Twitter: [@WordpressEzPz](https://twitter.com/wordpressezpz)
-* Github: [@WordpressEzPz](https://github.com/WordpressEzPz)
+* Twitter: [@WPEzPzDev](https://twitter.com/WPEzPzDev)
+* Github: [@WPEzPz](https://github.com/WPEzPz)
 
 ## 🤝 Contributing
 
@@ -33,7 +33,7 @@ Contributions, issues and feature requests are welcome!
 
 ## Show your support
 
-Give a ⭐️ if this project helped you!
+Give a ⭐️  if this project helped you!
 
 ## 📝 License
 
