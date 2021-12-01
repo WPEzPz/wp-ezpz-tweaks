@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to WP EzPz Tweaks 👋</h1>
 <p>
-  ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/WPEzPz/wp-ezpz-tweaks?include_prereleases&label=version)
+  <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/WPEzPz/wp-ezpz-tweaks?label=version">
   <a href="http://www.gnu.org/licenses/gpl-3.0.txt" target="_blank">
     <img alt="License: GPL 3.0" src="https://img.shields.io/badge/License-GPL 3.0-yellow.svg" />
   </a>
