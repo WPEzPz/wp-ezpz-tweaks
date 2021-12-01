@@ -154,7 +154,7 @@ class Settings_Page {
 		} else {
 			if ( ( isset( $this->customizing_option['footer_text'] ) && !isset( $_POST['footer_text'] ) ) || ( isset( $_POST['footer_text'] ) && !empty( $_POST['footer_text'] ) ) ) {
 				$footer_text = isset( $_POST['footer_text'] ) ? sanitize_text_field( $_POST['footer_text'] ) : $this->customizing_option['footer_text'];
-				return esc_html( $footer_text );
+				return wp_kses_post( $footer_text );
 			} else {
 				return $text;
 			}
