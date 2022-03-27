@@ -36,7 +36,8 @@ class Settings {
 		add_action( 'init', array( $this, 'disable_xmlrpc' ) );
 		add_action( 'init', array( $this, 'hide_admin_bar' ), 9999 );
 		add_action( 'wp_head', array( $this, 'change_adminbar_font' ), 30 );
-		add_action( 'wp_before_admin_bar_render', array( $this, 'adminbar_logo' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'adminbar_logo' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'adminbar_logo' ) );
 		add_action( 'login_head', array( $this, 'change_login_font' ), 999 );
 		add_action( 'after_setup_theme', array( $this, 'remove_shortlink' ) );
 		add_filter( 'after_setup_theme', array( $this, 'remove_wp_version_from_head' ) );
@@ -239,8 +240,8 @@ class Settings {
 		if ( ( isset( $this->customizing_option['custom_logo'] ) && !isset( $_POST['custom_logo'] ) ) || ( isset( $_POST['custom_logo'] ) && !empty( $_POST['custom_logo'] ) ) ) {
 			$custom_logo = isset( $_POST['custom_logo'] ) ? sanitize_text_field( $_POST['custom_logo'] ) : $this->customizing_option['custom_logo'];
 
-			wp_register_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo', '' );
-			wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo' );
+			wp_register_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo', false );
+			
 			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo', 
 				'#wpadminbar #wp-admin-bar-wp-logo>.ab-item {
 					padding: 0 7px;
@@ -255,6 +256,7 @@ class Settings {
 					top: 2px;
 				}' 
 			);
+			wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo' );
 		}
 	}
 
