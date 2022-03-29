@@ -35,6 +35,7 @@ class Settings {
 		add_action( 'init', array( $this, 'disable_embeds_code_init' ), 9999 );
 		add_action( 'init', array( $this, 'disable_xmlrpc' ) );
 		add_action( 'init', array( $this, 'hide_admin_bar' ), 9999 );
+		add_action( 'init', array( $this, 'deactivate_file_editor' ), 9999 );
 		add_action( 'wp_head', array( $this, 'change_adminbar_font' ), 30 );
 		add_action( 'wp_before_admin_bar_render', array( $this, 'adminbar_logo' ) );
 		add_action( 'login_head', array( $this, 'change_login_font' ), 999 );
@@ -299,6 +300,15 @@ class Settings {
 			// remove version from scripts and styles
 			add_filter( 'style_loader_src', array( $this, 'remove_version_scripts_styles' ), 9999 );
 			add_filter( 'script_loader_src', array( $this, 'remove_version_scripts_styles' ), 9999 );
+		}
+	}
+
+	public function deactivate_file_editor() {
+		if ( isset( $this->security_option['deactivate_file_editor'] ) ) {
+			// remove file editor
+			if( !defined('DISALLOW_FILE_EDIT') ){
+				define( 'DISALLOW_FILE_EDIT', true );
+			}
 		}
 	}
 
