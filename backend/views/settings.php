@@ -289,6 +289,101 @@
 			)
 		);
 
+		$cmb->add_field(
+			array(
+				'name' => __( 'WordPress Dashboard Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'desc' => __( '', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'id'   => 'disable_dashboard_heartbeat',
+				'type' => 'radio',
+				'default' => 'allow',
+				'options'          => array(
+					'allow'		 => __( 'Allow Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'disable'    => __( 'Disable Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'modify'     => __( 'Modify Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+				),
+			)
+		);
+
+		$cmb->add_field(
+			array(
+				'name' => __( 'Override Heartbeat frequency', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'desc' => __( '', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'id'   => 'range_modify_dashboard_heartbeat',
+				'type' => 'range',
+				'min' 	=> 15,
+				'max'   => 300,
+				'step' => 5,
+				'attributes'    => array(
+					'data-conditional-id'     => 'disable_dashboard_heartbeat',
+					'data-conditional-value'  => 'modify',
+				),
+			)
+		);
+
+
+		$cmb->add_field(
+			array(
+				'name' => __( 'Frontend Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'desc' => __( '', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'id'   => 'disable_frontend_heartbeat',
+				'type' => 'radio',
+				'default' => 'allow',
+				'options'          => array(
+					'allow'		 => __( 'Allow Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'disable'    => __( 'Disable Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'modify'     => __( 'Modify Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+				),
+			)
+		);
+
+		$cmb->add_field(
+			array(
+				'name' => __( 'Override Heartbeat frequency', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'desc' => __( '', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'id'   => 'range_modify_frontend_heartbeat',
+				'type' => 'range',
+				'min' 	=> 15,
+				'max'   => 300,
+				'step' => 5,
+				'attributes'    => array(
+					'data-conditional-id'     => 'disable_frontend_heartbeat',
+					'data-conditional-value'  => 'modify',
+				),
+			)
+		);
+
+		$cmb->add_field(
+			array(
+				'name' => __( 'Post editor Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'desc' => __( '', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'id'   => 'disable_post_editor_heartbeat',
+				'type' => 'radio',
+				'default' => 'allow',
+				'options'          => array(
+					'allow'		 => __( 'Allow Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'disable'    => __( 'Disable Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'modify'     => __( 'Modify Heartbeat', EZPZ_TWEAKS_TEXTDOMAIN ),
+				),
+			)
+		);
+
+		$cmb->add_field(
+			array(
+				'name' => __( 'Override Heartbeat frequency', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'desc' => __( '', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'id'   => 'range_modify_post_editor_heartbeat',
+				'type' => 'range',
+				'min' 	=> 15,
+				'max'   => 300,
+				'step' => 5,
+				'attributes'    => array(
+					'data-conditional-id'     => 'disable_post_editor_heartbeat',
+					'data-conditional-value'  => 'modify',
+				),
+			)
+		);
+
+
 		
 
 		cmb2_metabox_form( EZPZ_TWEAKS_TEXTDOMAIN . '_options_performance', EZPZ_TWEAKS_TEXTDOMAIN . '-performance' );

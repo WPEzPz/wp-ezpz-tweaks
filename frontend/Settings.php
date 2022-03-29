@@ -45,6 +45,10 @@ class Settings {
 		add_filter( 'rest_authentication_errors', array( $this, 'disable_wp_rest_api' ) );
 		add_filter( 'comment_form_default_fields', array( $this, 'remove_website_field' ) );
 		add_filter( 'login_message', array( $this, 'add_login_page_custom_text' ) );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
+		add_filter( 'heartbeat_settings', array( $this, 'maybe_modify_heartbeat' ), 99, 1 );
 	}
 
 	public function disable_emojis() {
@@ -329,5 +333,81 @@ class Settings {
 
 			return $message;
 		}
+	}
+
+	public function check_location_for_heartbeat( $location ) {
+
+		$location_test = array(
+			'dashboard'   => function() {
+				return is_admin();
+			},
+			'frontend'  => function() {
+				return ! is_admin();
+			},
+			'post_editor' => function() {
+				$_query_string = filter_input( INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_URL );
+				$_request_uri  = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );
+
+				if ( $_query_string && $_request_uri ) {
+					$current_url = wp_unslash( $_query_string . '?' . $_request_uri );
+				} elseif ( $_query_string ) {
+					$current_url = wp_unslash( $_request_uri );
+				} else {
+					$current_url = admin_url();
+				}
+				return ( '/wp-admin/post.php' === wp_parse_url( $current_url )['path'] );
+			},
+		);
+
+		if ( isset( $location_test[ $location ] ) ) {
+			return $location_test[ $location ]();
+		}
+
+		return false;
+	}
+
+	public function maybe_disable_heartbeat() {
+		$settings = $this->get_heartbeat_settings();
+		foreach ( $settings as $location => $rule ) {
+			if ( array_key_exists( 'value', $rule ) && 'disable' === $rule['value'] ) {
+				if ( $this->check_location_for_heartbeat( $location ) ) {
+					wp_deregister_script( 'heartbeat' );
+					return;
+				}
+			}
+		}
+	}
+
+
+	public function maybe_modify_heartbeat( $s ) {
+		$settings = $this->get_heartbeat_settings();
+		foreach ( $settings as $location => $rule ) {
+			if ( array_key_exists( 'value', $rule ) && 'modify' === $rule['value'] ) {
+				if ( $this->check_location_for_heartbeat( $location ) ) {
+					$s['interval'] = intval( $rule['range'] );
+
+					return $s;
+				}
+			}
+		}
+
+		return $s;
+	}
+
+	public function get_heartbeat_settings( ) {
+		return [
+			'dashboard' => [
+				'value'	=> $this->performance_option['disable_dashboard_heartbeat'],
+				'range'	=> $this->performance_option['range_modify_dashboard_heartbeat'],
+			],
+			'frontend' => [
+				'value'	=> $this->performance_option['disable_frontend_heartbeat'],
+				'range'	=> $this->performance_option['range_modify_frontend_heartbeat'],
+			],
+			'post_editor' => [
+				'value'	=> $this->performance_option['disable_post_editor_heartbeat'],
+				'range'	=> $this->performance_option['range_modify_post_editor_heartbeat'],
+			],
+		];
 	}
 }
