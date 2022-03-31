@@ -165,7 +165,7 @@ class Settings_Page {
 		$field_name  = ( $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font' );
 		$admin_font  = $_POST[ $field_name ] ?? $this->customizing_option[ $field_name ] ?? false;
 
-		if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
+		if ( isset( $admin_font ) && !empty($editor_font) && $admin_font != 'wp-default' ) {
 			if ( $this->get_locale == 'fa_IR' ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
@@ -182,7 +182,7 @@ class Settings_Page {
 		$field_name  = ( $this->get_locale == 'fa_IR' ? 'editor-font-fa': 'editor-font' );
 		$editor_font = $this->customizing_option[ $field_name ] ?? false;
 
-		if ( isset( $editor_font ) && $editor_font != 'wp-default' ) {
+		if ( isset( $editor_font ) && !empty($editor_font) && $editor_font != 'wp-default' ) {
 			if ( $this->get_locale == 'fa_IR' ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
