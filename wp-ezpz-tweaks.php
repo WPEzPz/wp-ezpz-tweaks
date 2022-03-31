@@ -2,13 +2,12 @@
 /**
  * @package   WPEzPz Tweaks
  * @author    WP EzPz <info@wpezpzdev.com>
- * @copyright 2020 WP EzPz
  * @license   GPL 3.0
  * @link      https://wpezpzdev.com/
  *
  * Plugin Name:     WPEzPz Tweaks
- * Description:     EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the admin panel appearances, clean your site code and remove unwanted features to increase its security and improve performance.
- * Version:         1.0.16
+ * Description:     WPEzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the admin panel appearances, clean your site code and remove unwanted features to increase its security and improve performance.
+ * Version:         1.0.17
  * Author:          WP EzPz
  * Author URI:      https://wpezpzdev.com/
  * Text Domain:     wpezpz-tweaks
@@ -16,7 +15,6 @@
  * License URI:     http://www.gnu.org/licenses/gpl-3.0.txt
  * Domain Path:     /languages
  * Requires PHP:    7.0
- * WordPress-Plugin-Boilerplate-Powered: v3.2.0
  */
 
 // If this file is called directly, abort.
@@ -26,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-define( 'EZPZ_TWEAKS_VERSION', '1.0.16' );
+define( 'EZPZ_TWEAKS_VERSION', '1.0.17' );
 define( 'EZPZ_TWEAKS_TEXTDOMAIN', 'wpezpz-tweaks' );
 define( 'EZPZ_TWEAKS_NAME', __( 'WPEzPz Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ) );
 define( 'EZPZ_TWEAKS_PLUGIN_ROOT', plugin_dir_path( __FILE__ ) );
