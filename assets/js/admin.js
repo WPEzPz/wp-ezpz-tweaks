@@ -303,6 +303,61 @@
 					}
 				}
 			}
+
+			$('#import-export').on('click', 'button[data-action="createBackup"]', function() {
+				$('#ezpz-tweeks-no-backup-message').hide();
+				$.ajax({
+					url: ezpz_object.ajax_url,
+					data: {
+					  'action'  : 'ezpz_tweaks_create_backup',
+					  'security': ezpz_object.security,
+					},
+					success:function(data) {
+						add_backup_to_table(data.data);
+					}
+				})
+			});
+
+			$('.ezpz-tweeks-settings-backup-form').on('click', 'button[data-action="deleteBackup"]', function() {
+				const key = $(this).attr('data-key');
+				$.ajax({
+					url: ezpz_object.ajax_url,
+					data: {
+					  'action'  : 'ezpz_tweaks_delete_backup',
+					  'security': ezpz_object.security,
+					  'key'		: $(this).attr('data-key')
+					},
+					success:function(data) {
+						remove_backup_from_table(key);
+					}
+				})
+			});
+
+			$('.ezpz-tweeks-settings-backup-form').on('click', 'button[data-action="restoreBackup"]', function() {
+				if (confirm(ezpz_object.strings.restoreConfirm)) {
+					const key = $(this).attr('data-key');
+					$.ajax({
+						url: ezpz_object.ajax_url,
+						data: {
+						'action'  : 'ezpz_tweaks_restore_backup',
+						'security': ezpz_object.security,
+						'key'		: $(this).attr('data-key')
+						},
+						success:function(data) {
+							alert(data.data.message);
+							location.reload();
+						}
+					})
+				}
+			});
+
+			function add_backup_to_table( data ) {
+				$('.ezpz-tweeks-settings-backup-form table tbody').prepend('<tr data-key="'+ data.key +'"><th> '+ data.backup +' </th> <td style="width:195px;padding-left:0;"><button type="button" class="button button-secondary button-small ezpz-tweeks-action" data-action="restoreBackup" data-key="'+ data.key +'">'+ ezpz_object.strings.restore +'</button> <button type="button" class="button button-link-delete button-small ezpz-tweeks-action" data-action="deleteBackup" data-key="'+ data.key +'">'+ ezpz_object.strings.delete +'</button></td></tr>');
+			}
+
+			function remove_backup_from_table( key ) {
+				$('.ezpz-tweeks-settings-backup-form table tbody tr[data-key="'+ key +'"]').remove();
+			}
 		})
 	});
 })(jQuery);

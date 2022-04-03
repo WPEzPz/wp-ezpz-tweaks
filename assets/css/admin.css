@@ -19,6 +19,8 @@
 
 .ezpz-tweaks-tabs .wp-tab-panel {
 	max-height: 100% !important;
+	max-width: 1280px !important;
+	width: 100% !important;
 	padding: 20px !important;
 }
 
@@ -197,4 +199,28 @@
 
 #import-export .hndle {
 	cursor: default;
+}
+
+.ezpz_tweeks_backups .hndle {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ezpz-tweeks-settings-backup-form td {
+    text-align: right;
+}
+
+.rtl .ezpz-tweeks-settings-backup-form td {
+    text-align: left;
+}
+
+.ezpz-tweeks-settings-backup-form .form-table {
+	border: 1px solid #b5bfc9;
+    border-radius: 6px;
+}
+
+.ezpz-tweeks-settings-backup-form th , .ezpz-tweeks-settings-backup-form td {
+	border-bottom: 1px solid #b5bfc9;
+	padding: 12px 20px;
+    vertical-align: middle;
 }
