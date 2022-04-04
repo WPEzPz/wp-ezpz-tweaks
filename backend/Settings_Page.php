@@ -45,6 +45,8 @@ class Settings_Page {
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
+		add_action( 'pre_user_query',array( $this, 'ezpz_pre_user_query') );
+		add_action( 'views_users',array( $this, 'reset_count_of_visible_users') );
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 	}
@@ -293,6 +295,60 @@ class Settings_Page {
 
 			echo '<div class="updated notice is-dismissible"><p>' . sprintf( __( 'Your login page is now here: <strong><a href="%1$s">%2$s</a></strong>. Bookmark this page!', EZPZ_TWEAKS_TEXTDOMAIN ), $hide_login->new_login_url(), $hide_login->new_login_url() ) . '</p></div>';
 		}
+	}
+
+	function ezpz_pre_user_query($user_search) {
+		global $pagenow;
+		$userids = $this->security_option['hide_user_in_admin'];
+
+		if ( !empty($userids) && !(( $pagenow == 'admin.php' ) && ( sanitize_text_field($_GET['page']) == 'wpezpz-tweaks'))) {
+			global $wpdb;
+			$query = '';
+
+			foreach ($userids as $userid) {
+				$query .= " AND {$wpdb->users}.ID != '$userid'";
+			}
+
+			$user_search->query_where = str_replace('WHERE 1=1',
+			"WHERE 1=1$query",
+			$user_search->query_where);
+		}
+	}
+
+	function reset_count_of_visible_users($views){
+		$hidden_userids = $this->security_option['hide_user_in_admin'];
+		$hidden_userids_count = count($hidden_userids);
+		if ( $hidden_userids_count > 0 ) {
+			
+			$users = count_users();
+			$avail_roles = array_keys($users['avail_roles']);
+			
+			foreach ($hidden_userids as $hidden_userid) {
+				$hidden_user_roles = implode(', ', \get_userdata( $hidden_userid )->roles);
+
+				foreach ($avail_roles as $role) {
+					if ( $hidden_user_roles == $role ) {
+						$users['avail_roles'][$role]--;
+					}
+				}
+			}
+
+			
+			foreach($views as $key => $view) {
+				if ($key == 'all') {
+					$count = $users['total_users'] - $hidden_userids_count;
+				} else {
+					$count = $users['avail_roles'][$key];
+				}
+
+				if ($count == 0) {
+					unset($views[$key]);
+				}
+				$views[$key] = preg_replace('/\d+/', $count, $views[$key]);
+			}
+		}
+
+		return $views;
 	}
 
 }
