@@ -35,6 +35,7 @@ class Settings {
 		add_action( 'init', array( $this, 'disable_embeds_code_init' ), 9999 );
 		add_action( 'init', array( $this, 'disable_xmlrpc' ) );
 		add_action( 'init', array( $this, 'hide_admin_bar' ), 9999 );
+		add_action( 'init', array( $this, 'limit_post_revisions' ));
 		add_action( 'wp_head', array( $this, 'change_adminbar_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'adminbar_logo' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'adminbar_logo' ) );
@@ -58,6 +59,21 @@ class Settings {
 			remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
 			add_filter( 'tiny_mce_plugins', array( $this, 'disable_emojis_tinymce' ) );
 			add_filter( 'wp_resource_hints', array( $this, 'disable_emojis_remove_dns_prefetch' ), 10, 2 );
+		}
+	}
+
+	public function limit_post_revisions() {
+		if ( isset( $this->performance_option['limit_post_revisions'] ) ) {
+
+			add_filter( 'wp_revisions_to_keep', function ( $num, $post ) {
+     
+				$max_revisions = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-performance' )['limit_post_revisions'];
+				if ( $max_revisions ) {
+					return $max_revisions;
+				}
+
+			}, 10, 2 );
+
 		}
 	}
 

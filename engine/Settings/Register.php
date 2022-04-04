@@ -346,6 +346,27 @@ class Register extends Settings {
             'performance'
         );
 
+		self::add_fields(
+			[
+				[
+					'field_id' => 'limit_post_revisions',
+                    'title' => __( 'Disable or limit post revisions', EZPZ_TWEAKS_TEXTDOMAIN ),
+                    'description' => __( 'Disable or limit the number of post revisions that WordPress stores to keep your database from growing out of control. <strong>0 means to disable</strong>', EZPZ_TWEAKS_TEXTDOMAIN ),
+                    'cmb2_args' => array(
+                        'type' => 'text',
+						'attributes' => array(
+							'type' => 'number',
+							'min' => 0,
+						),
+                    ),
+                    'priority' => 5,
+				]
+			]
+			,
+			'wpezpz-tweaks',
+			'performance'
+		);
+
         // security fields
         self::add_fields(
 			[
