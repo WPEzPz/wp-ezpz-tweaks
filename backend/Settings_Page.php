@@ -12,6 +12,8 @@
 
 namespace EZPZ_TWEAKS\Backend;
 
+use EZPZ_TWEAKS\Engine\MenuEditor\Admin_Bar_Edit;
+
 /**
  * Create the settings page in the backend
  */
@@ -47,6 +49,12 @@ class Settings_Page {
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
+
+		add_filter( 'admin_body_class', array($this, 'maybe_add_body_class') );
+		add_filter( 'admin_enqueue_scripts', array($this, 'maybe_enqueue_nav_menu_editor_scripts') );
+
+		new Admin_Bar_Edit();
+		
 	}
 
 	/**
@@ -68,11 +76,32 @@ class Settings_Page {
 			$ezpz_menu = menu_page_url( 'wp-ezpz', false );
 
 			if ( !$ezpz_menu ) {
-				add_menu_page( __( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN, [ $this, 'display_plugin_settings_page' ], EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/img/EzPzTweaks-icon.png' );
+				add_menu_page(
+					__( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ),
+					__( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ),
+					$capability, EZPZ_TWEAKS_TEXTDOMAIN,
+					[ $this, 'display_plugin_settings_page' ],
+					EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/img/EzPzTweaks-icon.png' );
 
-				add_submenu_page( EZPZ_TWEAKS_TEXTDOMAIN, __( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN, [ $this, 'display_plugin_settings_page' ] );
+				add_submenu_page(
+					EZPZ_TWEAKS_TEXTDOMAIN,
+					__( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ),
+					__( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ),
+					$capability,
+					EZPZ_TWEAKS_TEXTDOMAIN,
+					[ $this, 'display_plugin_settings_page' ]
+				);
+
+				add_submenu_page(
+						EZPZ_TWEAKS_TEXTDOMAIN,
+						__( 'Edit Admin Bar', EZPZ_TWEAKS_TEXTDOMAIN ),
+						__( 'Edit Admin Bar', EZPZ_TWEAKS_TEXTDOMAIN ),
+						$capability,
+						EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar',
+						[ $this, 'display_plugin_admin_bar_edit_page' ]
+				);
 			}
-			
+
 			add_submenu_page( EZPZ_TWEAKS_TEXTDOMAIN, __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN . '-edit-menu', '' );
 		}
 
@@ -80,13 +109,13 @@ class Settings_Page {
 			$menu_title 		= isset( $_POST['menu_title'] ) ? sanitize_text_field( $_POST['menu_title'] ) : $this->customizing_option['menu_title'];
 			$menu_slug 			= isset( $_POST['menu_slug'] ) ? sanitize_text_field( $_POST['menu_slug'] ) : $this->customizing_option['menu_slug'];
 			$branding_menu_logo = isset( $_POST['branding_menu_logo'] ) ? sanitize_text_field( $_POST['branding_menu_logo'] ) : $this->customizing_option['branding_menu_logo'];
-			
-			add_menu_page( 
-				$menu_title, 
-				$menu_title, 
-				'manage_options', 
-				$menu_slug, 
-				[ $this, 'display_branding_page' ], 
+
+			add_menu_page(
+				$menu_title,
+				$menu_title,
+				'manage_options',
+				$menu_slug,
+				[ $this, 'display_branding_page' ],
 				$branding_menu_logo, 79 );
 
 			add_action( 'admin_enqueue_scripts', function() use( $menu_slug ) {
@@ -129,6 +158,33 @@ class Settings_Page {
 		include EZPZ_TWEAKS_PLUGIN_ROOT . "backend/views/settings.php";
 	}
 
+	public function maybe_enqueue_nav_menu_editor_scripts() {
+		$page = !empty($_GET['page']) ? sanitize_text_field($_GET['page']) : '' ;
+		if ($page == EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar') {
+			wp_enqueue_script( 'nav-menu');
+			wp_enqueue_style( 'nav-menus');
+			wp_enqueue_style( 'wp-color-picker');
+			wp_enqueue_style( 'wp-codemirror');
+
+		}
+	}
+
+	public function display_plugin_admin_bar_edit_page() {
+
+		include EZPZ_TWEAKS_PLUGIN_ROOT . "backend/views/edit_admin_bar.php";
+	}
+
+	public function maybe_add_body_class($classes): string
+	{
+		$new_classes = '';
+		$page = !empty($_GET['page']) ? sanitize_text_field($_GET['page']) : '' ;
+		if ($page == EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar') {
+			$new_classes .= 'nav-menus-php';
+		}
+
+		return "$classes $new_classes";
+	}
+
 	/**
 	 * Add settings action link to the plugins page.
 	 *
@@ -144,7 +200,7 @@ class Settings_Page {
 	}
 
 	public function custom_footer( $text ) {
-		
+
 		if( isset( $_POST['submit-cmb'] ) ) {
 			$this->customizing_option['footer_visibility'] = sanitize_text_field( $_POST['footer_visibility'] );
 		}
@@ -240,7 +296,7 @@ class Settings_Page {
 				}
 			}
 		}
-		
+
 		return $widgets;
 	}
 
