@@ -463,7 +463,7 @@
 
 		$cmb->add_field(
 			array(
-				'name' => __( 'Deactivate Theme/Plugin File Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'name' => __( 'Disable Theme & Plugin File Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
 				'desc' => __( '', EZPZ_TWEAKS_TEXTDOMAIN ),
 				'id'   => 'deactivate_file_editor',
 				'type' => 'checkbox',

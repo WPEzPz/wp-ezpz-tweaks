@@ -46,6 +46,8 @@ class Settings_Page {
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
+		add_action( 'init', array( $this, 'deactivate_file_editor' ), 1 );
+
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 	}
@@ -159,6 +161,14 @@ class Settings_Page {
 			} else {
 				return $text;
 			}
+		}
+	}
+
+	public function deactivate_file_editor() {
+		if ( (isset($_POST['deactivate_file_editor']) && sanitize_text_field($_POST['deactivate_file_editor']) == 'on') || !isset($_POST['deactivate_file_editor']) && isset($_POST['object_id']) && sanitize_text_field($_POST['object_id']) != 'wpezpz-tweaks-security' && $this->security_option['deactivate_file_editor'] == 'on' ) {
+			define( 'DISALLOW_FILE_EDIT', true );
+		} else {
+			define( 'DISALLOW_FILE_EDIT', false );
 		}
 	}
 
