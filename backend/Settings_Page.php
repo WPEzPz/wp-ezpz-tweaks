@@ -42,6 +42,7 @@ class Settings_Page {
 		add_action( 'admin_init', array( $this, 'dashboard_widgets_options' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'remove_dashboard_widgets' ) );
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_custom_url_change' ), 30, 3 );
+		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_performance_change' ), 30, 3 );
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
@@ -292,6 +293,12 @@ class Settings_Page {
 			$hide_login = new \EZPZ_TWEAKS\Integrations\Custom_Login_Url();
 
 			echo '<div class="updated notice is-dismissible"><p>' . sprintf( __( 'Your login page is now here: <strong><a href="%1$s">%2$s</a></strong>. Bookmark this page!', EZPZ_TWEAKS_TEXTDOMAIN ), $hide_login->new_login_url(), $hide_login->new_login_url() ) . '</p></div>';
+		}
+	}
+
+	public function show_notices_on_performance_change( $object_id, $updated, $cmb ) {
+		if( in_array( 'remove_shortlink', $cmb ) ) {
+			echo '<div class="updated notice is-dismissible"><p>' .  __( 'Your performance settings saved.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
 		}
 	}
 
