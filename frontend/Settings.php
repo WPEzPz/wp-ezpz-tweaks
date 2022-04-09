@@ -45,6 +45,8 @@ class Settings {
 		add_filter( 'rest_authentication_errors', array( $this, 'disable_wp_rest_api' ) );
 		add_filter( 'comment_form_default_fields', array( $this, 'remove_website_field' ) );
 		add_filter( 'login_message', array( $this, 'add_login_page_custom_text' ) );
+
+		add_filter( 'login_errors', array( $this, 'no_wordpress_errors') );
 	}
 
 	public function disable_emojis() {
@@ -77,6 +79,14 @@ class Settings {
 		}
 
 		return $urls;
+	}
+
+	function no_wordpress_errors( $errors ) {
+		if ( isset( $this->security_option['hide_login_error_messages'] ) ) {
+			return __('Something is wrong!', EZPZ_TWEAKS_TEXTDOMAIN);
+		}
+
+		return $errors;
 	}
 
 	public function disable_wp_rest_api( $access ) {

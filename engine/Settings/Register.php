@@ -387,6 +387,14 @@ class Register extends Settings {
 					),
 					'priority' => 60,
 				],
+				[
+					'field_id' => 'hide_login_error_messages',
+					'title' => __( 'Hide login error messages', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' => array(
+						'type'    => 'checkbox',
+					),
+					'priority' => 70,
+				],
 			],
 			'wpezpz-tweaks',
 			'security'
