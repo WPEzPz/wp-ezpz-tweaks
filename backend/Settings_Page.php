@@ -176,7 +176,7 @@ class Settings_Page {
 		$field_name  = ( $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font' );
 		$admin_font  = $_POST[ $field_name ] ?? $this->customizing_option[ $field_name ] ?? false;
 
-		if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
+		if ( isset( $admin_font ) && !empty($admin_font) && $admin_font != 'wp-default' ) {
 			if ( $this->get_locale == 'fa_IR' ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
@@ -202,7 +202,7 @@ class Settings_Page {
 				$editor_font   = ezpz_tweaks_get_google_font_name( $editor_font );
 			}
 
-			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', 'body#tinymce.wp-editor, #editorcontainer #content, #wp_mce_fullscreen, .block-editor-writing-flow input, .block-editor-writing-flow textarea, .block-editor-writing-flow p {font-family:"' . esc_html( $editor_font ) . '" !important;}' );
+			// wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', 'body#tinymce.wp-editor, #editorcontainer #content, #wp_mce_fullscreen, .block-editor-writing-flow input, .block-editor-writing-flow textarea, .block-editor-writing-flow p {font-family:"' . esc_html( $editor_font ) . '" !important;}' );
 		}
 	}
 
