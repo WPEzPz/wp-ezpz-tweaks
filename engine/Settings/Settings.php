@@ -209,4 +209,16 @@ class Settings {
         $cmb = self::get_cmb2_instance( $tab );
         return $cmb->add_field($field_args);
     }
+
+    public static function add_group_field( $tab, $field ) {
+        $cmb = self::get_cmb2_instance( $tab );
+
+        if (!is_object($cmb)) {
+            return false;
+        }
+        $group_id = $field['group_id'];
+        unset($field['group_id']);
+
+        return $cmb->add_group_field($group_id, $field);
+    }
 }

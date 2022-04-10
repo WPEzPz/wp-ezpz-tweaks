@@ -43,6 +43,10 @@ class Render extends Settings {
             $field['cmb2_args']['desc'] = $field['description'];
             $field['cmb2_args']['name'] = $field['title'];
 
+            if ( !empty($field['cmb2_args']['group_id']) ) {
+                return self::add_group_field( $field['tab'], $field['cmb2_args'] );
+            }
+
             return self::add_cmb2_field( $field['tab'], $field['cmb2_args']);
         }
 
@@ -58,15 +62,36 @@ class Render extends Settings {
             }
         }
 
-        // Sort by priority
+        // if field is a group, move it to end of fields array.
+        // This is because groups are rendered after all fields
+        // and we want to render them after all fields.
+        $grouped_fields = [];
+        foreach( $fields as $key => $field ) {
+            if ( !empty($field['cmb2_args']['group_id']) ) {
+                unset( $fields[$key] );
+                $grouped_fields[] = $field;
+            }
+        }
+
+        // Sort fields by priority
         usort( $fields, function( $a, $b ) {
             return $a['priority'] - $b['priority'];
         });
 
+        // Sort grouped fields by priority
+        usort( $grouped_fields, function( $a, $b ) {
+            return $a['priority'] - $b['priority'];
+        });
+
+        // Add fields to page or CMB2
         foreach ( $fields as $field ) {
             self::field( $field );
         }
+        foreach ( $grouped_fields as $grouped_field ) {
+            self::field( $grouped_field );
+        }
 
+        // Render CMB2 form
         $tab = self::get_tab( $tab );
         if ( $tab['is_cmb2'] ) {
             cmb2_metabox_form( EZPZ_TWEAKS_TEXTDOMAIN . '_options_' . $tab['id'], EZPZ_TWEAKS_TEXTDOMAIN . '-' . $tab['id'] );
