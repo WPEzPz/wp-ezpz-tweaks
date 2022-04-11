@@ -198,3 +198,17 @@
 #import-export .hndle {
 	cursor: default;
 }
+
+.cmb-field-list {
+    max-width: 100% !important;
+}
+
+.cmb2-wrap input:not([type=hidden]) + .button-secondary,
+.cmb2-wrap input:not([type=hidden]) + input  {
+    margin-left: 0 !important;
+}
+
+.attachment-266x266, .thumbnail img {
+	width: 100% !important;
+	height: auto !important;
+}

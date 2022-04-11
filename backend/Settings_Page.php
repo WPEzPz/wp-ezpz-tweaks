@@ -46,6 +46,9 @@ class Settings_Page {
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
 
+		add_filter( 'upload_mimes', array( $this, 'allowed_wp_upload_mimes' ) );
+		add_filter( 'wp_check_filetype_and_ext', array( $this, 'maybe_update_mime_types' ), 10, 4 );
+
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 	}
 
@@ -295,4 +298,24 @@ class Settings_Page {
 		}
 	}
 
+	public function allowed_wp_upload_mimes( $mimes ) {
+		$mimes['woff']  = 'application/x-font-woff';
+		$mimes['woff2'] = 'application/x-font-woff2';
+		$mimes['ttf']   = 'application/x-font-ttf';
+		$mimes['eot']   = 'application/vnd.ms-fontobject';
+		// $mimes['otf']   = 'font/otf';
+		$mimes['svg'] = 'image/svg+xml';
+
+		return $mimes;
+	}
+
+	public function maybe_update_mime_types( $data, $file, $filename, $mimes ) {
+		$filetype = wp_check_filetype( $filename, $mimes );
+  
+		return [
+			'ext'             => $filetype['ext'],
+			'type'            => $filetype['type'],
+			'proper_filename' => $data['proper_filename']
+		];
+	}
 }
