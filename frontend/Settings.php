@@ -82,8 +82,12 @@ class Settings {
 	}
 
 	function no_wordpress_errors( $errors ) {
-		if ( isset( $this->security_option['hide_login_error_messages'] ) ) {
-			return __('Something is wrong!', EZPZ_TWEAKS_TEXTDOMAIN);
+		if ( isset( $this->security_option['hide_login_error_messages'] ) ) {	
+			return sprintf(
+				/* translators: %s: URL that allows the user to retrieve the lost password */
+				__( '<strong>Error:</strong> The username or password you entered is incorrect. <a href="%s">Lost your password?</a>', EZPZ_TWEAKS_TEXTDOMAIN ),
+				wp_lostpassword_url()
+			);
 		}
 
 		return $errors;
