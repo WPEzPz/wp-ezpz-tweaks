@@ -362,7 +362,7 @@ class Register extends Settings {
 				[
 					'field_id' => 'disable_xmlrpc',
 					'title' => __( 'Disable XML-RPC', EZPZ_TWEAKS_TEXTDOMAIN ),
-					'description' => __( 'Disabling this feature makes your site more secure', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' => __( 'Disable this feature makes your site more secure', EZPZ_TWEAKS_TEXTDOMAIN ),
 					'cmb2_args' => array(
 						'type' => 'checkbox',
 					),
