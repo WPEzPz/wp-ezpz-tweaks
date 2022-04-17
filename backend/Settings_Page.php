@@ -299,7 +299,16 @@ class Settings_Page {
 
 	function ezpz_pre_user_query($user_search) {
 		global $pagenow;
+		if (!isset($this->security_option['hide_user_in_admin']) || empty($this->security_option['hide_user_in_admin'])) {
+			return $user_search;
+		}
 		$userids = $this->security_option['hide_user_in_admin'];
+
+		// if current user is hidden, do nothing
+		$current_user_id = get_current_user_id();
+		if (in_array($current_user_id, $userids)) {
+			return $user_search;
+		}
 
 		if ( !empty($userids) && !(( $pagenow == 'admin.php' ) && ( sanitize_text_field($_GET['page']) == 'wpezpz-tweaks'))) {
 			global $wpdb;
@@ -316,8 +325,18 @@ class Settings_Page {
 	}
 
 	function reset_count_of_visible_users($views){
+		if (!isset($this->security_option['hide_user_in_admin']) || empty($this->security_option['hide_user_in_admin'])) {
+			return $views;
+		}
 		$hidden_userids = $this->security_option['hide_user_in_admin'];
 		$hidden_userids_count = count($hidden_userids);
+
+		// if current user is hidden, do nothing
+		$current_user_id = get_current_user_id();
+		if (in_array($current_user_id, $hidden_userids)) {
+			return $views;
+		}
+
 		if ( $hidden_userids_count > 0 ) {
 			
 			$users = count_users();
