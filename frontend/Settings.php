@@ -360,11 +360,13 @@ class Settings {
 
 	public function maybe_disable_heartbeat() {
 		$settings = $this->get_heartbeat_settings();
-		foreach ( $settings as $location => $rule ) {
-			if ( array_key_exists( 'value', $rule ) && 'disable' === $rule['value'] ) {
-				if ( $this->check_location_for_heartbeat( $location ) ) {
-					wp_deregister_script( 'heartbeat' );
-					return;
+		if (!empty($settings)) {
+			foreach ( $settings as $location => $rule ) {
+				if ( array_key_exists( 'value', $rule ) && 'disable' === $rule['value'] ) {
+					if ( $this->check_location_for_heartbeat( $location ) ) {
+						wp_deregister_script( 'heartbeat' );
+						return;
+					}
 				}
 			}
 		}
@@ -373,20 +375,29 @@ class Settings {
 
 	public function maybe_modify_heartbeat( $s ) {
 		$settings = $this->get_heartbeat_settings();
-		foreach ( $settings as $location => $rule ) {
-			if ( array_key_exists( 'value', $rule ) && 'modify' === $rule['value'] ) {
-				if ( $this->check_location_for_heartbeat( $location ) ) {
-					$s['interval'] = intval( $rule['range'] );
 
-					return $s;
+		if (!empty($settings)) {
+			foreach ( $settings as $location => $rule ) {
+				if ( array_key_exists( 'value', $rule ) && 'modify' === $rule['value'] ) {
+					if ( $this->check_location_for_heartbeat( $location ) ) {
+						$s['interval'] = intval( $rule['range'] );
+	
+						return $s;
+					}
 				}
 			}
 		}
+
 
 		return $s;
 	}
 
 	public function get_heartbeat_settings( ) {
+
+		if (!isset($this->performance_option['disable_dashboard_heartbeat'])) {
+			return;
+		}
+
 		return [
 			'dashboard' => [
 				'value'	=> $this->performance_option['disable_dashboard_heartbeat'],
