@@ -18,14 +18,22 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
         $item->type_label = $item->ID;
 
         $item->object = $item->id;
+        $item->object_id = $item->id;
         $item->description = false;
-        $item->classes = [];
+		if ( empty( $item->classes ) ) {
+			$item->classes = [];
+		}
         $item->xfn = '';
         $item->target = false;
         $item->post_excerpt = false;
         $item->post_type = 'custom';
         $item->url = $item->href;
-        $item->title = $item->title == strip_tags($item->title) ? $item->title : 'contains HTML';
+
+		$item->menu_order = 1;
+		$item->menu_item_parent = $item->parent;
+
+        // $item->title = $item->title == strip_tags($item->title) ? $item->title : 'contains HTML';
+        $item->title = !empty($item->title) ? $item->title : $item->id;
         self::start_ele($item_html, $item, $depth, $args);	
  
         $output .= $item_html;
@@ -216,13 +224,6 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
 					<label for="edit-menu-item-xfn-<?php echo $item_id; ?>">
 						<?php _e( 'Link Relationship (XFN)' ); ?><br />
 						<input type="text" id="edit-menu-item-xfn-<?php echo $item_id; ?>" class="widefat code edit-menu-item-xfn" name="menu-item-xfn[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $menu_item->xfn ); ?>" />
-					</label>
-				</p>
-				<p class="field-description description description-wide">
-					<label for="edit-menu-item-description-<?php echo $item_id; ?>">
-						<?php _e( 'Description' ); ?><br />
-						<textarea id="edit-menu-item-description-<?php echo $item_id; ?>" class="widefat edit-menu-item-description" rows="3" cols="20" name="menu-item-description[<?php echo $item_id; ?>]"><?php echo esc_html( $menu_item->description ); // textarea_escaped ?></textarea>
-						<span class="description"><?php _e( 'The description will be displayed in the menu if the current theme supports it.' ); ?></span>
 					</label>
 				</p>
 

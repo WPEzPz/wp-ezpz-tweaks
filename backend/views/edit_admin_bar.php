@@ -36,17 +36,19 @@ $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'edit';
 $walker = new Walker_Admin_Bar_Edit();
 
 $Walker_Nav_Menu_Edit = Admin_Bar_Edit::get_walker();
+// delete_option( 'wpezpz_tweaks_admin_bar_edit' );
+
+if ( empty(get_option('wpezpz_tweaks_admin_bar_edit') ) ) {
+	update_option('wpezpz_tweaks_admin_bar_edit', Admin_Bar_Edit::get_nodes(), true);
+}
+
+$data = get_option('wpezpz_tweaks_admin_bar_edit');
+
 
 $result = '<ul class="menu" id="menu-to-edit"> ';
-$result .= $walker->walk( Admin_Bar_Edit::get_nodes(), 4 );
+$result .= $walker->walk( $data, 4 );
 $result .= ' </ul> ';
 
-
-// echo '<pre>';
-// var_export( Admin_Bar_Edit::get_nodes() );
-// print_r($menu_items );
-
-// echo '</pre>';
 ?>
 <script id='nav-menu-js-extra'>
 var menus = {"oneThemeLocationNoMenus":"","moveUp":"Move up one","moveDown":"Move down one","moveToTop":"Move to the top","moveUnder":"Move under %s","moveOutFrom":"Move out from under %s","under":"Under %s","outFrom":"Out from under %s","menuFocus":"%1$s. Menu item %2$d of %3$d.","subMenuFocus":"%1$s. Sub item number %2$d under %3$s.","menuItemDeletion":"item %s","itemsDeleted":"Deleted menu item: %s.","itemAdded":"Menu item added","itemRemoved":"Menu item removed","movedUp":"Menu item moved up","movedDown":"Menu item moved down","movedTop":"Menu item moved to the top","movedLeft":"Menu item moved out of submenu","movedRight":"Menu item is now a sub-item"};
@@ -206,27 +208,6 @@ var menus = {"oneThemeLocationNoMenus":"","moveUp":"Move up one","moveDown":"Mov
 											</div>
 										</div>
 
-									<div class="menu-settings">
-										<h3>Menu Settings</h3>
-
-										<fieldset class="menu-settings-group auto-add-pages">
-											<legend class="menu-settings-group-name howto">Auto add pages</legend>
-											<div class="menu-settings-input checkbox-input">
-												<input type="checkbox" name="auto-add-pages" id="auto-add-pages" value="1"> <label for="auto-add-pages">Automatically add new top-level pages to this menu</label>
-											</div>
-										</fieldset>
-
-
-											<fieldset class="menu-settings-group menu-theme-locations">
-												<legend class="menu-settings-group-name howto">Display location</legend>
-																							<div class="menu-settings-input checkbox-input">
-														<input type="checkbox" checked="checked" name="menu-locations[primary_navigation]" id="locations-primary_navigation" value="2">
-														<label for="locations-primary_navigation">Primary Navigation</label>
-																									</div>
-																					</fieldset>
-
-
-									</div>
 								</div><!-- /#post-body-content -->
 							</div><!-- /#post-body -->
 							<div id="nav-menu-footer">
@@ -234,11 +215,12 @@ var menus = {"oneThemeLocationNoMenus":"","moveUp":"Move up one","moveDown":"Mov
 
 																		<span class="delete-action">
 											<a class="submitdelete deletion menu-delete" href="
-											http://ezpz.test/wp-admin/nav-menus.php?action=delete&amp;menu=2&amp;_wpnonce=ee38eefd3b									">Delete Menu</a>
+											http://ezpz.test/wp-admin/nav-menus.php?action=delete&amp;menu=2&amp;_wpnonce=ee38eefd3b">Delete Menu</a>
 										</span><!-- END .delete-action -->
 
-																<div class="publishing-action">
-										<input type="submit" name="save_menu" id="save_menu_footer" class="button button-primary button-large menu-save" value="Save Menu">							</div><!-- END .publishing-action -->
+									<div class="publishing-action">
+										<input type="submit" name="save_menu" id="save_menu_admin_bar" class="button button-primary button-large menu-save" value="Save Menu">
+									</div><!-- END .publishing-action -->
 								</div><!-- END .major-publishing-actions -->
 							</div><!-- /#nav-menu-footer -->
 						</div><!-- /.menu-edit -->
