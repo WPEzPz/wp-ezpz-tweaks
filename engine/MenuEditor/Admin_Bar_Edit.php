@@ -57,6 +57,12 @@ class Admin_Bar_Edit {
             }
             $menu_data = str_replace('menu-item-', '', $matches[0]);
             $menu_data = ($menu_data == 'parent-id') ? 'parent' : $menu_data;
+
+            if (!isset($default_data[$menu_item])) {
+                $default_data[$menu_item] = new \stdClass();
+                $default_data[$menu_item]->id = $menu_item;
+            }
+
             if ($menu_data == 'classes') {
                 $default_data[$menu_item]->classes = explode(' ', $value['value']);
                 if (empty($default_data[$menu_item]->meta['class'])) {
@@ -73,6 +79,8 @@ class Admin_Bar_Edit {
             }
 
             if (isset($default_data[$menu_item])) {
+                $default_data[$menu_item]->$menu_data = $value['value'];
+            } else {
                 $default_data[$menu_item]->$menu_data = $value['value'];
             }
         }
@@ -95,6 +103,7 @@ class Admin_Bar_Edit {
 
         if (isset($_POST['nav-menu-data'])) {
             update_option('wpezpz_tweaks_admin_bar_edit', self::merge_data( json_decode( stripslashes( $_POST['nav-menu-data'] ), true ), self::get_nodes()), true);
+
         }
 
         $option_data = get_option( 'wpezpz_tweaks_admin_bar_edit' );
