@@ -47,16 +47,28 @@ class Render extends Settings {
                 return self::add_group_field( $field['tab'], $field['cmb2_args'] );
             }
 
+
+            if ( isset($field['section']) && !empty($field['section']) ) {
+                $section = self::get_section( $field['section'] );
+                if ( isset($section['is_cmb2']) && $section['is_cmb2']) {
+                    return self::add_cmb2_field( $field['tab'], $field['cmb2_args'], $section['id'] );
+                }
+            }
+
             return self::add_cmb2_field( $field['tab'], $field['cmb2_args']);
         }
 
 		return false;
     }
 
-    public static function fields( $page, $tab, $fields = [] ) {
+    public static function fields( $page, $tab, $fields = [], $section = false ) {
         // early return if no fields
         if ( empty( $fields ) ) {
-            $fields = Settings::get_fields( $page, $tab );
+            if ( $section) {
+                $fields = Settings::get_fields( $page, $tab, $section['id'] );
+            } else {
+                $fields = Settings::get_fields( $page, $tab );
+            }
             if ( empty( $fields ) ) {
                 return;
             }
@@ -91,6 +103,12 @@ class Render extends Settings {
             self::field( $grouped_field );
         }
 
+
+        if ( $section && isset($section['is_cmb2']) && $section['is_cmb2'] ) {
+            cmb2_metabox_form( EZPZ_TWEAKS_TEXTDOMAIN . '_options_' . $section['id'], EZPZ_TWEAKS_TEXTDOMAIN . '-' . $section['id'] );
+            return;
+        }
+
         // Render CMB2 form
         $tab = self::get_tab( $tab );
         if ( $tab['is_cmb2'] ) {
@@ -113,6 +131,12 @@ class Render extends Settings {
             // Hide if not current tab
             $style = $current_tab == $tab['id'] ? '' : 'display: none';
             echo '<div id="'. $tab['id'] .'" class="wp-tab-panel" style="'. $style .'">';
+                foreach(self::get_sections(false, $tab['id']) as $section) {
+                    if (isset($section['is_cmb2']) && $section['is_cmb2'] === false) {
+                        continue;
+                    }
+                    self::fields( $page, $tab['id'], [], $section );
+                }
                 self::fields( $page, $tab['id']);
             echo '</div>';
 

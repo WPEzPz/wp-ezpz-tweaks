@@ -424,18 +424,11 @@ class Register extends Settings {
 		}
 
         // import-export fields
-        self::add_section(
-            'wpezpz-tweaks',
-            'import-export',
-            'export_settings',
-            __( 'Export Settings', EZPZ_TWEAKS_TEXTDOMAIN ),
-            10
-        );
 
         self::add_field(
             'wpezpz-tweaks',
             'import-export',
-            'export_settings',
+            '',
             'export_settings',
             __( 'Export Settings', EZPZ_TWEAKS_TEXTDOMAIN ),
             __( 'Export the plugin\'s settings for this site as a .json file. This will allows you to easily import the configuration to another installation.', EZPZ_TWEAKS_TEXTDOMAIN ),
@@ -463,7 +456,7 @@ class Register extends Settings {
         self::add_field(
             'wpezpz-tweaks',
             'import-export',
-            'import_settings',
+            '',
             'import_settings',
             __( 'Import Settings', EZPZ_TWEAKS_TEXTDOMAIN ),
             __( 'Import the plugin\'s settings from a .json file. This file can be retrieved by exporting the settings from another installation.', EZPZ_TWEAKS_TEXTDOMAIN ),

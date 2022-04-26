@@ -75,8 +75,10 @@ class Settings {
         return false;
     }
 
-    public static function add_section( $page, $tab, $section_id, $title = '', $description = '',  $priority = 10 ): bool
+    public static function add_section( $page, $tab, $section_id, $title = '', $description = '', $is_cmb2 = false, $priority = 10 ): bool
 	{
+        $cmb2_instance = $is_cmb2 ? self::add_cmb2_box( $section_id ) : null;
+
         self::$Sections[] = [
             'id' => $section_id,
             'page' => $page,
@@ -84,6 +86,8 @@ class Settings {
             'title' => $title,
             'description' => $description,
             'priority' => $priority,
+            'is_cmb2' => $is_cmb2,
+            'cmb2_instance' => $cmb2_instance,
         ];
 
         return true;
@@ -98,8 +102,34 @@ class Settings {
         return true;
     }
 
-    public static function get_sections() {
-        return self::$Sections;
+    public static function get_sections($page = false, $tab = false) {
+        $sections = self::$Sections;
+        if ( $page ) {
+            $sections = array_filter( $sections, function( $field ) use ( $page ) {
+                return $field['page'] === $page;
+            });
+        }
+        if ( $tab ) {
+            $sections = array_filter( $sections, function( $field ) use ( $tab ) {
+                return $field['tab'] === $tab;
+            });
+        }
+
+        return $sections;
+    }
+
+    public static function get_section($section_id = false) {
+        $sections = self::$Sections;
+
+        if ($section_id) {
+            foreach ($sections as $section) {
+                if ($section['id'] === $section_id) {
+                    return $section;
+                }
+            }
+        }
+
+        return $sections;
     }
 
     public static function add_field( $page, $tab, $section, $field_id, $title = '', $description = '', $callback = '', $only_callback = false, $cmb2_args = false ,$priority = 10 ): bool
@@ -177,13 +207,29 @@ class Settings {
             $fields = array_filter( $fields, function( $field ) use ( $section ) {
                 return $field['section'] === $section;
             });
+        } else {
+            // remove field if section['is_cmb2'] is set and equals true
+            $fields = array_filter( $fields, function( $field ) {
+                if ( !empty($field['section'])) {
+                    $section = self::get_section($field['section']);
+    
+                    return ! (isset($section['is_cmb2']) && $section['is_cmb2'] === false);
+                }
+                return true;
+            });
         }
 
         return $fields;
     }
 
 
-    public static function get_cmb2_instance( $id ) {
+    public static function get_cmb2_instance( $id, $section_id = false ) {
+        if ($section_id) {
+            $section = self::get_section($section_id);
+            if (isset($section['cmb2_instance'])&& !empty($section['cmb2_instance'])) {
+                return $section['cmb2_instance'];
+            }
+        }
         $tab = self::get_tab( $id );
         if ( $tab ) {
             return $tab['cmb2_instance'];
@@ -205,12 +251,20 @@ class Settings {
 		]);
     }
 
-    public static function add_cmb2_field( $tab, $field_args ) {
-        $cmb = self::get_cmb2_instance( $tab );
+    public static function add_cmb2_field( $tab, $field_args, $section_id = false ) {
+        if ( $section_id ) {
+            $cmb = self::get_cmb2_instance( $tab, $section_id);
+        } else {
+            $cmb = self::get_cmb2_instance( $tab );
+        }
+
         return $cmb->add_field($field_args);
     }
 
-    public static function add_group_field( $tab, $field ) {
+    public static function add_group_field( $tab, $field, $section_id = false ) {
+        if ( $section_id ) {
+            $tab = $section_id;
+        }
         $cmb = self::get_cmb2_instance( $tab );
 
         if (!is_object($cmb)) {
