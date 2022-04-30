@@ -43,7 +43,11 @@ class Render extends Settings {
             $field['cmb2_args']['desc'] = $field['description'];
             $field['cmb2_args']['name'] = $field['title'];
 
-            if ( !empty($field['cmb2_args']['group_id']) ) {
+            if ( isset($field['cmb2_args']['group_id']) && !empty($field['cmb2_args']['group_id']) ) {
+                if ( isset($field['section']) && !empty($field['section']) ) {
+                    $section = self::get_section( $field['section'] );
+                    return self::add_group_field( $field['tab'], $field['cmb2_args'], $section['id'] );
+                }
                 return self::add_group_field( $field['tab'], $field['cmb2_args'] );
             }
 
@@ -79,7 +83,7 @@ class Render extends Settings {
         // and we want to render them after all fields.
         $grouped_fields = [];
         foreach( $fields as $key => $field ) {
-            if ( !empty($field['cmb2_args']['group_id']) ) {
+            if ( isset($field['cmb2_args']['group_id']) && !empty($field['cmb2_args']['group_id'])  ) {
                 unset( $fields[$key] );
                 $grouped_fields[] = $field;
             }

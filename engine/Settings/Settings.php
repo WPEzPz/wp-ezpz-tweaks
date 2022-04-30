@@ -252,21 +252,14 @@ class Settings {
     }
 
     public static function add_cmb2_field( $tab, $field_args, $section_id = false ) {
-        if ( $section_id ) {
-            $cmb = self::get_cmb2_instance( $tab, $section_id);
-        } else {
-            $cmb = self::get_cmb2_instance( $tab );
-        }
+        $cmb = (!$section_id) ? self::get_cmb2_instance( $tab ) : self::get_cmb2_instance( $tab, $section_id );
 
         return $cmb->add_field($field_args);
     }
 
     public static function add_group_field( $tab, $field, $section_id = false ) {
-        if ( $section_id ) {
-            $tab = $section_id;
-        }
-        $cmb = self::get_cmb2_instance( $tab );
-
+        $cmb = (!$section_id) ? self::get_cmb2_instance( $tab ) : self::get_cmb2_instance( $tab, $section_id );
+        
         if (!is_object($cmb)) {
             return false;
         }
