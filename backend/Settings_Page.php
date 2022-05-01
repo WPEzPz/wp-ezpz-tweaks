@@ -13,6 +13,7 @@
 namespace EZPZ_TWEAKS\Backend;
 
 use EZPZ_TWEAKS\Engine\MenuEditor\Admin_Bar_Edit;
+use EZPZ_TWEAKS\Engine\Role\Admin_Bar_Role;
 
 /**
  * Create the settings page in the backend
@@ -54,6 +55,7 @@ class Settings_Page {
 		add_filter( 'admin_enqueue_scripts', array($this, 'maybe_enqueue_nav_menu_editor_scripts') );
 
 		new Admin_Bar_Edit();
+		new Admin_Bar_Role();
 		
 	}
 
