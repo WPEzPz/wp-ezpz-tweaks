@@ -166,6 +166,8 @@ class Settings_Page {
 			wp_enqueue_style( 'wp-color-picker');
 			wp_enqueue_style( 'wp-codemirror');
 
+			wp_enqueue_script( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-bar', plugins_url( 'assets/js/admin_bar_editor.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ), array( 'jquery' ), EZPZ_TWEAKS_VERSION, false );
+
 		}
 	}
 
