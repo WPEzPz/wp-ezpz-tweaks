@@ -356,12 +356,12 @@ class Register extends Settings {
 					'callback' => function() {
 						$plugin_list = get_option( 'active_plugins' );
 						$options = [
-							// 'block' => [
-							// 	'label' 	=> __( 'Block Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
-							// 	'value' 	=> 'block',
-							// 	'selected' 	=> false,
-							// 	'install' 	=> false,
-							// ],
+							'block' => [
+								'label' 	=> __( 'Block Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
+								'value' 	=> 'block',
+								'selected' 	=> false,
+								'install' 	=> false,
+							],
 							'classic' => [
 								'label' 	=> __( 'Classic Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
 								'value' 	=> 'classic',
@@ -430,7 +430,28 @@ class Register extends Settings {
 							);
 						}
 
-						$is_all_options_disabled = ( $options['classic']['selected'] && $options['tinymce']['selected'] );
+						$options['classic']['install'] = add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'classic-editor',
+							),
+							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
+						);
+						$options['tinymce']['install'] = add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'tinymce-advanced',
+							),
+							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
+						);
+						$options['block']['install'] = add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'block-editor',
+							),
+							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
+						);
+
 						?>
 						<div class="cmb-row cmb-type-select cmb2-id-disable-blockeditor" data-fieldtype="select">
 							<div class="cmb-th">
@@ -438,14 +459,14 @@ class Register extends Settings {
 							</div>
 							<div class="cmb-td">
 								<div>
-									<select class="cmb2_select" name="disable_block_editor" id="disable_block_editor" <?php echo $is_all_options_disabled ? 'disabled' : ''; ?>>
+									<select class="cmb2_select" name="disable_block_editor" id="disable_block_editor">
 										<?php
 										foreach ( $options as $option ) {
-											echo '<option value="' . $option['value'] . '" data-install="'. $option['install'] .'" ' . disabled( $option['selected'] ) . '>' . $option['label'] . '</option>';
+											echo '<option value="' . $option['value'] . '" data-install="'. $option['install'] .'" >' . $option['label'] . '</option>';
 										}
 										?>
 									</select>
-									<button class="button-primary ezpz-install-editor <?php echo $is_all_options_disabled ? 'disabled' : ''; ?>"><?php _e('Install', EZPZ_TWEAKS_TEXTDOMAIN) ?></button>
+									<button class="button-primary ezpz-install-editor "><?php _e('Activate', EZPZ_TWEAKS_TEXTDOMAIN) ?></button>
 								</div>
 
 								<p class="cmb2-metabox-description"><?php _e( 'If you want to continue to use the previous (“classic”) editor in WordPress 5.0 and newer, this plugin has an option to replace the new editor with the previous one. If you prefer to have access to both editors side by side or to allow your users to switch editors, it would be better to install the Classic Editor plugin. Advanced Editor Tools is fully compatible with the classic editor plugin and similar plugins that restore use of the previous WordPress editor.', EZPZ_TWEAKS_TEXTDOMAIN ) ?></p>
