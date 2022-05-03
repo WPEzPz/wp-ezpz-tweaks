@@ -349,6 +349,19 @@ class Register extends Settings {
 		self::add_fields(
 			[
 				[
+					'field_id' => 'limit_post_revisions',
+                    'title' => __( 'Disable or limit post revisions', EZPZ_TWEAKS_TEXTDOMAIN ),
+                    'description' => __( 'Disable or limit the number of post revisions that WordPress stores to keep your database from growing out of control. <strong>0 means to disable</strong>', EZPZ_TWEAKS_TEXTDOMAIN ),
+                    'cmb2_args' => array(
+                        'type' => 'text',
+						'attributes' => array(
+							'type' => 'number',
+							'min' => 0,
+						),
+                    ),
+                    'priority' => 5,
+          ],
+          [
 					'field_id' => 'disable_block_editor',
 					'title' => __( 'Disable Block Editor ', EZPZ_TWEAKS_TEXTDOMAIN ),
 					'description' => __( 'If you want to continue to use the previous (“classic”) editor in WordPress 5.0 and newer, this plugin has an option to replace the new editor with the previous one. If you prefer to have access to both editors side by side or to allow your users to switch editors, it would be better to install the Classic Editor plugin. Advanced Editor Tools is fully compatible with the classic editor plugin and similar plugins that restore use of the previous WordPress editor.', EZPZ_TWEAKS_TEXTDOMAIN ),
