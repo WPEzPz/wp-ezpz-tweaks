@@ -46,6 +46,7 @@ class Settings {
 		add_filter( 'comment_form_default_fields', array( $this, 'remove_website_field' ) );
 		add_filter( 'login_message', array( $this, 'add_login_page_custom_text' ) );
 
+		add_filter( 'login_errors', array( $this, 'no_wordpress_errors') );
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
 		add_filter( 'heartbeat_settings', array( $this, 'maybe_modify_heartbeat' ), 99, 1 );
@@ -81,6 +82,18 @@ class Settings {
 		}
 
 		return $urls;
+	}
+
+	function no_wordpress_errors( $errors ) {
+		if ( isset( $this->security_option['hide_login_error_messages'] ) ) {	
+			return sprintf(
+				/* translators: %s: URL that allows the user to retrieve the lost password */
+				__( '<strong>Error:</strong> The username or password you entered is incorrect. <a href="%s">Lost your password?</a>', EZPZ_TWEAKS_TEXTDOMAIN ),
+				wp_lostpassword_url()
+			);
+		}
+
+		return $errors;
 	}
 
 	public function disable_wp_rest_api( $access ) {
