@@ -1,8 +1,10 @@
-.ezpz-tweaks-tabs .wp-tab-bar {
+.ezpz-tweaks-tabs .wp-tab-bar,
+.ezpz-tweaks-tabs .wp-admin-bar-tab-bar {
 	margin-bottom: -7px !important;
 }
 
-.ezpz-tweaks-tabs .wp-tab-bar li {
+.ezpz-tweaks-tabs .wp-tab-bar li,
+.ezpz-tweaks-tabs .wp-admin-bar-tab-bar li {
 	padding: 10px 15px !important;
 	display: inline-block !important;
 }
@@ -10,6 +12,7 @@
 .ezpz-tweaks-tabs li a {
 	color: black;
 	font-size: 14px;
+	text-decoration: none;
 }
 
 .ezpz-tweaks-tabs li.wp-tab-active a {
@@ -22,7 +25,7 @@
 	padding: 20px !important;
 }
 
-.ezpz-tweaks-tabs h3.hndle {
+.ezpz-tweaks-tabs .postbox h3.hndle {
 	padding: 0 1em;
 }
 
@@ -197,4 +200,42 @@
 
 #import-export .hndle {
 	cursor: default;
+}
+
+.cmb-field-list {
+    max-width: 100% !important;
+}
+
+.cmb2-wrap input:not([type=hidden]) + .button-secondary,
+.cmb2-wrap input:not([type=hidden]) + input  {
+    margin-left: 0 !important;
+}
+
+.attachment-266x266, .thumbnail img {
+	width: 100% !important;
+	height: auto !important;
+}
+/* Range field */
+.cmb2-range {
+	width: 70%;
+	float: left;
+	opacity: 0.75;
+	-webkit-transition: .2s;
+	transition: opacity .2s;
+}
+.cmb2-range:hover {
+	opacity: 1;
+}
+.range-text {
+	display: inline-block;
+	margin: 0 .5rem
+}
+@media screen and (max-width:782px) {
+	.cmb2-range {
+	  width: 100%;
+	  float: none;
+	}
+	.range-text {
+	  margin: .5rem 0
+	}
 }
