@@ -104,6 +104,11 @@ class Settings {
 
     public static function get_sections($page = false, $tab = false) {
         $sections = self::$Sections;
+
+        // early return if no sections
+        if (empty($sections)) {
+            return [];
+        }
         if ( $page ) {
             $sections = array_filter( $sections, function( $field ) use ( $page ) {
                 return $field['page'] === $page;
@@ -120,6 +125,11 @@ class Settings {
 
     public static function get_section($section_id = false) {
         $sections = self::$Sections;
+
+        // early return if no sections
+        if (empty($sections)) {
+            return [];
+        }
 
         if ($section_id) {
             foreach ($sections as $section) {
