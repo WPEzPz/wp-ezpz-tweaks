@@ -12,6 +12,8 @@
 
 namespace EZPZ_TWEAKS\Backend;
 
+use EZPZ_TWEAKS\Engine\MenuEditor\Admin_Bar_Edit;
+
 /**
  * Create the settings page in the backend
  */
@@ -40,13 +42,26 @@ class Settings_Page {
 		add_action( 'admin_head', array( $this, 'hide_core_update_notifications_from_users' ), 1 );
 		add_action( 'admin_init', array( $this, 'remove_welcome_panel' ) );
 		add_action( 'admin_init', array( $this, 'dashboard_widgets_options' ) );
+		add_action( 'admin_init', array( $this, 'disable_block_editor' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'remove_dashboard_widgets' ) );
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_custom_url_change' ), 30, 3 );
+		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_performance_change' ), 30, 3 );
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
+		add_action( 'init', array( $this, 'deactivate_file_editor' ), 1 );
+
+
+		add_filter( 'upload_mimes', array( $this, 'allowed_wp_upload_mimes' ) );
+		add_filter( 'wp_check_filetype_and_ext', array( $this, 'maybe_update_mime_types' ), 10, 4 );
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
+
+		add_filter( 'admin_body_class', array($this, 'maybe_add_body_class') );
+		add_filter( 'admin_enqueue_scripts', array($this, 'maybe_enqueue_nav_menu_editor_scripts') );
+
+		new Admin_Bar_Edit();
+		
 	}
 
 	/**
@@ -68,11 +83,32 @@ class Settings_Page {
 			$ezpz_menu = menu_page_url( 'wp-ezpz', false );
 
 			if ( !$ezpz_menu ) {
-				add_menu_page( __( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN, [ $this, 'display_plugin_settings_page' ], EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/img/EzPzTweaks-icon.png' );
+				add_menu_page(
+					__( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ),
+					__( 'WP EzPz', EZPZ_TWEAKS_TEXTDOMAIN ),
+					$capability, EZPZ_TWEAKS_TEXTDOMAIN,
+					[ $this, 'display_plugin_settings_page' ],
+					EZPZ_TWEAKS_PLUGIN_ROOT_URL . 'assets/img/EzPzTweaks-icon.png' );
 
-				add_submenu_page( EZPZ_TWEAKS_TEXTDOMAIN, __( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN, [ $this, 'display_plugin_settings_page' ] );
+				add_submenu_page(
+					EZPZ_TWEAKS_TEXTDOMAIN,
+					__( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ),
+					__( 'Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ),
+					$capability,
+					EZPZ_TWEAKS_TEXTDOMAIN,
+					[ $this, 'display_plugin_settings_page' ]
+				);
+
+				add_submenu_page(
+						EZPZ_TWEAKS_TEXTDOMAIN,
+						__( 'Edit Admin Bar', EZPZ_TWEAKS_TEXTDOMAIN ),
+						__( 'Edit Admin Bar', EZPZ_TWEAKS_TEXTDOMAIN ),
+						$capability,
+						EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar',
+						[ $this, 'display_plugin_admin_bar_edit_page' ]
+				);
 			}
-			
+
 			add_submenu_page( EZPZ_TWEAKS_TEXTDOMAIN, __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN . '-edit-menu', '' );
 		}
 
@@ -80,13 +116,13 @@ class Settings_Page {
 			$menu_title 		= isset( $_POST['menu_title'] ) ? sanitize_text_field( $_POST['menu_title'] ) : $this->customizing_option['menu_title'];
 			$menu_slug 			= isset( $_POST['menu_slug'] ) ? sanitize_text_field( $_POST['menu_slug'] ) : $this->customizing_option['menu_slug'];
 			$branding_menu_logo = isset( $_POST['branding_menu_logo'] ) ? sanitize_text_field( $_POST['branding_menu_logo'] ) : $this->customizing_option['branding_menu_logo'];
-			
-			add_menu_page( 
-				$menu_title, 
-				$menu_title, 
-				'manage_options', 
-				$menu_slug, 
-				[ $this, 'display_branding_page' ], 
+
+			add_menu_page(
+				$menu_title,
+				$menu_title,
+				'manage_options',
+				$menu_slug,
+				[ $this, 'display_branding_page' ],
 				$branding_menu_logo, 79 );
 
 			add_action( 'admin_enqueue_scripts', function() use( $menu_slug ) {
@@ -129,6 +165,35 @@ class Settings_Page {
 		include EZPZ_TWEAKS_PLUGIN_ROOT . "backend/views/settings.php";
 	}
 
+	public function maybe_enqueue_nav_menu_editor_scripts() {
+		$page = !empty($_GET['page']) ? sanitize_text_field($_GET['page']) : '' ;
+		if ($page == EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar') {
+			wp_enqueue_script( 'nav-menu');
+			wp_enqueue_style( 'nav-menus');
+			wp_enqueue_style( 'wp-color-picker');
+			wp_enqueue_style( 'wp-codemirror');
+
+			wp_enqueue_script( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-bar', plugins_url( 'assets/js/admin_bar_editor.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ), array( 'jquery' ), EZPZ_TWEAKS_VERSION, false );
+
+		}
+	}
+
+	public function display_plugin_admin_bar_edit_page() {
+
+		include EZPZ_TWEAKS_PLUGIN_ROOT . "backend/views/edit_admin_bar.php";
+	}
+
+	public function maybe_add_body_class($classes): string
+	{
+		$new_classes = '';
+		$page = !empty($_GET['page']) ? sanitize_text_field($_GET['page']) : '' ;
+		if ($page == EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar') {
+			$new_classes .= 'nav-menus-php';
+		}
+
+		return "$classes $new_classes";
+	}
+
 	/**
 	 * Add settings action link to the plugins page.
 	 *
@@ -144,7 +209,7 @@ class Settings_Page {
 	}
 
 	public function custom_footer( $text ) {
-		
+
 		if( isset( $_POST['submit-cmb'] ) ) {
 			$this->customizing_option['footer_visibility'] = sanitize_text_field( $_POST['footer_visibility'] );
 		}
@@ -161,11 +226,19 @@ class Settings_Page {
 		}
 	}
 
+	public function deactivate_file_editor() {
+		if ( (isset($_POST['deactivate_file_editor']) && sanitize_text_field($_POST['deactivate_file_editor']) == 'on') || !isset($_POST['deactivate_file_editor']) && isset($_POST['object_id']) && sanitize_text_field($_POST['object_id']) != 'wpezpz-tweaks-security' && $this->security_option['deactivate_file_editor'] == 'on' ) {
+			define( 'DISALLOW_FILE_EDIT', true );
+		} else {
+			define( 'DISALLOW_FILE_EDIT', false );
+		}
+	}
+
 	public function change_admin_font() {
 		$field_name  = ( $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font' );
 		$admin_font  = $_POST[ $field_name ] ?? $this->customizing_option[ $field_name ] ?? false;
 
-		if ( isset( $admin_font ) && !empty($editor_font) && $admin_font != 'wp-default' ) {
+		if ( isset( $admin_font ) && !empty($admin_font) && $admin_font != 'wp-default' ) {
 			if ( $this->get_locale == 'fa_IR' ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
@@ -240,7 +313,7 @@ class Settings_Page {
 				}
 			}
 		}
-		
+
 		return $widgets;
 	}
 
@@ -292,6 +365,130 @@ class Settings_Page {
 			$hide_login = new \EZPZ_TWEAKS\Integrations\Custom_Login_Url();
 
 			echo '<div class="updated notice is-dismissible"><p>' . sprintf( __( 'Your login page is now here: <strong><a href="%1$s">%2$s</a></strong>. Bookmark this page!', EZPZ_TWEAKS_TEXTDOMAIN ), $hide_login->new_login_url(), $hide_login->new_login_url() ) . '</p></div>';
+		}
+	}
+
+	public function disable_block_editor() {
+		if (!is_admin() && !current_user_can('administrator')) {
+			return;
+		}
+
+		$action = isset($_GET['action']) ? sanitize_key( $_GET['action'] ) : '';
+		$plugin_name = isset($_GET['plugin']) ? sanitize_text_field( $_GET['plugin'] ) : '';
+
+		if ( $action !== 'activate' || empty($plugin_name) ) {
+			return;
+		}
+		$plugin_list = get_option( 'active_plugins' );
+
+		if ( $plugin_name === 'block-editor' ) {
+			if (file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' )) {
+				deactivate_plugins( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' );
+			}
+			if (file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' )) {
+				deactivate_plugins( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' );
+			}
+			return;
+		} else if ( $plugin_name === 'classic-editor' ) {
+			if (file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' )) {
+				deactivate_plugins( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' );
+			}
+			if (!in_array( 'classic-editor/classic-editor.php' , $plugin_list )) {
+				if (file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' )) {
+					$url = $options['classic']['install'] = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'classic-editor/classic-editor.php',
+								'plugin_status' => 'all',
+								'paged' => '1',
+							),
+							admin_url( 'plugins.php' )
+						),
+						'activate-plugin' .'_'.'classic-editor/classic-editor.php'
+					);
+				} else {
+					$url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'install-plugin',
+								'plugin' => 'classic-editor'
+							),
+							admin_url( 'update.php' )
+						),
+						'install-plugin' .'_'. 'classic-editor'
+					);
+				}
+				wp_safe_redirect( html_entity_decode($url) );
+				exit;
+
+			}
+
+
+			return;
+		} else if ($plugin_name === 'tinymce-advanced' ) {
+			if (file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' )) {
+				deactivate_plugins( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' );
+			}
+			if (!in_array( 'tinymce-advanced/tinymce-advanced.php' , $plugin_list )) {
+				if (file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' )) {
+					$url = $options['tinymce']['install'] = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'tinymce-advanced/tinymce-advanced.php',
+								'plugin_status' => 'all',
+								'paged' => '1',
+							),
+							admin_url( 'plugins.php' )
+						),
+						'activate-plugin' .'_'.'tinymce-advanced/tinymce-advanced.php'
+					);
+				} else {
+					$url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'install-plugin',
+								'plugin' => 'tinymce-advanced'
+							),
+							admin_url( 'update.php' )
+						),
+						'install-plugin'.'_'. 'tinymce-advanced'
+					);
+				}
+
+				wp_redirect( html_entity_decode($url) );
+				exit;
+			}
+		}
+
+
+		return;
+  }
+
+	public function allowed_wp_upload_mimes( $mimes ) {
+		$mimes['woff']  = 'application/x-font-woff';
+		$mimes['woff2'] = 'application/x-font-woff2';
+		$mimes['ttf']   = 'application/x-font-ttf';
+		$mimes['eot']   = 'application/vnd.ms-fontobject';
+		// $mimes['otf']   = 'font/otf';
+		$mimes['svg'] = 'image/svg+xml';
+
+		return $mimes;
+	}
+
+	public function maybe_update_mime_types( $data, $file, $filename, $mimes ) {
+		$filetype = wp_check_filetype( $filename, $mimes );
+  
+		return [
+			'ext'             => $filetype['ext'],
+			'type'            => $filetype['type'],
+			'proper_filename' => $data['proper_filename']
+		];
+	}
+	public function show_notices_on_performance_change( $object_id, $updated, $cmb ) {
+		if( in_array( 'remove_shortlink', $cmb ) ) {
+			echo '<div class="updated notice is-dismissible"><p>' .  __( 'Your performance settings saved.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
 		}
 	}
 
