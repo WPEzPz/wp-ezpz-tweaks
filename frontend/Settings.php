@@ -39,6 +39,7 @@ class Settings {
 		add_action( 'init', array( $this, 'disable_embeds_code_init' ), 9999 );
 		add_action( 'init', array( $this, 'disable_xmlrpc' ) );
 		add_action( 'init', array( $this, 'hide_admin_bar' ), 9999 );
+		add_action( 'init', array( $this, 'limit_post_revisions' ));
 		add_action( 'wp_head', array( $this, 'change_adminbar_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'adminbar_logo' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'adminbar_logo' ) );
@@ -52,8 +53,11 @@ class Settings {
 
 		// Backups
 		add_action( 'ezpz_register_fields', array( $Backups, 'add_options' ) );
-
-
+    
+		add_filter( 'login_errors', array( $this, 'no_wordpress_errors') );
+		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
+		add_filter( 'heartbeat_settings', array( $this, 'maybe_modify_heartbeat' ), 99, 1 );
 	}
 
 	public function disable_emojis() {
@@ -67,6 +71,21 @@ class Settings {
 			remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
 			add_filter( 'tiny_mce_plugins', array( $this, 'disable_emojis_tinymce' ) );
 			add_filter( 'wp_resource_hints', array( $this, 'disable_emojis_remove_dns_prefetch' ), 10, 2 );
+		}
+	}
+
+	public function limit_post_revisions() {
+		if ( isset( $this->performance_option['limit_post_revisions'] ) ) {
+
+			add_filter( 'wp_revisions_to_keep', function ( $num, $post ) {
+     
+				$max_revisions = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-performance' )['limit_post_revisions'];
+				if ( $max_revisions ) {
+					return $max_revisions;
+				}
+
+			}, 10, 2 );
+
 		}
 	}
 
@@ -86,6 +105,18 @@ class Settings {
 		}
 
 		return $urls;
+	}
+
+	function no_wordpress_errors( $errors ) {
+		if ( isset( $this->security_option['hide_login_error_messages'] ) ) {	
+			return sprintf(
+				/* translators: %s: URL that allows the user to retrieve the lost password */
+				__( '<strong>Error:</strong> The username or password you entered is incorrect. <a href="%s">Lost your password?</a>', EZPZ_TWEAKS_TEXTDOMAIN ),
+				wp_lostpassword_url()
+			);
+		}
+
+		return $errors;
 	}
 
 	public function disable_wp_rest_api( $access ) {
@@ -231,7 +262,7 @@ class Settings {
 			$field_name  = $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font';
 			$admin_font  = $this->customizing_option[ $field_name ] ?? false;
 
-			if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
+			if ( isset( $admin_font ) && !empty($admin_font) && $admin_font != 'wp-default' ) {
 				if ( $this->get_locale == 'fa_IR' ) {
 					wp_register_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '' );
 					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name );
@@ -272,6 +303,9 @@ class Settings {
 	public function change_login_font() {
 		if( !is_user_logged_in() ) {
 			$field_name  = $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font';
+			if (!isset($this->customizing_option[ $field_name ])) {
+				return;
+			}
 			$admin_font  = $this->customizing_option[ $field_name ];
 
 			if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
@@ -313,6 +347,8 @@ class Settings {
 		}
 	}
 
+
+
 	public function remove_version_scripts_styles( $src ) {
 		if ( strpos( $src, 'ver=' ) ) {
 			$src = remove_query_arg( 'ver', $src );
@@ -330,5 +366,92 @@ class Settings {
 
 			return $message;
 		}
+	}
+
+	public function check_location_for_heartbeat( $location ) {
+
+		$location_test = array(
+			'dashboard'   => function() {
+				return is_admin();
+			},
+			'frontend'  => function() {
+				return ! is_admin();
+			},
+			'post_editor' => function() {
+				$_query_string = filter_input( INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_URL );
+				$_request_uri  = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );
+
+				if ( $_query_string && $_request_uri ) {
+					$current_url = wp_unslash( $_query_string . '?' . $_request_uri );
+				} elseif ( $_query_string ) {
+					$current_url = wp_unslash( $_request_uri );
+				} else {
+					$current_url = admin_url();
+				}
+				return ( '/wp-admin/post.php' === wp_parse_url( $current_url )['path'] );
+			},
+		);
+
+		if ( isset( $location_test[ $location ] ) ) {
+			return $location_test[ $location ]();
+		}
+
+		return false;
+	}
+
+	public function maybe_disable_heartbeat() {
+		$settings = $this->get_heartbeat_settings();
+		if (!empty($settings)) {
+			foreach ( $settings as $location => $rule ) {
+				if ( array_key_exists( 'value', $rule ) && 'disable' === $rule['value'] ) {
+					if ( $this->check_location_for_heartbeat( $location ) ) {
+						wp_deregister_script( 'heartbeat' );
+						return;
+					}
+				}
+			}
+		}
+	}
+
+
+	public function maybe_modify_heartbeat( $s ) {
+		$settings = $this->get_heartbeat_settings();
+
+		if (!empty($settings)) {
+			foreach ( $settings as $location => $rule ) {
+				if ( array_key_exists( 'value', $rule ) && 'modify' === $rule['value'] ) {
+					if ( $this->check_location_for_heartbeat( $location ) ) {
+						$s['interval'] = intval( $rule['range'] );
+	
+						return $s;
+					}
+				}
+			}
+		}
+
+
+		return $s;
+	}
+
+	public function get_heartbeat_settings( ) {
+
+		if (!isset($this->performance_option['disable_dashboard_heartbeat'])) {
+			return;
+		}
+
+		return [
+			'dashboard' => [
+				'value'	=> $this->performance_option['disable_dashboard_heartbeat'],
+				'range'	=> $this->performance_option['range_modify_dashboard_heartbeat'],
+			],
+			'frontend' => [
+				'value'	=> $this->performance_option['disable_frontend_heartbeat'],
+				'range'	=> $this->performance_option['range_modify_frontend_heartbeat'],
+			],
+			'post_editor' => [
+				'value'	=> $this->performance_option['disable_post_editor_heartbeat'],
+				'range'	=> $this->performance_option['range_modify_post_editor_heartbeat'],
+			],
+		];
 	}
 }

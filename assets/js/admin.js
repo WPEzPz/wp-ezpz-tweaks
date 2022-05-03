@@ -358,6 +358,22 @@
 			function remove_backup_from_table( key ) {
 				$('.ezpz-tweeks-settings-backup-form table tbody tr[data-key="'+ key +'"]').remove();
 			}
+
+			$('.ezpz-install-editor').on('click', function() {
+				const selected = $('select[name="disable_block_editor"] option:selected')
+				const selected_install_url = $(selected).attr('data-install')
+				window.location.href = selected_install_url;
+			})
+			// CMB2 range
+			$('.cmb2-range').each(function() {
+				var span = $(this).siblings('.range-text').children('.range-value');
+				// Append the range value to each slider 
+				span.html('<strong>' + $(this).val() + '</strong>' );
+				// update to the dynamic value
+				$(this).on('input', function() {
+					span.html('<strong>' + $(this).val() + '</strong>' );
+				});           
+			});
 		})
 	});
 })(jQuery);
