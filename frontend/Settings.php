@@ -11,6 +11,8 @@
 
 namespace EZPZ_TWEAKS\Frontend;
 
+use EZPZ_TWEAKS\Engine\Backups\Import_Export;
+
 class Settings {
 	/**
 	 * @var false|mixed|void
@@ -31,6 +33,8 @@ class Settings {
 		$this->performance_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-performance' );
 		$this->security_option 	  = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
 
+		$Backups = new Import_Export();
+
 		add_action( 'init', array( $this, 'disable_emojis' ) );
 		add_action( 'init', array( $this, 'disable_embeds_code_init' ), 9999 );
 		add_action( 'init', array( $this, 'disable_xmlrpc' ) );
@@ -47,6 +51,9 @@ class Settings {
 		add_filter( 'comment_form_default_fields', array( $this, 'remove_website_field' ) );
 		add_filter( 'login_message', array( $this, 'add_login_page_custom_text' ) );
 
+		// Backups
+		add_action( 'ezpz_register_fields', array( $Backups, 'add_options' ) );
+    
 		add_filter( 'login_errors', array( $this, 'no_wordpress_errors') );
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );

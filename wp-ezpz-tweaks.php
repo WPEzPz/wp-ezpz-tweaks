@@ -19,6 +19,7 @@
 
 // If this file is called directly, abort.
 use EZPZ_TWEAKS\Engine\Initialize;
+use EZPZ_TWEAKS\Engine\Backups\Import_Export;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
@@ -206,6 +207,8 @@ function ezpz_tweaks_change_plugin_priority() {
     update_option('active_plugins', $active_plugins);
 }
 add_action( 'activated_plugin', 'ezpz_tweaks_change_plugin_priority' );
+
+$backup = (new Import_Export())->register_ajax();
 
 function cmb2_render_range( $field, $field_escaped_value, $field_object_id, $field_object_type, $field_type_object ){
 
