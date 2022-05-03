@@ -296,6 +296,9 @@ class Settings {
 	public function change_login_font() {
 		if( !is_user_logged_in() ) {
 			$field_name  = $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font';
+			if (!isset($this->customizing_option[ $field_name ])) {
+				return;
+			}
 			$admin_font  = $this->customizing_option[ $field_name ];
 
 			if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {

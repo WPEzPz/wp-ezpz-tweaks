@@ -12,6 +12,7 @@
 namespace EZPZ_TWEAKS\Engine\Settings;
 
 use CMB2;
+use EZPZ_TWEAKS\Backend\Settings_Page;
 
 class Settings {
 //    private static $Pages;

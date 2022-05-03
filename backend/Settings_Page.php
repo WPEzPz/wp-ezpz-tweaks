@@ -45,7 +45,7 @@ class Settings_Page {
 		add_action( 'admin_init', array( $this, 'disable_block_editor' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'remove_dashboard_widgets' ) );
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_custom_url_change' ), 30, 3 );
-		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_performance_change' ), 30, 3 );
+		add_action( "admin_notices", array( $this, 'show_notices_on_performance_change' ), 30 );
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
@@ -210,6 +210,11 @@ class Settings_Page {
 
 	public function custom_footer( $text ) {
 
+		// earlly exit if footer text not on the settings page
+		if( !isset( $this->customizing_option['footer_visibility'] ) && !isset( $_POST['footer_text'] ) ) {
+			return $text;
+		}
+
 		if( isset( $_POST['submit-cmb'] ) ) {
 			$this->customizing_option['footer_visibility'] = sanitize_text_field( $_POST['footer_visibility'] );
 		}
@@ -227,7 +232,7 @@ class Settings_Page {
 	}
 
 	public function deactivate_file_editor() {
-		if ( (isset($_POST['deactivate_file_editor']) && sanitize_text_field($_POST['deactivate_file_editor']) == 'on') || !isset($_POST['deactivate_file_editor']) && isset($_POST['object_id']) && sanitize_text_field($_POST['object_id']) != 'wpezpz-tweaks-security' && $this->security_option['deactivate_file_editor'] == 'on' ) {
+		if ( (isset($_POST['deactivate_file_editor']) && sanitize_text_field($_POST['deactivate_file_editor']) == 'on') || !isset($_POST['deactivate_file_editor']) && isset($_POST['object_id']) && sanitize_text_field($_POST['object_id']) != 'wpezpz-tweaks-security' && isset($this->security_option['deactivate_file_editor']) && $this->security_option['deactivate_file_editor'] == 'on' ) {
 			define( 'DISALLOW_FILE_EDIT', true );
 		} else {
 			define( 'DISALLOW_FILE_EDIT', false );
@@ -486,8 +491,8 @@ class Settings_Page {
 			'proper_filename' => $data['proper_filename']
 		];
 	}
-	public function show_notices_on_performance_change( $object_id, $updated, $cmb ) {
-		if( in_array( 'remove_shortlink', $cmb ) ) {
+	public function show_notices_on_performance_change( ) {
+		if( isset($_POST['disable_wp_emoji']) ) {
 			echo '<div class="updated notice is-dismissible"><p>' .  __( 'Your performance settings saved.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
 		}
 	}
