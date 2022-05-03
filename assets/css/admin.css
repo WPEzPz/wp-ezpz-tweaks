@@ -1,8 +1,10 @@
-.ezpz-tweaks-tabs .wp-tab-bar {
+.ezpz-tweaks-tabs .wp-tab-bar,
+.ezpz-tweaks-tabs .wp-admin-bar-tab-bar {
 	margin-bottom: -7px !important;
 }
 
-.ezpz-tweaks-tabs .wp-tab-bar li {
+.ezpz-tweaks-tabs .wp-tab-bar li,
+.ezpz-tweaks-tabs .wp-admin-bar-tab-bar li {
 	padding: 10px 15px !important;
 	display: inline-block !important;
 }
@@ -10,6 +12,7 @@
 .ezpz-tweaks-tabs li a {
 	color: black;
 	font-size: 14px;
+	text-decoration: none;
 }
 
 .ezpz-tweaks-tabs li.wp-tab-active a {
@@ -22,7 +25,7 @@
 	padding: 20px !important;
 }
 
-.ezpz-tweaks-tabs h3.hndle {
+.ezpz-tweaks-tabs .postbox h3.hndle {
 	padding: 0 1em;
 }
 
