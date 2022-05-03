@@ -2,13 +2,12 @@
 /**
  * @package   WPEzPz Tweaks
  * @author    WP EzPz <info@wpezpzdev.com>
- * @copyright 2020 WP EzPz
  * @license   GPL 3.0
  * @link      https://wpezpzdev.com/
  *
  * Plugin Name:     WPEzPz Tweaks
- * Description:     EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the admin panel appearances, clean your site code and remove unwanted features to increase its security and improve performance.
- * Version:         1.0.16
+ * Description:     WPEzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the admin panel appearances, clean your site code and remove unwanted features to increase its security and improve performance.
+ * Version:         1.0.17
  * Author:          WP EzPz
  * Author URI:      https://wpezpzdev.com/
  * Text Domain:     wpezpz-tweaks
@@ -16,7 +15,6 @@
  * License URI:     http://www.gnu.org/licenses/gpl-3.0.txt
  * Domain Path:     /languages
  * Requires PHP:    7.0
- * WordPress-Plugin-Boilerplate-Powered: v3.2.0
  */
 
 // If this file is called directly, abort.
@@ -26,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-define( 'EZPZ_TWEAKS_VERSION', '1.0.16' );
+define( 'EZPZ_TWEAKS_VERSION', '1.0.17' );
 define( 'EZPZ_TWEAKS_TEXTDOMAIN', 'wpezpz-tweaks' );
 define( 'EZPZ_TWEAKS_NAME', __( 'WPEzPz Tweaks', EZPZ_TWEAKS_TEXTDOMAIN ) );
 define( 'EZPZ_TWEAKS_PLUGIN_ROOT', plugin_dir_path( __FILE__ ) );
@@ -95,6 +93,7 @@ if ( ! wp_installing() ) {
 
 function ezpz_tweaks_activate() {
 	ezpz_tweaks_upgrade_procedure();
+	ezpz_tweaks_admin_set_install_time();
 	
 	flush_rewrite_rules();
 }
@@ -138,6 +137,62 @@ function ezpz_tweaks_upgrade_procedure() {
 }
 
 add_action( 'admin_init', 'ezpz_tweaks_upgrade_procedure' );
+
+
+function ezpz_tweaks_admin_notice() {
+	if ( ! is_admin() ) {
+		return;
+	}
+	
+	$install_date = get_option( 'ezpz-tweaks-install-time' );
+	
+	if ( ! $install_date ) {
+		return;
+	}
+	
+	$install_date = strtotime( $install_date );
+	$install_date = strtotime( '+7 day', $install_date );
+	$install_date = date( 'Y-m-d H:i:s', $install_date );
+	$user_id = get_current_user_id();
+	$is_dissmissed = (bool)get_user_meta( $user_id, 'ezpz_tweaks_review_notice_dismissed', true );
+	if ( $is_dissmissed ) {
+		return;
+	} else if ($install_date > date( 'Y-m-d H:i:s')) {
+		return;
+	}
+
+	$notice = __( 'Thank you for using <strong>WP EzPz Tweaks</strong>! You have been using it for over a week. What do you think about it? ', EZPZ_TWEAKS_TEXTDOMAIN );
+	$notice .= '<a href="https://wordpress.org/support/plugin/wpezpz-tweaks/reviews/?rate=5#new-post" target="_blank" class="button button-primary">' . __( 'Rate it', EZPZ_TWEAKS_TEXTDOMAIN ) . '</a>';
+
+	echo '<div class="notice notice-success is-dismissible"><p>' . $notice . ' <a href="?ezpz-tweaks-review-dismissed">Dismiss</a></p></div>';
+}
+
+function ezpz_tweaks_admin_notice_dissmiss() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+    if ( isset( $_GET['ezpz-tweaks-review-dismissed'] ) ) {
+        add_user_meta( $user_id, 'ezpz_tweaks_review_notice_dismissed', 'true', true );
+	}
+}
+
+
+add_action( 'admin_init', 'ezpz_tweaks_admin_notice' );
+add_action( 'admin_init', 'ezpz_tweaks_admin_notice_dissmiss' );
+
+function ezpz_tweaks_admin_set_install_time() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	if ( empty(get_option( 'ezpz-tweaks-install-time')) ) {
+		add_option( 'ezpz-tweaks-install-time', date('Y-m-d H:i:s') );
+	} else {
+		update_option( 'ezpz-tweaks-install-time', date('Y-m-d H:i:s') );
+	}
+}
 
 function ezpz_tweaks_change_plugin_priority() {
 	$wp_path_to_this_file = preg_replace('/(.*)plugins\/(.*)$/', WP_PLUGIN_DIR."/$2", __FILE__);

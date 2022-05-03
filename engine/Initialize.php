@@ -80,6 +80,8 @@ class Initialize {
 		}
 
 		$this->load_classes();
+
+		$this->register_cmb2_custom_types();
 	}
 
 	/**
@@ -202,6 +204,10 @@ class Initialize {
 				}
 			}
 		}
+	}
+
+	private function register_cmb2_custom_types() {
+
 	}
 
 }
