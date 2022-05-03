@@ -303,6 +303,17 @@
 					}
 				}
 			}
+
+			// CMB2 range
+			$('.cmb2-range').each(function() {
+				var span = $(this).siblings('.range-text').children('.range-value');
+				// Append the range value to each slider 
+				span.html('<strong>' + $(this).val() + '</strong>' );
+				// update to the dynamic value
+				$(this).on('input', function() {
+					span.html('<strong>' + $(this).val() + '</strong>' );
+				});           
+			});
 		})
 	});
 })(jQuery);
