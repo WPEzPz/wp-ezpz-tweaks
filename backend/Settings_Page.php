@@ -40,6 +40,7 @@ class Settings_Page {
 		add_action( 'admin_head', array( $this, 'hide_core_update_notifications_from_users' ), 1 );
 		add_action( 'admin_init', array( $this, 'remove_welcome_panel' ) );
 		add_action( 'admin_init', array( $this, 'dashboard_widgets_options' ) );
+		add_action( 'admin_init', array( $this, 'disable_block_editor' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'remove_dashboard_widgets' ) );
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_custom_url_change' ), 30, 3 );
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_performance_change' ), 30, 3 );
@@ -308,6 +309,104 @@ class Settings_Page {
 			echo '<div class="updated notice is-dismissible"><p>' . sprintf( __( 'Your login page is now here: <strong><a href="%1$s">%2$s</a></strong>. Bookmark this page!', EZPZ_TWEAKS_TEXTDOMAIN ), $hide_login->new_login_url(), $hide_login->new_login_url() ) . '</p></div>';
 		}
 	}
+
+	public function disable_block_editor() {
+		if (!is_admin() && !current_user_can('administrator')) {
+			return;
+		}
+
+		$action = isset($_GET['action']) ? sanitize_key( $_GET['action'] ) : '';
+		$plugin_name = isset($_GET['plugin']) ? sanitize_text_field( $_GET['plugin'] ) : '';
+
+		if ( $action !== 'activate' || empty($plugin_name) ) {
+			return;
+		}
+		$plugin_list = get_option( 'active_plugins' );
+
+		if ( $plugin_name === 'block-editor' ) {
+			if (file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' )) {
+				deactivate_plugins( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' );
+			}
+			if (file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' )) {
+				deactivate_plugins( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' );
+			}
+			return;
+		} else if ( $plugin_name === 'classic-editor' ) {
+			if (file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' )) {
+				deactivate_plugins( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' );
+			}
+			if (!in_array( 'classic-editor/classic-editor.php' , $plugin_list )) {
+				if (file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' )) {
+					$url = $options['classic']['install'] = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'classic-editor/classic-editor.php',
+								'plugin_status' => 'all',
+								'paged' => '1',
+							),
+							admin_url( 'plugins.php' )
+						),
+						'activate-plugin' .'_'.'classic-editor/classic-editor.php'
+					);
+				} else {
+					$url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'install-plugin',
+								'plugin' => 'classic-editor'
+							),
+							admin_url( 'update.php' )
+						),
+						'install-plugin' .'_'. 'classic-editor'
+					);
+				}
+				wp_safe_redirect( html_entity_decode($url) );
+				exit;
+
+			}
+
+
+			return;
+		} else if ($plugin_name === 'tinymce-advanced' ) {
+			if (file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' )) {
+				deactivate_plugins( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' );
+			}
+			if (!in_array( 'tinymce-advanced/tinymce-advanced.php' , $plugin_list )) {
+				if (file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' )) {
+					$url = $options['tinymce']['install'] = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'tinymce-advanced/tinymce-advanced.php',
+								'plugin_status' => 'all',
+								'paged' => '1',
+							),
+							admin_url( 'plugins.php' )
+						),
+						'activate-plugin' .'_'.'tinymce-advanced/tinymce-advanced.php'
+					);
+				} else {
+					$url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => 'install-plugin',
+								'plugin' => 'tinymce-advanced'
+							),
+							admin_url( 'update.php' )
+						),
+						'install-plugin'.'_'. 'tinymce-advanced'
+					);
+				}
+
+				wp_redirect( html_entity_decode($url) );
+				exit;
+			}
+		}
+
+
+		return;
+  }
 
 	public function allowed_wp_upload_mimes( $mimes ) {
 		$mimes['woff']  = 'application/x-font-woff';

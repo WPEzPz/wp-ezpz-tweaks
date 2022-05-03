@@ -346,6 +346,144 @@ class Register extends Settings {
             'performance'
         );
 
+		self::add_fields(
+			[
+				[
+					'field_id' => 'disable_block_editor',
+					'title' => __( 'Disable Block Editor ', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' => __( 'If you want to continue to use the previous (“classic”) editor in WordPress 5.0 and newer, this plugin has an option to replace the new editor with the previous one. If you prefer to have access to both editors side by side or to allow your users to switch editors, it would be better to install the Classic Editor plugin. Advanced Editor Tools is fully compatible with the classic editor plugin and similar plugins that restore use of the previous WordPress editor.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' => false,
+					'callback' => function() {
+						$plugin_list = get_option( 'active_plugins' );
+						$options = [
+							'block' => [
+								'label' 	=> __( 'Block Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
+								'value' 	=> 'block',
+								'selected' 	=> false,
+								'install' 	=> false,
+							],
+							'classic' => [
+								'label' 	=> __( 'Classic Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
+								'value' 	=> 'classic',
+								'selected' 	=> in_array( 'classic-editor/classic-editor.php' , $plugin_list ),
+								'installed' => file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' ),
+							],
+							'tinymce' => [
+								'label' 	=> __( 'Advanced Editor Tools (previously TinyMCE Advanced)', EZPZ_TWEAKS_TEXTDOMAIN ),
+								'value' 	=> 'tinymce',
+								'selected' 	=> in_array( 'tinymce-advanced/tinymce-advanced.php' , $plugin_list ),
+								'installed' => file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' ),
+								
+							],
+						];
+
+						if( ! $options['classic']['installed'] ) {
+							$options['tinymce']['install'] = wp_nonce_url(
+								add_query_arg(
+									array(
+										'action' => 'install-plugin',
+										'plugin' => 'tinymce-advanced'
+									),
+									admin_url( 'update.php' )
+								),
+								'install-plugin'.'_'. 'tinymce-advanced'
+							);
+						} else {
+							$options['tinymce']['install'] = wp_nonce_url(
+								add_query_arg(
+									array(
+										'action' => 'activate',
+										'plugin' => 'tinymce-advanced/tinymce-advanced.php',
+										'plugin_status' => 'all',
+										'paged' => '1',
+									),
+									admin_url( 'plugins.php' )
+								),
+								'activate-plugin' .'_'.'tinymce-advanced/tinymce-advanced.php'
+							);
+						}
+
+						
+						if (!$options['classic']['installed']) {
+							$options['classic']['install'] = wp_nonce_url(
+								add_query_arg(
+									array(
+										'action' => 'install-plugin',
+										'plugin' => 'classic-editor'
+									),
+									admin_url( 'update.php' )
+								),
+								'install-plugin' .'_'. 'classic-editor'
+							);
+						} else {
+							$options['classic']['install'] = wp_nonce_url(
+								add_query_arg(
+									array(
+										'action' => 'activate',
+										'plugin' => 'classic-editor/classic-editor.php',
+										'plugin_status' => 'all',
+										'paged' => '1',
+									),
+									admin_url( 'plugins.php' )
+								),
+								'activate-plugin' .'_'.'classic-editor/classic-editor.php'
+							);
+						}
+
+						$options['classic']['install'] = add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'classic-editor',
+							),
+							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
+						);
+						$options['tinymce']['install'] = add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'tinymce-advanced',
+							),
+							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
+						);
+						$options['block']['install'] = add_query_arg(
+							array(
+								'action' => 'activate',
+								'plugin' => 'block-editor',
+							),
+							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
+						);
+
+						?>
+						<div class="cmb-row cmb-type-select cmb2-id-disable-blockeditor" data-fieldtype="select">
+							<div class="cmb-th">
+								<label for="disable_block editor"><?php _e('Disable Block Editor', EZPZ_TWEAKS_TEXTDOMAIN) ?></label>
+							</div>
+							<div class="cmb-td">
+								<div>
+									<select class="cmb2_select" name="disable_block_editor" id="disable_block_editor">
+										<?php
+										foreach ( $options as $option ) {
+											echo '<option value="' . $option['value'] . '" data-install="'. $option['install'] .'" >' . $option['label'] . '</option>';
+										}
+										?>
+									</select>
+									<button class="button-primary ezpz-install-editor "><?php _e('Activate', EZPZ_TWEAKS_TEXTDOMAIN) ?></button>
+								</div>
+
+								<p class="cmb2-metabox-description"><?php _e( 'If you want to continue to use the previous (“classic”) editor in WordPress 5.0 and newer, this plugin has an option to replace the new editor with the previous one. If you prefer to have access to both editors side by side or to allow your users to switch editors, it would be better to install the Classic Editor plugin. Advanced Editor Tools is fully compatible with the classic editor plugin and similar plugins that restore use of the previous WordPress editor.', EZPZ_TWEAKS_TEXTDOMAIN ) ?></p>
+
+							</div>
+						</div>
+						<?php
+					},
+					'only_callback' => true,
+					'priority' => 80,
+				]
+			]
+			,
+			'wpezpz-tweaks',
+			'performance'
+		);
+
         // security fields
         self::add_fields(
 			[
