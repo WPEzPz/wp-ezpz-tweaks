@@ -17,6 +17,7 @@ $page = 'wpezpz-tweaks';
 	Render::navigation( $page );
 	Render::tabs( $page );
 	?>
+
 	<!-- End tabs -->
 
 </div>

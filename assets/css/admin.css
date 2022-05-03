@@ -198,3 +198,41 @@
 #import-export .hndle {
 	cursor: default;
 }
+
+.cmb-field-list {
+    max-width: 100% !important;
+}
+
+.cmb2-wrap input:not([type=hidden]) + .button-secondary,
+.cmb2-wrap input:not([type=hidden]) + input  {
+    margin-left: 0 !important;
+}
+
+.attachment-266x266, .thumbnail img {
+	width: 100% !important;
+	height: auto !important;
+}
+/* Range field */
+.cmb2-range {
+	width: 70%;
+	float: left;
+	opacity: 0.75;
+	-webkit-transition: .2s;
+	transition: opacity .2s;
+}
+.cmb2-range:hover {
+	opacity: 1;
+}
+.range-text {
+	display: inline-block;
+	margin: 0 .5rem
+}
+@media screen and (max-width:782px) {
+	.cmb2-range {
+	  width: 100%;
+	  float: none;
+	}
+	.range-text {
+	  margin: .5rem 0
+	}
+}

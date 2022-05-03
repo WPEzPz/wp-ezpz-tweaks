@@ -43,9 +43,15 @@ class Settings_Page {
 		add_action( 'admin_init', array( $this, 'disable_block_editor' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'remove_dashboard_widgets' ) );
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_custom_url_change' ), 30, 3 );
+		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_performance_change' ), 30, 3 );
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
+		add_action( 'init', array( $this, 'deactivate_file_editor' ), 1 );
+
+
+		add_filter( 'upload_mimes', array( $this, 'allowed_wp_upload_mimes' ) );
+		add_filter( 'wp_check_filetype_and_ext', array( $this, 'maybe_update_mime_types' ), 10, 4 );
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 	}
@@ -162,11 +168,19 @@ class Settings_Page {
 		}
 	}
 
+	public function deactivate_file_editor() {
+		if ( (isset($_POST['deactivate_file_editor']) && sanitize_text_field($_POST['deactivate_file_editor']) == 'on') || !isset($_POST['deactivate_file_editor']) && isset($_POST['object_id']) && sanitize_text_field($_POST['object_id']) != 'wpezpz-tweaks-security' && $this->security_option['deactivate_file_editor'] == 'on' ) {
+			define( 'DISALLOW_FILE_EDIT', true );
+		} else {
+			define( 'DISALLOW_FILE_EDIT', false );
+		}
+	}
+
 	public function change_admin_font() {
 		$field_name  = ( $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font' );
 		$admin_font  = $_POST[ $field_name ] ?? $this->customizing_option[ $field_name ] ?? false;
 
-		if ( isset( $admin_font ) && !empty($editor_font) && $admin_font != 'wp-default' ) {
+		if ( isset( $admin_font ) && !empty($admin_font) && $admin_font != 'wp-default' ) {
 			if ( $this->get_locale == 'fa_IR' ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
 				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
@@ -392,6 +406,32 @@ class Settings_Page {
 
 
 		return;
+  }
+
+	public function allowed_wp_upload_mimes( $mimes ) {
+		$mimes['woff']  = 'application/x-font-woff';
+		$mimes['woff2'] = 'application/x-font-woff2';
+		$mimes['ttf']   = 'application/x-font-ttf';
+		$mimes['eot']   = 'application/vnd.ms-fontobject';
+		// $mimes['otf']   = 'font/otf';
+		$mimes['svg'] = 'image/svg+xml';
+
+		return $mimes;
+	}
+
+	public function maybe_update_mime_types( $data, $file, $filename, $mimes ) {
+		$filetype = wp_check_filetype( $filename, $mimes );
+  
+		return [
+			'ext'             => $filetype['ext'],
+			'type'            => $filetype['type'],
+			'proper_filename' => $data['proper_filename']
+		];
+	}
+	public function show_notices_on_performance_change( $object_id, $updated, $cmb ) {
+		if( in_array( 'remove_shortlink', $cmb ) ) {
+			echo '<div class="updated notice is-dismissible"><p>' .  __( 'Your performance settings saved.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
+		}
 	}
 
 }
