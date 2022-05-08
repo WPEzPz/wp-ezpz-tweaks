@@ -101,8 +101,8 @@ class Settings_Page {
 
 				add_submenu_page(
 						EZPZ_TWEAKS_TEXTDOMAIN,
-						__( 'Edit Admin Bar', EZPZ_TWEAKS_TEXTDOMAIN ),
-						__( 'Edit Admin Bar', EZPZ_TWEAKS_TEXTDOMAIN ),
+						__( 'WordPress Admin Bar Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
+						__( 'Admin Bar Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
 						$capability,
 						EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar',
 						[ $this, 'display_plugin_admin_bar_edit_page' ]
