@@ -8,7 +8,7 @@ if (!function_exists('wp_initial_nav_menu_meta_boxes')) {
 }
 
 $page = 'wpezpz-tweaks-edit-admin-bar';
-$current_tab = isset( $_GET['user_role'] ) ? sanitize_text_field($_GET['user_role']) : 'general';
+$current_tab = isset( $_GET['user_role'] ) ? sanitize_text_field($_GET['user_role']) : 'all';
 $user_role = $current_tab;
 
 do_action('wpezpz_tweaks_admin_bar_edit_before_render');
@@ -66,15 +66,19 @@ $walker = new Walker_Admin_Bar_Edit();
 $Walker_Nav_Menu_Edit = Admin_Bar_Edit::get_walker();
 // delete_option( 'wpezpz_tweaks_admin_bar_edit' );
 
+
 if ( empty(get_option('wpezpz_tweaks_admin_bar_edit-' . $user_role) ) ) {
 	update_option(
 		'wpezpz_tweaks_admin_bar_edit-' . $user_role,
-		Admin_Bar_Edit::get_nodes(),
+		Admin_Bar_Edit::sort_nodes_by_periority(Admin_Bar_Edit::get_nodes()),
 		true
 	);
 }
 $data = get_option('wpezpz_tweaks_admin_bar_edit-' . $user_role);
 
+foreach ($data as $node) {
+	$node->visibility = isset($node->visibility) ? $node->visibility : 'default';
+}
 
 $result = '<ul class="menu" id="menu-to-edit"> ';
 $result .= $walker->walk( $data, 4 );
@@ -117,8 +121,8 @@ $result .= ' </ul> ';
 	</p>
 	<!-- Start tabs -->
 	<ul class="wp-admin-bar-tab-bar">
-		<li class="<?php echo $current_tab == 'general' ? 'wp-tab-active' : ''; ?>">
-			<a href="<?php echo admin_url( 'admin.php?page='. $page ); ?>"><?php _e('General', EZPZ_TWEAKS_TEXTDOMAIN); ?></a>
+		<li class="<?php echo $current_tab == 'all' ? 'wp-tab-active' : ''; ?>">
+			<a href="<?php echo admin_url( 'admin.php?page='. $page ); ?>"><?php _e('All', EZPZ_TWEAKS_TEXTDOMAIN); ?></a>
 		</li>
 		<?php echo apply_filters('wpezpz_tweaks_admin_bar_tabs', ''); ?>
 	</ul>
