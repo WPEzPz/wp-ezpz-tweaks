@@ -23,6 +23,6 @@ abstract class Abstract_Custom_CMB2_Type {
 
     abstract public function cmb2_render_custom_type_field_type( $field, $escaped_value, $object_id, $object_type, $field_type_object );
 
-    abstract public function cmb2_sanitize_custom_type_callback( $override_value, $value );
+    abstract public function cmb2_sanitize_custom_type_callback( $override_value, $value, $object_id, $field_args );
 
 }

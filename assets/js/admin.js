@@ -434,6 +434,9 @@
 					}, 500);
 				}
 			})
+			$('.cmb2_select2_multiselect').select2({
+				closeOnSelect: false
+			});
 		})
 	});
 })(jQuery);

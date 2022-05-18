@@ -403,3 +403,12 @@
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    padding: 4px 4px 4px 24px !important;
+    font-size: 15px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    padding: 0 4px 4px 4px !important;
+}
