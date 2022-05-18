@@ -42,7 +42,7 @@ class Type_Select2 extends Abstract_Custom_CMB2_Type {
 
     }
 
-    public function cmb2_sanitize_custom_type_callback( $override_value, $value ) {
+    public function cmb2_sanitize_custom_type_callback( $override_value, $value, $object_id, $field_args ) {
         if ( is_array( $value ) ) {
             foreach ( $value as $key => $saved_value ) {
                 $value[$key] = sanitize_text_field( $saved_value );

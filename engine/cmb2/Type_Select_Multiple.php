@@ -34,7 +34,7 @@ class Type_Select_Multiple extends Abstract_Custom_CMB2_Type {
         echo $select_multiple; // WPCS: XSS ok.
     }
 
-    public function cmb2_sanitize_custom_type_callback( $override_value, $value ) {
+    public function cmb2_sanitize_custom_type_callback( $override_value, $value, $object_id, $field_args ) {
         if ( is_array( $value ) ) {
             foreach ( $value as $key => $saved_value ) {
                 $value[$key] = sanitize_text_field( $saved_value );

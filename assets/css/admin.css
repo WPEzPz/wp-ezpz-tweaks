@@ -198,3 +198,12 @@
 #import-export .hndle {
 	cursor: default;
 }
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    padding: 4px 4px 4px 24px !important;
+    font-size: 15px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    padding: 0 4px 4px 4px !important;
+}
