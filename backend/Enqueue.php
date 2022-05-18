@@ -11,6 +11,8 @@
 
 namespace EZPZ_TWEAKS\Backend;
 
+use EZPZ_TWEAKS\Engine\Settings\Settings;
+
 use function add_action;
 use function plugins_url;
 use function wp_enqueue_script;

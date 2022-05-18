@@ -20,7 +20,7 @@
 				event.preventDefault();
 
 				// Limit effect to the container element.
-				var context = $(this).closest('.wp-tab-bar').parent();
+				var context = $(this).closest('.wp-tab-bar').parent().parent();
 				setGetParameter( 'tab', $(this).attr("href" ).replace('#','') );
 				// window.location.hash = $(this).attr("href");
 				$('.wp-tab-bar li', context).removeClass('wp-tab-active');
@@ -374,6 +374,66 @@
 					span.html('<strong>' + $(this).val() + '</strong>' );
 				});           
 			});
+
+			$('.ezpz-search input[type=search]').keyup(function () {
+				var searchField = $(this).val();
+				if (searchField === '') {
+					$('#ezpz-search-res').html('');
+					$('#ezpz-search-res').hide();
+					return;
+				}
+			
+				var regex = new RegExp(searchField, "i");
+				var output = ' ';
+				var count = 0;
+				$.each(searchData, function (key, val) {
+					if (count > 6) {
+						return;
+					}
+
+					if ((val.title.search(regex) != -1) || (val.description.search(regex) != -1)) {
+						output += '<a href="#'+ val.tab +'" data-id="'+ val.id +'" class="ezpz-search-res-item">';
+						output += '<h5>' + val.title + '</h5>';
+						output += '<p>' + val.description + '</p>'
+						output += '</a>';
+						count++;
+					}
+					
+				});
+				$('#ezpz-search-res').html(output);
+				$('#ezpz-search-res').show();
+			});
+			$('.ezpz-search input[type=search]').on( 'input', function () {
+				var searchField = $(this).val();
+				if (searchField === '') {
+					$('#ezpz-search-res').html('');
+					$('#ezpz-search-res').hide();
+					return;
+				}
+			})
+
+			$('#ezpz-search-res').on('click', '.ezpz-search-res-item', function(e) {
+				e.preventDefault();
+				var tab = $(this).attr('href');
+				$('.ezpz-search input[type=search]').val('');
+				$('#ezpz-search-res').html('');
+				$('#ezpz-search-res').hide();
+
+				$('.wp-tab-bar li a').each(function() {
+					console.log($(this).attr('href'));
+					if ($(this).attr('href') == tab) {
+						$(this).click();
+						return;
+					}
+				})
+				var id = $(this).attr('data-id')
+
+				if($('.cmb2-id-'+ id.replace(/_/gi, '-')).length > 0) {
+					$('html, body').animate({
+						scrollTop: $('.cmb2-id-'+ id.replace(/_/gi, '-')).offset().top - 100
+					}, 500);
+				}
+			})
 		})
 	});
 })(jQuery);

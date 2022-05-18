@@ -279,4 +279,30 @@ class Settings {
 
         return $cmb->add_group_field($group_id, $field);
     }
+
+    public static function get_first_tab( $page ){
+        $tabs = self::get_tabs($page);
+        if (empty($tabs)) {
+            return false;
+        }
+        return $tabs[0];
+    }
+
+    public static function get_search_data() {
+        $search_data = [];
+		$all_fields = self::get_fields();
+		foreach ($all_fields as $field) {
+			$search_data[$field['id']] = [
+				'id' => $field['id'],
+				'title' => $field['title'],
+				'description' => $field['description'],
+			];
+
+            if (isset($field['tab'])) {
+                $search_data[$field['id']]['tab'] = $field['tab'];
+            }
+		}
+
+        return $search_data;
+    }
 }
