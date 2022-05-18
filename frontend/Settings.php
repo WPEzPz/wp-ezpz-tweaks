@@ -258,6 +258,9 @@ class Settings {
 	}
 
 	public function change_adminbar_font() {
+		if (!is_admin_bar_showing()) {
+			return;
+		}
 		if( is_admin_bar_showing() ) {
 			$field_name  = $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font';
 			$admin_font  = $this->customizing_option[ $field_name ] ?? false;
@@ -277,6 +280,9 @@ class Settings {
 	}
 
 	public function adminbar_logo() {
+		if (!is_admin_bar_showing()) {
+			return;
+		}
 		if ( ( isset( $this->customizing_option['custom_logo'] ) && !isset( $_POST['custom_logo'] ) ) || ( isset( $_POST['custom_logo'] ) && !empty( $_POST['custom_logo'] ) ) ) {
 			$custom_logo = isset( $_POST['custom_logo'] ) ? sanitize_text_field( $_POST['custom_logo'] ) : $this->customizing_option['custom_logo'];
 
