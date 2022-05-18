@@ -364,7 +364,7 @@ class Register extends Settings {
           [
 					'field_id' => 'disable_block_editor',
 					'title' => __( 'Disable Block Editor ', EZPZ_TWEAKS_TEXTDOMAIN ),
-					'description' => __( 'If you want to continue to use the previous (“classic”) editor in WordPress 5.0 and newer, this plugin has an option to replace the new editor with the previous one. If you prefer to have access to both editors side by side or to allow your users to switch editors, it would be better to install the Classic Editor plugin. Advanced Editor Tools is fully compatible with the classic editor plugin and similar plugins that restore use of the previous WordPress editor.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' => __( 'If you want to continue to use the previous (“classic”) editor in WordPress 5.0 and newer, this plugin has an option to replace the new editor with the previous one. If you prefer to have access to both editors side by side or to allow your users to switch editors, it would be better to install the Classic Editor plugin.', EZPZ_TWEAKS_TEXTDOMAIN ),
 					'cmb2_args' => false,
 					'callback' => function() {
 						$plugin_list = get_option( 'active_plugins' );
@@ -380,41 +380,8 @@ class Register extends Settings {
 								'value' 	=> 'classic',
 								'selected' 	=> in_array( 'classic-editor/classic-editor.php' , $plugin_list ),
 								'installed' => file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' ),
-							],
-							'tinymce' => [
-								'label' 	=> __( 'Advanced Editor Tools (previously TinyMCE Advanced)', EZPZ_TWEAKS_TEXTDOMAIN ),
-								'value' 	=> 'tinymce',
-								'selected' 	=> in_array( 'tinymce-advanced/tinymce-advanced.php' , $plugin_list ),
-								'installed' => file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' ),
-								
-							],
+							]
 						];
-
-						if( ! $options['classic']['installed'] ) {
-							$options['tinymce']['install'] = wp_nonce_url(
-								add_query_arg(
-									array(
-										'action' => 'install-plugin',
-										'plugin' => 'tinymce-advanced'
-									),
-									admin_url( 'update.php' )
-								),
-								'install-plugin'.'_'. 'tinymce-advanced'
-							);
-						} else {
-							$options['tinymce']['install'] = wp_nonce_url(
-								add_query_arg(
-									array(
-										'action' => 'activate',
-										'plugin' => 'tinymce-advanced/tinymce-advanced.php',
-										'plugin_status' => 'all',
-										'paged' => '1',
-									),
-									admin_url( 'plugins.php' )
-								),
-								'activate-plugin' .'_'.'tinymce-advanced/tinymce-advanced.php'
-							);
-						}
 
 						
 						if (!$options['classic']['installed']) {
@@ -450,13 +417,7 @@ class Register extends Settings {
 							),
 							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
 						);
-						$options['tinymce']['install'] = add_query_arg(
-							array(
-								'action' => 'activate',
-								'plugin' => 'tinymce-advanced',
-							),
-							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
-						);
+
 						$options['block']['install'] = add_query_arg(
 							array(
 								'action' => 'activate',

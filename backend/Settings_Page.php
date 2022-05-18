@@ -431,40 +431,6 @@ class Settings_Page {
 
 
 			return;
-		} else if ($plugin_name === 'tinymce-advanced' ) {
-			if (file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' )) {
-				deactivate_plugins( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' );
-			}
-			if (!in_array( 'tinymce-advanced/tinymce-advanced.php' , $plugin_list )) {
-				if (file_exists( WP_PLUGIN_DIR . '/tinymce-advanced/tinymce-advanced.php' )) {
-					$url = $options['tinymce']['install'] = wp_nonce_url(
-						add_query_arg(
-							array(
-								'action' => 'activate',
-								'plugin' => 'tinymce-advanced/tinymce-advanced.php',
-								'plugin_status' => 'all',
-								'paged' => '1',
-							),
-							admin_url( 'plugins.php' )
-						),
-						'activate-plugin' .'_'.'tinymce-advanced/tinymce-advanced.php'
-					);
-				} else {
-					$url = wp_nonce_url(
-						add_query_arg(
-							array(
-								'action' => 'install-plugin',
-								'plugin' => 'tinymce-advanced'
-							),
-							admin_url( 'update.php' )
-						),
-						'install-plugin'.'_'. 'tinymce-advanced'
-					);
-				}
-
-				wp_redirect( html_entity_decode($url) );
-				exit;
-			}
 		}
 
 
