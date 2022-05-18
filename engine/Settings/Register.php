@@ -546,6 +546,15 @@ class Register extends Settings {
 					),
 					'priority' => 70,
 				],
+				[
+					'field_id'   => 'deactivate_file_editor',
+					'title' => __( 'Disable Theme & Plugin File Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' => __( 'Disable to remove the ability for users to edit theme and plugin files', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' => array(
+						'type'    => 'checkbox',
+					),
+					'priority' => 80,
+				],
 			],
 			'wpezpz-tweaks',
 			'security'
