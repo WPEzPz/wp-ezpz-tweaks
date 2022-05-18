@@ -72,7 +72,7 @@ class Type_Select2_Multiple extends Abstract_Custom_CMB2_Type {
     
 
     public function custom_type_field_type_table_row_class( $check ) {
-		$check[] = $this->custom_type;
+		$check[] = 'select2multiple';
 
 		return $check;
 	}
