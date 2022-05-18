@@ -400,7 +400,10 @@ class Register extends Settings {
 					<br>Hidden users can see other hidden users.
 					<br>So if you hide your own user account, you will still see it under "All Users" unless you switch to another user.', EZPZ_TWEAKS_TEXTDOMAIN ),
 					'cmb2_args' => array(
-						'type'    => 'select_multiple',
+						'type'    => 'select2multiple',
+						'attributes' => [
+							'data-placeholder' => __( 'Select users', EZPZ_TWEAKS_TEXTDOMAIN ),
+						],
 						'options' => $users,
 					),
 					'priority' => 60,
