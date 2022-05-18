@@ -494,7 +494,10 @@ class Register extends Settings {
 					'title' => __( 'Hide Update Notifications', EZPZ_TWEAKS_TEXTDOMAIN ),
 					'description' => __( 'Hide update notifications for user roles', EZPZ_TWEAKS_TEXTDOMAIN ),
 					'cmb2_args' => array(
-						'type'    => 'multicheck',
+						'type'    => 'select2multiple',
+						'attributes' => array(
+							'data-placeholder' => __( 'Select roles', EZPZ_TWEAKS_TEXTDOMAIN ),
+						),
 						'options' => $user_roles,
 					),
 					'priority' => 60,
