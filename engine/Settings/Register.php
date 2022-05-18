@@ -116,7 +116,10 @@ class Register extends Settings {
 				'title' => __( 'Hide Admin Bar', EZPZ_TWEAKS_TEXTDOMAIN ),
 				'description' => __( 'Hide admin bar for user roles', EZPZ_TWEAKS_TEXTDOMAIN ),
 				'cmb2_args' => array(
-					'type'    => 'multicheck',
+					'type'    => 'select2multiple',
+					'attributes' => array(
+						'data-placeholder' => __( 'Select user roles', EZPZ_TWEAKS_TEXTDOMAIN ),
+					),
 					'options' => $user_roles,
 				),
 				'priority' => 40,
@@ -126,7 +129,10 @@ class Register extends Settings {
 				'title' => __( 'Remove Dashboard Widgets', EZPZ_TWEAKS_TEXTDOMAIN ),
 				'description' => __( 'Check widgets to remove from dashboard', EZPZ_TWEAKS_TEXTDOMAIN ),
 				'cmb2_args' => array(
-					'type'    => 'multicheck',
+					'type'    => 'select2multiple',
+					'attributes' => array(
+						'data-placeholder' => __( 'Select Widgets', EZPZ_TWEAKS_TEXTDOMAIN ),
+					),
 					'options' => $settings_page->dashboard_widgets_options(),
 				),
 				'priority' => 50,
