@@ -282,10 +282,11 @@ class Settings_Page {
 
 	public function hide_core_update_notifications_from_users() {
 		if ( isset( $this->security_option['hide_update_notifications'] ) ) {
-			$user_roles = ezpz_tweaks_wp_roles_array();
+			$user_roles = $this->security_option['hide_update_notifications'];
+			$user = wp_get_current_user();
 
-			foreach ( $user_roles as $role => $name ) {
-				if ( current_user_can( $role ) ) {
+			foreach ( $user_roles as $role ) {
+				if ( in_array( $role, (array) $user->roles ) ) {
 					remove_action( 'admin_notices', 'update_nag', 3 );
 					break;
 				}
