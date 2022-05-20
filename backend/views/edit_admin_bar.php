@@ -36,7 +36,7 @@ $nav_menu_selected_preset = '';
 // wp_nav_menu_setup();
 
 wp_nav_menu_post_type_meta_boxes();
-add_meta_box( 'add-custom-links', __( 'Custom Links' ), 'wp_nav_menu_item_link_meta_box', 'admin-bar-editor', 'side', 'default' );
+add_meta_box( 'add-custom-links', __( 'Custom Links' ), array('EZPZ_TWEAKS\Engine\MenuEditor\Admin_Bar_Helper', 'nav_menu_item_link_meta_box'), 'admin-bar-editor', 'side', 'default' );
 // $taxonomies = get_taxonomies( array( 'show_in_nav_menus' => true ), 'object' );
 
 // foreach ( $taxonomies as $tax ) {
@@ -117,10 +117,14 @@ $result .= ' </ul> ';
 	</p>
 	<!-- Start tabs -->
 	<ul class="wp-admin-bar-tab-bar">
+		<?php 
+		$tabs = apply_filters('wpezpz_tweaks_admin_bar_tabs', '');
+		$defualt_tab =  empty($tabs) ? __('WordPress Admin Bar Editor', EZPZ_TWEAKS_TEXTDOMAIN) : __('General', EZPZ_TWEAKS_TEXTDOMAIN);
+		?>
 		<li class="<?php echo $current_tab == 'general' ? 'wp-tab-active' : ''; ?>">
-			<a href="<?php echo admin_url( 'admin.php?page='. $page ); ?>"><?php _e('General', EZPZ_TWEAKS_TEXTDOMAIN); ?></a>
+			<a href="<?php echo admin_url( 'admin.php?page='. $page ); ?>"><?php echo $defualt_tab ?></a>
 		</li>
-		<?php echo apply_filters('wpezpz_tweaks_admin_bar_tabs', ''); ?>
+		<?php echo $tabs; ?>
 	</ul>
 	<!-- End tabs -->
 
