@@ -14,7 +14,7 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
     public function start_el(&$output, $item, $depth = 0, $args = null, $current_object_id = 0 ) {
         $item_html = '';
         $item->ID = $item->id;
-        $item->type = 'custom';
+        $item->type = empty($item->type) ? 'admin_bar_default' : $item->type;
         $item->type_label = $item->ID;
 
         $item->object = $item->id;
@@ -29,10 +29,9 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
         $item->post_type = 'custom';
         $item->url = $item->href;
 
-		$item->menu_order = 1;
+		$item->menu_order = isset($item->menu_order) ? $item->menu_order : 1;
 		$item->menu_item_parent = $item->parent;
 
-        // $item->title = $item->title == strip_tags($item->title) ? $item->title : 'contains HTML';
         $item->title = !empty($item->title) ? $item->title : $item->id;
         self::start_ele($item_html, $item, $depth, $args);	
  
@@ -111,19 +110,24 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
 		}
 
 		$title = ( ! isset( $menu_item->label ) || '' === $menu_item->label ) ? $title : $menu_item->label;
+		$title = strip_tags($title);
 
 		$submenu_text = '';
 		if ( 0 === $depth ) {
 			$submenu_text = 'style="display: none;"';
 		}
 
+		if ($menu_item->type_label == 'menu-toggle') {
+			return;
+		}
+		$visibility = (isset($menu_item->visibility) && in_array($menu_item->visibility, array('on', 'default'))) ? true : false;
 		?>
 		<li id="menu-item-<?php echo $item_id; ?>" class="<?php echo implode( ' ', $classes ); ?>">
 			<div class="menu-item-bar">
 				<div class="menu-item-handle is-non-sortable">
 					<label class="item-title" for="menu-item-checkbox-<?php echo $item_id; ?>">
-						<input id="menu-item-checkbox-<?php echo $item_id; ?>" type="checkbox" class="menu-item-checkbox" data-menu-item-id="<?php echo $item_id; ?>" disabled="disabled" />
-						<span class="menu-item-title"><?php echo esc_html( $title ); ?></span>
+						<input id="menu-item-checkbox-<?php echo $item_id; ?>" type="checkbox" class="menu-item-visibility-checkbox" data-menu-item-id="<?php echo $item_id; ?>" name="menu-item-visibility[<?php echo $item_id; ?>]" <?php echo checked($visibility) ?> />
+						<span class="menu-item-title"><?php echo esc_html($title); ?></span>
 						<span class="is-submenu" <?php echo $submenu_text; ?>><?php _e( 'sub item' ); ?></span>
 					</label>
 					<span class="item-controls">
@@ -199,7 +203,7 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
 				<p class="description description-wide">
 					<label for="edit-menu-item-title-<?php echo $item_id; ?>">
 						<?php _e( 'Navigation Label' ); ?><br />
-						<input type="text" id="edit-menu-item-title-<?php echo $item_id; ?>" class="widefat edit-menu-item-title" name="menu-item-title[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $menu_item->title ); ?>" />
+						<textarea type="text" id="edit-menu-item-title-<?php echo $item_id; ?>" class="widefat edit-menu-item-title" name="menu-item-title[<?php echo $item_id; ?>]"><?php echo esc_attr( $menu_item->title ); ?></textarea>
 					</label>
 				</p>
 				<p class="field-title-attribute field-attr-title description description-wide">
@@ -262,23 +266,25 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
 					<?php endif; ?>
 
 					<?php
-					printf(
-						'<a class="item-delete submitdelete deletion" id="delete-%s" href="%s">%s</a>',
-						$item_id,
-						wp_nonce_url(
-							add_query_arg(
-								array(
-									'action'    => 'delete-menu-item',
-									'menu-item' => $item_id,
+					if ($menu_item->type != 'admin_bar_default') {
+						printf(
+							'<a class="item-delete submitdelete deletion" id="delete-%s" href="%s">%s</a>',
+							$item_id,
+							wp_nonce_url(
+								add_query_arg(
+									array(
+										'action'    => 'delete-menu-item',
+										'menu-item' => $item_id,
+									),
+									admin_url( 'admin.php?page='. EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar' )
 								),
-								admin_url( 'admin.php?page='. EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar' )
+								'delete-menu_item_' . $item_id
 							),
-							'delete-menu_item_' . $item_id
-						),
-						__( 'Remove' )
-					);
+							__( 'Remove' )
+						);
+						echo '<span class="meta-sep hide-if-no-js"> | </span>';
+					}
 					?>
-					<span class="meta-sep hide-if-no-js"> | </span>
 					<?php
 					printf(
 						'<a class="item-cancel submitcancel hide-if-no-js" id="cancel-%s" href="%s#menu-item-settings-%s">%s</a>',

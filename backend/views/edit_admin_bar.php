@@ -8,7 +8,7 @@ if (!function_exists('wp_initial_nav_menu_meta_boxes')) {
 }
 
 $page = 'wpezpz-tweaks-edit-admin-bar';
-$current_tab = isset( $_GET['user_role'] ) ? sanitize_text_field($_GET['user_role']) : 'general';
+$current_tab = isset( $_GET['user_role'] ) ? sanitize_text_field($_GET['user_role']) : 'all';
 $user_role = $current_tab;
 
 do_action('wpezpz_tweaks_admin_bar_edit_before_render');
@@ -66,15 +66,19 @@ $walker = new Walker_Admin_Bar_Edit();
 $Walker_Nav_Menu_Edit = Admin_Bar_Edit::get_walker();
 // delete_option( 'wpezpz_tweaks_admin_bar_edit' );
 
+
 if ( empty(get_option('wpezpz_tweaks_admin_bar_edit-' . $user_role) ) ) {
 	update_option(
 		'wpezpz_tweaks_admin_bar_edit-' . $user_role,
-		Admin_Bar_Edit::get_nodes(),
+		Admin_Bar_Edit::sort_nodes_by_periority(Admin_Bar_Edit::get_nodes()),
 		true
 	);
 }
 $data = get_option('wpezpz_tweaks_admin_bar_edit-' . $user_role);
 
+foreach ($data as $node) {
+	$node->visibility = isset($node->visibility) ? $node->visibility : 'default';
+}
 
 $result = '<ul class="menu" id="menu-to-edit"> ';
 $result .= $walker->walk( $data, 4 );
@@ -169,33 +173,11 @@ $result .= ' </ul> ';
 											item to reveal additional configuration options.</p>
 									</div>
 
-									<div id="nav-menu-bulk-actions-top" class="bulk-actions">
-										<label class="bulk-select-button" for="bulk-select-switcher-top">
-											<input type="checkbox" id="bulk-select-switcher-top"
-												name="bulk-select-switcher-top" class="bulk-select-switcher">
-											<span class="bulk-select-button-label">Bulk Select</span>
-										</label>
-									</div>
-
 									<div id="menu-instructions" class="post-body-plain menu-instructions-inactive">
 										<p>Add menu items from the column on the left.</p>
 									</div>
 									<?php echo $result; ?>
 
-
-									<div id="nav-menu-bulk-actions-bottom" class="bulk-actions">
-										<label class="bulk-select-button" for="bulk-select-switcher-bottom">
-											<input type="checkbox" id="bulk-select-switcher-bottom"
-												name="bulk-select-switcher-top" class="bulk-select-switcher">
-											<span class="bulk-select-button-label">Bulk Select</span>
-										</label>
-										<input type="button" class="deletion menu-items-delete disabled"
-											value="Remove Selected Items">
-										<div id="pending-menu-items-to-delete">
-											<p>List of menu items selected for deletion:</p>
-											<ul></ul>
-										</div>
-									</div>
 								</div><!-- /#post-body-content -->
 							</div><!-- /#post-body -->
 							<div id="nav-menu-footer">

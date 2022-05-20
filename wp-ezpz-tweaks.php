@@ -19,6 +19,7 @@
 
 // If this file is called directly, abort.
 use EZPZ_TWEAKS\Engine\Initialize;
+use EZPZ_TWEAKS\Engine\Backups\Import_Export;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
@@ -93,6 +94,7 @@ if ( ! wp_installing() ) {
 
 function ezpz_tweaks_activate() {
 	ezpz_tweaks_upgrade_procedure();
+	ezpz_tweaks_admin_set_install_time();
 	
 	flush_rewrite_rules();
 }
@@ -137,6 +139,62 @@ function ezpz_tweaks_upgrade_procedure() {
 
 add_action( 'admin_init', 'ezpz_tweaks_upgrade_procedure' );
 
+
+function ezpz_tweaks_admin_notice() {
+	if ( ! is_admin() ) {
+		return;
+	}
+	
+	$install_date = get_option( 'ezpz-tweaks-install-time' );
+	
+	if ( ! $install_date ) {
+		return;
+	}
+	
+	$install_date = strtotime( $install_date );
+	$install_date = strtotime( '+7 day', $install_date );
+	$install_date = date( 'Y-m-d H:i:s', $install_date );
+	$user_id = get_current_user_id();
+	$is_dissmissed = (bool)get_user_meta( $user_id, 'ezpz_tweaks_review_notice_dismissed', true );
+	if ( $is_dissmissed ) {
+		return;
+	} else if ($install_date > date( 'Y-m-d H:i:s')) {
+		return;
+	}
+
+	$notice = __( 'Thank you for using <strong>WP EzPz Tweaks</strong>! You have been using it for over a week. What do you think about it? ', EZPZ_TWEAKS_TEXTDOMAIN );
+	$notice .= '<a href="https://wordpress.org/support/plugin/wpezpz-tweaks/reviews/?rate=5#new-post" target="_blank" class="button button-primary">' . __( 'Rate it', EZPZ_TWEAKS_TEXTDOMAIN ) . '</a>';
+
+	echo '<div class="notice notice-success is-dismissible"><p>' . $notice . ' <a href="?ezpz-tweaks-review-dismissed">Dismiss</a></p></div>';
+}
+
+function ezpz_tweaks_admin_notice_dissmiss() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+    if ( isset( $_GET['ezpz-tweaks-review-dismissed'] ) ) {
+        add_user_meta( $user_id, 'ezpz_tweaks_review_notice_dismissed', 'true', true );
+	}
+}
+
+
+add_action( 'admin_init', 'ezpz_tweaks_admin_notice' );
+add_action( 'admin_init', 'ezpz_tweaks_admin_notice_dissmiss' );
+
+function ezpz_tweaks_admin_set_install_time() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	if ( empty(get_option( 'ezpz-tweaks-install-time')) ) {
+		add_option( 'ezpz-tweaks-install-time', date('Y-m-d H:i:s') );
+	} else {
+		update_option( 'ezpz-tweaks-install-time', date('Y-m-d H:i:s') );
+	}
+}
+
 function ezpz_tweaks_change_plugin_priority() {
 	$wp_path_to_this_file = preg_replace('/(.*)plugins\/(.*)$/', WP_PLUGIN_DIR."/$2", __FILE__);
 	$this_plugin = plugin_basename(trim($wp_path_to_this_file));
@@ -149,3 +207,23 @@ function ezpz_tweaks_change_plugin_priority() {
     update_option('active_plugins', $active_plugins);
 }
 add_action( 'activated_plugin', 'ezpz_tweaks_change_plugin_priority' );
+
+$backup = (new Import_Export())->register_ajax();
+
+function cmb2_render_range( $field, $field_escaped_value, $field_object_id, $field_object_type, $field_type_object ){
+
+	$slider = $field_type_object->input( array(
+	  'type'  => 'range',
+	  'class' => 'cmb2-range',
+	  'start' => absint( $field_escaped_value ),
+	  'min'   => $field->min(),
+	  'step'  => $field->step(),
+	  'max'   => $field->max(),
+	  'desc'  => '',
+	) );
+
+	$slider .= '<span class="range-text">' . $field->value_label() . ' <span class="range-value"></span></span>';
+	$slider .= $field_type_object->_desc(true);
+	echo $slider;
+}
+add_filter( 'cmb2_render_range', 'cmb2_render_range', 10, 5 );
