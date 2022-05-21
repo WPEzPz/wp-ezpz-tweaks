@@ -214,8 +214,8 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
 				</p>
 				<p class="field-title-attribute field-attr-title description description-wide">
 					<label for="edit-menu-item-attr-title-<?php echo $item_id; ?>">
-						<?php _e( 'Title Attribute' ); ?><br />
-						<input type="text" id="edit-menu-item-attr-title-<?php echo $item_id; ?>" class="widefat edit-menu-item-attr-title" name="menu-item-attr-title[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $menu_item->post_excerpt ); ?>" />
+						<?php _e( 'ID' ); ?><br />
+						<input type="text" id="edit-menu-item-attr-id-<?php echo $item_id; ?>" class="widefat edit-menu-item-id" name="menu-item-id[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $menu_item->id ); ?>" />
 					</label>
 				</p>
 				<p class="field-css-classes description description-thin">
