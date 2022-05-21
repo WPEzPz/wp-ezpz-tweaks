@@ -8,7 +8,7 @@ if (!function_exists('wp_initial_nav_menu_meta_boxes')) {
 }
 
 $page = 'wpezpz-tweaks-edit-admin-bar';
-$current_tab = isset( $_GET['user_role'] ) ? sanitize_text_field($_GET['user_role']) : 'all';
+$current_tab = isset( $_GET['user_role'] ) ? sanitize_text_field($_GET['user_role']) : 'general';
 $user_role = $current_tab;
 
 do_action('wpezpz_tweaks_admin_bar_edit_before_render');
