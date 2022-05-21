@@ -192,6 +192,12 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
 			</div>
 
 			<div class="menu-item-settings wp-clearfix" id="menu-item-settings-<?php echo $item_id; ?>">
+				<p class="description description-wide">
+					<label for="edit-menu-item-title-<?php echo $item_id; ?>">
+						<?php _e( 'Navigation Label' ); ?><br />
+						<textarea type="text" id="edit-menu-item-title-<?php echo $item_id; ?>" class="widefat edit-menu-item-title" name="menu-item-title[<?php echo $item_id; ?>]"><?php echo esc_attr( $menu_item->title ); ?></textarea>
+					</label>
+				</p>
 				<?php if ( 'custom' === $menu_item->type ) : ?>
 					<p class="field-url description description-wide">
 						<label for="edit-menu-item-url-<?php echo $item_id; ?>">
@@ -200,22 +206,16 @@ class Walker_Admin_Bar_Edit extends Walker_Nav_Menu_Edit {
 						</label>
 					</p>
 				<?php endif; ?>
-				<p class="description description-wide">
-					<label for="edit-menu-item-title-<?php echo $item_id; ?>">
-						<?php _e( 'Navigation Label' ); ?><br />
-						<textarea type="text" id="edit-menu-item-title-<?php echo $item_id; ?>" class="widefat edit-menu-item-title" name="menu-item-title[<?php echo $item_id; ?>]"><?php echo esc_attr( $menu_item->title ); ?></textarea>
+				<p class="field-link-target description">
+					<label for="edit-menu-item-target-<?php echo $item_id; ?>">
+						<input type="checkbox" id="edit-menu-item-target-<?php echo $item_id; ?>" value="_blank" name="menu-item-target[<?php echo $item_id; ?>]"<?php checked( $menu_item->target, '_blank' ); ?> />
+						<?php _e( 'Open link in a new tab' ); ?>
 					</label>
 				</p>
 				<p class="field-title-attribute field-attr-title description description-wide">
 					<label for="edit-menu-item-attr-title-<?php echo $item_id; ?>">
 						<?php _e( 'Title Attribute' ); ?><br />
 						<input type="text" id="edit-menu-item-attr-title-<?php echo $item_id; ?>" class="widefat edit-menu-item-attr-title" name="menu-item-attr-title[<?php echo $item_id; ?>]" value="<?php echo esc_attr( $menu_item->post_excerpt ); ?>" />
-					</label>
-				</p>
-				<p class="field-link-target description">
-					<label for="edit-menu-item-target-<?php echo $item_id; ?>">
-						<input type="checkbox" id="edit-menu-item-target-<?php echo $item_id; ?>" value="_blank" name="menu-item-target[<?php echo $item_id; ?>]"<?php checked( $menu_item->target, '_blank' ); ?> />
-						<?php _e( 'Open link in a new tab' ); ?>
 					</label>
 				</p>
 				<p class="field-css-classes description description-thin">
