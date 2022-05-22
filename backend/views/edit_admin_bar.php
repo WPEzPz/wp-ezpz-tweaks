@@ -9,7 +9,7 @@ if (!function_exists('wp_initial_nav_menu_meta_boxes')) {
 
 $page = 'wpezpz-tweaks-edit-admin-bar';
 $current_tab = isset( $_GET['user_role'] ) ? sanitize_text_field($_GET['user_role']) : 'general';
-$user_role = $current_tab;
+$user_role = sanitize_text_field($current_tab);
 
 do_action('wpezpz_tweaks_admin_bar_edit_before_render');
 // Permissions check.
@@ -64,7 +64,6 @@ $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'edit';
 $walker = new Walker_Admin_Bar_Edit();
 
 $Walker_Nav_Menu_Edit = Admin_Bar_Edit::get_walker();
-// delete_option( 'wpezpz_tweaks_admin_bar_edit' );
 
 
 if ( empty(get_option('wpezpz_tweaks_admin_bar_edit-' . $user_role) ) ) {
@@ -148,7 +147,7 @@ $result .= ' </ul> ';
 
 			</div><!-- /#menu-settings-column -->
 			<div id="menu-management-liquid">
-				<div id="menu-management">
+				<div id="menu-management" class="ezpz-admin-bar-manage">
 					<form id="update-nav-menu" method="post" enctype="multipart/form-data">
 						<h2><?php _e('Admin Bar structure', EZPZ_TWEAKS_TEXTDOMAIN); ?></h2>
 						<div class="menu-edit">
@@ -165,6 +164,19 @@ $result .= ' </ul> ';
 											class="button button-primary button-large menu-save" value="Save Menu">
 									</div><!-- END .publishing-action -->
 								</div><!-- END .major-publishing-actions -->
+								<span class="reset-action">
+									<?php $reset_url = add_query_arg( array(
+											'page' => $page,
+											'action' => 'reset',
+											'role' => $user_role,
+											'_wpnonce' => wp_create_nonce('reset-menu'),
+										),
+										admin_url( 'admin.php' )
+									); ?>
+									<a class="submitreset menu-reset" href="<?php echo esc_url( $reset_url ) ?>">
+										<?php _e('Reset Menu', EZPZ_TWEAKS_TEXTDOMAIN) ?>
+									</a>
+								</span>
 							</div><!-- END .nav-menu-header -->
 							<div id="post-body">
 								<div id="post-body-content" class="wp-clearfix">

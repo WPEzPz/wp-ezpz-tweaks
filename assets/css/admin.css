@@ -285,3 +285,13 @@
 	  margin: .5rem 0
 	}
 }
+
+.ezpz-admin-bar-manage #nav-menu-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.ezpz-admin-bar-manage .submitreset {
+	color: #b32d2e;
+}

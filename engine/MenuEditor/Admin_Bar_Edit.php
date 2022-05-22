@@ -20,6 +20,7 @@ class Admin_Bar_Edit {
         }
 
         add_action( 'admin_bar_menu', array( $this, 'set_instance' ), 999 );
+        add_action ('wp_loaded', array( $this, 'reset_admin_bar' ));
 
         // get current user role
         $user_role = Role::get_current_user_role();
@@ -194,6 +195,28 @@ class Admin_Bar_Edit {
         foreach ( self::get_nodes() as $node ) {
             $node->type = ( !isset($node->type) ) ? 'admin_bar_default' : '';
         }
+    }
+
+    public function reset_admin_bar() {
+        $page = 'wpezpz-tweaks-edit-admin-bar';
+        $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'edit';
+
+        if ($action == 'reset') {
+            if (wp_verify_nonce( $_REQUEST['_wpnonce'], 'reset-menu')) {
+                $role = sanitize_text_field( $_REQUEST['role']);
+                delete_option( 'wpezpz_tweaks_admin_bar_edit-' . $role);
+                add_action( 'admin_notices', function () {
+                    echo wp_kses_post('<div class="notice notice-success is-dismissible">
+                            <p>'. esc_html__( "The admin bar menu was reset.", EZPZ_TWEAKS_TEXTDOMAIN) .'</p>
+                        </div>');
+                } ); 
+                // wp redirect
+                wp_redirect( admin_url( 'admin.php?page='. $page ) );
+                exit();
+            }
+        }
+
+        return;
     }
 
 }
