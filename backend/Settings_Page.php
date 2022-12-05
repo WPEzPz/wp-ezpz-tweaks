@@ -531,6 +531,7 @@ class Settings_Page {
 
 				if ($count == 0) {
 					unset($views[$key]);
+					break;
 				}
 				$views[$key] = preg_replace('/\d+/', $count, $views[$key]);
 			}
