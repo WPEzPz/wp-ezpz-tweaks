@@ -69,6 +69,10 @@ class Register extends Settings {
         $locale        = get_locale();
 		$settings_page = new Settings_Page();
 		$user_roles = ezpz_tweaks_wp_roles_array();
+		$users_list = get_users( );
+		foreach ( $users_list as $user ) {
+			$users[$user->ID] = $user->display_name;
+		}
 
 		self::add_fields([
 			[
@@ -525,6 +529,23 @@ class Register extends Settings {
 					),
 					'priority' => 80,
 				],
+				[
+					'field_id' => 'hide_user_in_admin',
+					'title' => __( 'Hide user in admin', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' => __( 'Hidden users don\'t show up on the Users → All Users page.
+					<br>They can\'t be edited or deleted by normal users.
+					<br>However, they still show up in other places like the "Author" column on the "Posts" page, and their posts and comments are not specially protected.
+					<br>Hidden users can see other hidden users.
+					<br>So if you hide your own user account, you will still see it under "All Users" unless you switch to another user.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' => array(
+						'type'    => 'select2multiple',
+						'attributes' => [
+							'data-placeholder' => __( 'Select users', EZPZ_TWEAKS_TEXTDOMAIN ),
+						],
+						'options' => $users,
+					),
+					'priority' => 60,
+				]
 			],
 			'wpezpz-tweaks',
 			'security'

@@ -54,6 +54,8 @@ class Settings_Page {
 
 		add_filter( 'upload_mimes', array( $this, 'allowed_wp_upload_mimes' ) );
 		add_filter( 'wp_check_filetype_and_ext', array( $this, 'maybe_update_mime_types' ), 10, 4 );
+		add_action( 'pre_user_query',array( $this, 'ezpz_pre_user_query') );
+		add_action( 'views_users',array( $this, 'reset_count_of_visible_users') );
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 
@@ -462,6 +464,79 @@ class Settings_Page {
 		if( isset($_POST['disable_wp_emoji']) ) {
 			echo '<div class="updated notice is-dismissible"><p>' .  __( 'Your performance settings saved.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
 		}
+
+	}
+	function ezpz_pre_user_query($user_search) {
+		global $pagenow;
+		if (!isset($this->security_option['hide_user_in_admin']) || empty($this->security_option['hide_user_in_admin'])) {
+			return $user_search;
+		}
+		$userids = $this->security_option['hide_user_in_admin'];
+
+		// if current user is hidden, do nothing
+		$current_user_id = get_current_user_id();
+		if (in_array($current_user_id, $userids)) {
+			return $user_search;
+		}
+
+		if ( !empty($userids) && !(( $pagenow == 'admin.php' ) && ( sanitize_text_field($_GET['page']) == 'wpezpz-tweaks'))) {
+			global $wpdb;
+			$query = '';
+
+			foreach ($userids as $userid) {
+				$query .= " AND {$wpdb->users}.ID != '$userid'";
+			}
+
+			$user_search->query_where = str_replace('WHERE 1=1',
+			"WHERE 1=1$query",
+			$user_search->query_where);
+		}
+	}
+
+	function reset_count_of_visible_users($views){
+		if (!isset($this->security_option['hide_user_in_admin']) || empty($this->security_option['hide_user_in_admin'])) {
+			return $views;
+		}
+		$hidden_userids = $this->security_option['hide_user_in_admin'];
+		$hidden_userids_count = count($hidden_userids);
+
+		// if current user is hidden, do nothing
+		$current_user_id = get_current_user_id();
+		if (in_array($current_user_id, $hidden_userids)) {
+			return $views;
+		}
+
+		if ( $hidden_userids_count > 0 ) {
+			
+			$users = count_users();
+			$avail_roles = array_keys($users['avail_roles']);
+			
+			foreach ($hidden_userids as $hidden_userid) {
+				$hidden_user_roles = implode(', ', \get_userdata( $hidden_userid )->roles);
+
+				foreach ($avail_roles as $role) {
+					if ( $hidden_user_roles == $role ) {
+						$users['avail_roles'][$role]--;
+					}
+				}
+			}
+
+			
+			foreach($views as $key => $view) {
+				if ($key == 'all') {
+					$count = $users['total_users'] - $hidden_userids_count;
+				} else {
+					$count = $users['avail_roles'][$key];
+				}
+
+				if ($count == 0) {
+					unset($views[$key]);
+				}
+				$views[$key] = preg_replace('/\d+/', $count, $views[$key]);
+			}
+		}
+
+		return $views;
 	}
 
 }
