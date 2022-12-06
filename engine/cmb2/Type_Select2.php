@@ -24,14 +24,13 @@ class Type_Select2 extends Abstract_Custom_CMB2_Type {
             foreach ($field->args('options') as $key => $all_option) {
                 $options_html .= '<optgroup label="'. $key .'">';
                 foreach ($all_option as $k => $v) {
-                    $options_html .= '<option value="'.$k.'">' . $v . '</option>';
+                    $options_html .= '<option value="'.$k.'" ' . selected( $k, $escaped_value, false) . '>' . $v . '</option>';
                 }
                 $options_html .= '</optgroup>';
             };
         } else {
             $options_html = '<option></option>' . $field_type_object->concat_items();
         }
-
         
         echo $field_type_object->select( array(
 			'class'            => 'cmb2_type_select2_select',

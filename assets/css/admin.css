@@ -412,3 +412,7 @@
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
     padding: 0 4px 4px 4px !important;
 }
+
+.cmb2_type_select2_select {
+	width: 100% !important;
+}

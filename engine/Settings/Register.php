@@ -12,7 +12,7 @@
 namespace EZPZ_TWEAKS\Engine\Settings;
 
 use EZPZ_TWEAKS\Backend\Settings_Page;
-
+use EZPZ_TWEAKS\Engine\Font\Font;
 
 class Register extends Settings {
     public function init() {
@@ -246,6 +246,97 @@ class Register extends Settings {
 				),
 				'priority' => 120,
 			],
+			
+			],
+			'wpezpz-tweaks',
+			'customizing-branding'
+		);
+
+		self::add_section(
+			'wpezpz-tweaks',
+			'customizing-branding',
+			'custom_fonts',
+			__( 'Custom Fonts', EZPZ_TWEAKS_TEXTDOMAIN ),
+			__( 'Custom fonts are used to replace the default font in the theme. You can add as many custom fonts as you want.', EZPZ_TWEAKS_TEXTDOMAIN ),
+			true,
+			10,
+		);
+
+		self::add_fields(
+			[
+				[
+					'field_id' 		=> 'custom_fonts_repeat_group',
+					'title' 		=> __( 'Custom Fonts', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' 	=> __( 'Add your own custom fonts.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' 	=> array(
+						'type' => 'group',
+						'repeatable' => true,
+						'options'     => array(
+							'group_title'       => __( 'Custom Font #{#}', EZPZ_TWEAKS_TEXTDOMAIN ),
+							'add_button'        => __( 'Add Another Custom Font', EZPZ_TWEAKS_TEXTDOMAIN ),
+							'remove_button'     => __( 'Remove Font', EZPZ_TWEAKS_TEXTDOMAIN ),
+							'sortable'          => false,
+							'closed'         	=> true,
+							'remove_confirm' 	=> esc_html__( 'Are you sure you want to remove?', EZPZ_TWEAKS_TEXTDOMAIN ),
+						),
+					),
+					'priority' => 3,
+				],
+				[
+					'field_id' 		=> 'custom_font_name',
+					'title' 		=> __( 'Name', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' 	=> __( 'The name of the font as it appears in the EzPz Tweaks options.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' 	=> array(
+						'type' => 'text',
+						'group_id' => 'custom_fonts_repeat_group',
+					),
+					'priority' => 5,
+				],
+				[
+					'field_id' 		=> 'custom_font_woff2',
+					'title' 		=> __( 'Custom Font .woff2', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' 	=> __( 'Upload the font\'s woff2 file.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' 	=> array(
+						'type' => 'file',
+						'group_id' => 'custom_fonts_repeat_group',
+						'query_args' => array(
+							'type' => array(
+								'application/x-font-woff2',
+							),
+						),
+					),
+					'priority' => 10,
+				],
+				[
+					'field_id' 		=> 'custom_font_woff',
+					'title' 		=> __( 'Custom Font .woff', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' 	=> __( 'Upload the font\'s woff file.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' 	=> array(
+						'type' => 'file',
+						'group_id' => 'custom_fonts_repeat_group',
+						'query_args' => array(
+							'type' => array(
+								'application/x-font-woff',
+							),
+						),
+					),
+					'priority' => 15,
+				],
+				[
+					'field_id' 		=> 'custom_font_ttf',
+					'title' 		=> __( 'Custom Font .ttf', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'description' 	=> __( 'Upload the font\'s ttf file.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'cmb2_args' 	=> array(
+						'type' => 'file',
+						'group_id' => 'custom_fonts_repeat_group',
+						'query_args' => array(
+							'type' => array(
+								'application/x-font-ttf',
+							),
+						),
+					),
+					'priority' => 20,
+				],
 			],
 			'wpezpz-tweaks',
 			'customizing-branding'
@@ -260,9 +351,10 @@ class Register extends Settings {
 						'title' => __( 'Admin Font', EZPZ_TWEAKS_TEXTDOMAIN ),
 						'description' => __( 'Change WordPress admin font', EZPZ_TWEAKS_TEXTDOMAIN ),
 						'cmb2_args' => array(
-							'type'             => 'select',
+							'type'             => 'select2',
 							'show_option_none' => false,
-							'options'          => $settings_page->custom_fonts(),
+							'options'          => Font::get_fa_fonts(),
+							'options_type'     => 'grouped',
 						),
 						'priority' => 5,
 					],
@@ -271,9 +363,10 @@ class Register extends Settings {
 						'title' => __( 'Editor Font', EZPZ_TWEAKS_TEXTDOMAIN ),
 						'description' => __( 'Change WordPress editor font', EZPZ_TWEAKS_TEXTDOMAIN ),
 						'cmb2_args' => array(
-							'type'             => 'select',
+							'type'             => 'select2',
 							'show_option_none' => false,
-							'options'          => $settings_page->custom_fonts(),
+							'options'          => Font::get_fa_fonts(),
+							'options_type'     => 'grouped',
 						),
 						'priority' => 5,
 					],
@@ -289,9 +382,11 @@ class Register extends Settings {
 						'title' => __( 'Admin Font', EZPZ_TWEAKS_TEXTDOMAIN ),
 						'description' => __( 'Change WordPress admin font', EZPZ_TWEAKS_TEXTDOMAIN ),
 						'cmb2_args' => array(
-							'type'       => 'text',
+							'type'       => 'select2',
 							'attributes' => array( 'data-placeholder' => __( 'Choose a font', EZPZ_TWEAKS_TEXTDOMAIN ),
-							'data-placeholder_search' => __( 'Type to search...', EZPZ_TWEAKS_TEXTDOMAIN ) )
+							'data-placeholder_search' => __( 'Type to search...', EZPZ_TWEAKS_TEXTDOMAIN ) ),
+							'options'          => Font::get_fonts(),
+							'options_type'     => 'grouped',
 						),
 						'priority' => 5,
 					],
@@ -300,9 +395,11 @@ class Register extends Settings {
 						'title' => __( 'Editor Font', EZPZ_TWEAKS_TEXTDOMAIN ),
 						'description' => __( 'Change WordPress editor font', EZPZ_TWEAKS_TEXTDOMAIN ),
 						'cmb2_args' => array(
-							'type'       => 'text',
+							'type'       => 'select2',
 							'attributes' => array( 'data-placeholder' => __( 'Choose a font', EZPZ_TWEAKS_TEXTDOMAIN ),
-							'data-placeholder_search' => __( 'Type to search...', EZPZ_TWEAKS_TEXTDOMAIN ) )
+							'data-placeholder_search' => __( 'Type to search...', EZPZ_TWEAKS_TEXTDOMAIN ) ),
+							'options'          => Font::get_fonts(),
+							'options_type'     => 'grouped',
 						),
 						'priority' => 5,
 					],

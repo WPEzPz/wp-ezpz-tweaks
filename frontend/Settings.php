@@ -12,6 +12,8 @@
 namespace EZPZ_TWEAKS\Frontend;
 
 use EZPZ_TWEAKS\Engine\Backups\Import_Export;
+use EZPZ_TWEAKS\Backend\Settings_Page;
+use EZPZ_TWEAKS\Engine\Font\Font;
 
 class Settings {
 	/**
@@ -34,6 +36,7 @@ class Settings {
 		$this->security_option 	  = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
 
 		$Backups = new Import_Export();
+		$font = new Font();
 
 		add_action( 'init', array( $this, 'disable_emojis' ) );
 		add_action( 'init', array( $this, 'disable_embeds_code_init' ), 9999 );
@@ -43,9 +46,10 @@ class Settings {
 		add_action( 'wp_head', array( $this, 'change_adminbar_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'adminbar_logo' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'adminbar_logo' ) );
-		add_action( 'login_head', array( $this, 'change_login_font' ), 999 );
 		add_action( 'after_setup_theme', array( $this, 'remove_shortlink' ) );
 		add_filter( 'after_setup_theme', array( $this, 'remove_wp_version_from_head' ) );
+		add_action( 'login_head', array( $font, 'wp_change_login_font' ), 999 );
+		add_action( 'wp_enqueue_scripts', array( $font, 'render_fonts_css' ), 30 );
 
 		add_filter( 'rest_authentication_errors', array( $this, 'disable_wp_rest_api' ) );
 		add_filter( 'comment_form_default_fields', array( $this, 'remove_website_field' ) );
@@ -257,25 +261,9 @@ class Settings {
 		}
 	}
 
-	public function change_adminbar_font() {
-		if (!is_admin_bar_showing()) {
-			return;
-		}
+	public function change_adminbar_font( $font_name ) {
 		if( is_admin_bar_showing() ) {
-			$field_name  = $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font';
-			$admin_font  = $this->customizing_option[ $field_name ] ?? false;
-
-			if ( isset( $admin_font ) && !empty($admin_font) && $admin_font != 'wp-default' ) {
-				if ( $this->get_locale == 'fa_IR' ) {
-					wp_register_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '' );
-					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name );
-				} else {
-					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, 'https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) );
-					$admin_font = ezpz_tweaks_get_google_font_name( $admin_font );
-				}
-
-				wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '#wpadminbar *:not([class="ab-icon"]) {font-family:"' . esc_html( $admin_font ) . '" !important;}' );
-			}
+			(new Settings_Page)->change_adminbar_font( $font_name );
 		}
 	}
 

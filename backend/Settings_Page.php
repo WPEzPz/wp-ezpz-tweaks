@@ -13,7 +13,7 @@
 namespace EZPZ_TWEAKS\Backend;
 
 use EZPZ_TWEAKS\Engine\MenuEditor\Admin_Bar_Edit;
-
+use EZPZ_TWEAKS\Engine\Font\Font;
 /**
  * Create the settings page in the backend
  */
@@ -33,10 +33,14 @@ class Settings_Page {
 	 * @return void
 	 */
 	public function initialize() {
-		$this->get_locale         = get_locale();
-		$this->customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
-		$this->performance_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-performance' );
-		$this->security_option 	  = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
+
+		$font = new Font();
+
+		add_action( 'admin_enqueue_scripts', array( $font, 'change_admin_font' ), 30 );
+		add_action( 'admin_enqueue_scripts', array( $font, 'change_editor_font' ), 30 );
+		add_action( 'admin_enqueue_scripts', array( $font, 'render_fonts_css' ), 30 );
+        add_action( 'wp_enqueue_scripts', array( $font, 'render_fonts_css' ), 30 );
+        add_action( 'login_head', array( $font, 'wp_change_login_font' ), 999 );
 
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'hide_core_update_notifications_from_users' ), 1 );
@@ -47,8 +51,6 @@ class Settings_Page {
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_custom_url_change' ), 30, 3 );
 		add_action( "admin_notices", array( $this, 'show_notices_on_performance_change' ), 30 );
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'change_admin_font' ), 30 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'change_editor_font' ), 30 );
 		add_action( 'init', array( $this, 'deactivate_file_editor' ), 1 );
 
 
@@ -64,6 +66,14 @@ class Settings_Page {
 
 		new Admin_Bar_Edit();
 		
+	}
+
+	// get options data and set to variables
+	public function __construct() {
+		$this->get_locale         = get_locale();
+		$this->customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
+		$this->performance_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-performance' );
+		$this->security_option 	  = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
 	}
 
 	/**
@@ -241,40 +251,6 @@ class Settings_Page {
 		}
 	}
 
-	public function change_admin_font() {
-		$field_name  = ( $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font' );
-		$admin_font  = $_POST[ $field_name ] ?? $this->customizing_option[ $field_name ] ?? false;
-
-		if ( isset( $admin_font ) && !empty($admin_font) && $admin_font != 'wp-default' ) {
-			if ( $this->get_locale == 'fa_IR' ) {
-				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
-				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
-			} else {
-				wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-google-fonts', 'https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) );
-				$admin_font   = ezpz_tweaks_get_google_font_name( $admin_font );
-			}
-
-			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', 'body, h1, h2, h3, h4, h5, h6, label, input, textarea, .components-notice, #wpadminbar *:not([class="ab-icon"]), .wp-core-ui, .media-menu, .media-frame *, .media-modal * {font-family:"' . esc_html( $admin_font ) . '" !important;}' );
-		}
-	}
-
-	public function change_editor_font() {
-		$field_name  = ( $this->get_locale == 'fa_IR' ? 'editor-font-fa': 'editor-font' );
-		$editor_font = $this->customizing_option[ $field_name ] ?? false;
-
-		if ( isset( $editor_font ) && !empty($editor_font) && $editor_font != 'wp-default' ) {
-			if ( $this->get_locale == 'fa_IR' ) {
-				add_action( 'wp_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
-				add_action( 'admin_enqueue_scripts', array( $this, 'remove_google_fonts' ) );
-			} else {
-				wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-editor-google-fonts', 'https://fonts.googleapis.com/css?family=' . esc_attr( $editor_font ) );
-				$editor_font   = ezpz_tweaks_get_google_font_name( $editor_font );
-			}
-
-			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-styles', 'body#tinymce.wp-editor, #editorcontainer #content, #wp_mce_fullscreen, .block-editor-writing-flow input, .block-editor-writing-flow textarea, .block-editor-writing-flow p {font-family:"' . esc_html( $editor_font ) . '" !important;}' );
-		}
-	}
-
 	public function remove_google_fonts() {
 		// Unload Open Sans
 		wp_deregister_style( 'open-sans' );
@@ -356,18 +332,6 @@ class Settings_Page {
 		}
 	}
 
-	public function custom_fonts() {
-		$fonts = array(
-			'wp-default'  => 'پیشفرض وردپرس',
-			'Vazir'       => 'وزیر',
-			'Estedad'     => 'استعداد',
-			'Shabnam'     => 'شبنم',
-			'Samim'       => 'صمیم',
-		);
-
-		return $fonts;
-	}
-
 	public function show_notices_on_custom_url_change( $object_id, $updated, $cmb ) {
 		if( in_array( 'custom_login_url', $cmb ) ) {
 			$hide_login = new \EZPZ_TWEAKS\Integrations\Custom_Login_Url();
@@ -444,9 +408,6 @@ class Settings_Page {
 		$mimes['woff']  = 'application/x-font-woff';
 		$mimes['woff2'] = 'application/x-font-woff2';
 		$mimes['ttf']   = 'application/x-font-ttf';
-		$mimes['eot']   = 'application/vnd.ms-fontobject';
-		// $mimes['otf']   = 'font/otf';
-		$mimes['svg'] = 'image/svg+xml';
 
 		return $mimes;
 	}

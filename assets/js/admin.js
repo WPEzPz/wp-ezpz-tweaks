@@ -2,19 +2,6 @@
 	'use strict';
 	$(function () {
 		jQuery(document).ready(function ($) {
-			$('#admin-font').fontselect({
-				systemFonts: false,
-				placeholderSearch: $('#admin-font').data('placeholder_search'),
-				placeholder: $('#admin-font').data('placeholder'),
-				lookahead: 4
-			});
-
-			$('#editor-font').fontselect({
-				systemFonts: false,
-				placeholderSearch: $('#editor-font').data('placeholder_search'),
-				placeholder: $('#editor-font').data('placeholder'),
-				lookahead: 4
-			});
 
 			$('.wp-tab-bar a').click(function (event) {
 				event.preventDefault();
@@ -437,6 +424,9 @@
 			$('.cmb2_select2_multiselect').select2({
 				closeOnSelect: false
 			});
+			if ($('.cmb2_type_select2_select').length > 0) {
+				$('.cmb2_type_select2_select').select2();
+			}
 		})
 	});
 })(jQuery);
