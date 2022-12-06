@@ -65,6 +65,9 @@ class Enqueue {
 			EZPZ_TWEAKS_VERSION,
 			false
 		);
+		$cm_settings['codeEditor'] = wp_enqueue_code_editor(array('type' => 'text/css'));
+  		wp_localize_script('jquery', 'cm_settings', $cm_settings);
+
 		wp_enqueue_script( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-script', plugins_url( 'assets/js/admin.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ), array( 'jquery', 'jquery-ui-sortable', 'underscore' ), EZPZ_TWEAKS_VERSION, false );
 		wp_enqueue_code_editor( array( 'type' => 'text/css' ) );
 

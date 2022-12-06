@@ -427,6 +427,7 @@
 			if ($('.cmb2_type_select2_select').length > 0) {
 				$('.cmb2_type_select2_select').select2();
 			}
+			wp.codeEditor.initialize($('.ezpz_css_editor'), cm_settings);
 		})
 	});
 })(jQuery);

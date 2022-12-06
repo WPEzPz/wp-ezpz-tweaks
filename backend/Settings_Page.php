@@ -58,6 +58,7 @@ class Settings_Page {
 		add_filter( 'wp_check_filetype_and_ext', array( $this, 'maybe_update_mime_types' ), 10, 4 );
 		add_action( 'pre_user_query',array( $this, 'ezpz_pre_user_query') );
 		add_action( 'views_users',array( $this, 'reset_count_of_visible_users') );
+		add_action( 'admin_footer', array( $this, 'custom_admin_css' ), 9999 );
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 
@@ -227,7 +228,7 @@ class Settings_Page {
 			return $text;
 		}
 
-		if( isset( $_POST['submit-cmb'] ) ) {
+		if( isset( $_POST['submit-cmb'] ) && isset( $this->customizing_option['footer_visibility'] ) ) {
 			$this->customizing_option['footer_visibility'] = sanitize_text_field( $_POST['footer_visibility'] );
 		}
 
@@ -499,6 +500,15 @@ class Settings_Page {
 		}
 
 		return $views;
+	}
+
+
+	public function custom_admin_css() {
+		if (isset( $_POST['custom_admin_css'] ) && !empty($_POST['custom_admin_css']) && isset($_POST['custom_admin_css']['cm_code'])) {
+			echo '<style type="text/css">' . $_POST['custom_admin_css']['cm_code'] . '</style>';
+		} else if ( isset( $this->customizing_option['custom_admin_css'] ) && isset($this->customizing_option['custom_admin_css']['cm_code']) ) {
+			echo '<style type="text/css">' . $this->customizing_option['custom_admin_css']['cm_code'] . '</style>';
+		}
 	}
 
 }

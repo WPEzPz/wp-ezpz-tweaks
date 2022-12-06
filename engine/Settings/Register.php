@@ -337,6 +337,21 @@ class Register extends Settings {
 					),
 					'priority' => 20,
 				],
+			[
+				'field_id' => 'custom_admin_css',
+				'title' => __( 'Custom Admin CSS', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'description' => __( '', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'before_row' => '<h2 class="title">'. __( 'Custom CSS', EZPZ_TWEAKS_TEXTDOMAIN ) .'</h2>',
+					'type' => 'code-editor',
+					'options'	=> array(
+						'field_id' => 'custom_admin_css',
+						'lang' => 'css',
+						'classes' => 'ezpz_css_editor',
+					)
+				),
+				'priority' => 150,
+			],
 			],
 			'wpezpz-tweaks',
 			'customizing-branding'
