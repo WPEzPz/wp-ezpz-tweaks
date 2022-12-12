@@ -2,6 +2,7 @@
 
 /**
  * EZPZ_TWEAKS
+ * Register field and sections for CMB2
  *
  * @package   EZPZ_TWEAKS
  * @author    WP EzPz <info@wpezpz.dev>

@@ -39,6 +39,8 @@ class Settings_Page {
 		add_action( 'admin_enqueue_scripts', array( $font, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $font, 'change_editor_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $font, 'render_fonts_css' ), 30 );
+		add_filter( 'admin_enqueue_scripts', array($this, 'maybe_enqueue_nav_menu_editor_scripts') );
+
         add_action( 'wp_enqueue_scripts', array( $font, 'render_fonts_css' ), 30 );
         add_action( 'login_head', array( $font, 'wp_change_login_font' ), 999 );
 
@@ -63,7 +65,6 @@ class Settings_Page {
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 
 		add_filter( 'admin_body_class', array($this, 'maybe_add_body_class') );
-		add_filter( 'admin_enqueue_scripts', array($this, 'maybe_enqueue_nav_menu_editor_scripts') );
 
 		new Admin_Bar_Edit();
 		
@@ -178,6 +179,9 @@ class Settings_Page {
 		include EZPZ_TWEAKS_PLUGIN_ROOT . "backend/views/settings.php";
 	}
 
+	/**
+	 * Related feature: OLD Edit Admin Bar
+	 */
 	public function maybe_enqueue_nav_menu_editor_scripts() {
 		$page = !empty($_GET['page']) ? sanitize_text_field($_GET['page']) : '' ;
 		if ($page == EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar') {
@@ -191,11 +195,17 @@ class Settings_Page {
 		}
 	}
 
+	/**
+	 * Related feature: Edit Admin Bar
+	 */
 	public function display_plugin_admin_bar_edit_page() {
 
 		include EZPZ_TWEAKS_PLUGIN_ROOT . "backend/views/edit_admin_bar.php";
 	}
 
+	/**
+	 * Related feature: Edit Admin Bar
+	 */
 	public function maybe_add_body_class($classes): string
 	{
 		$new_classes = '';
@@ -221,6 +231,9 @@ class Settings_Page {
 		), $links );
 	}
 
+	/**
+	 * Related feature: Custom Footer
+	 */
 	public function custom_footer( $text ) {
 
 		// earlly exit if footer text not on the settings page
@@ -244,6 +257,9 @@ class Settings_Page {
 		}
 	}
 
+	/**
+	 * Related feature: Disable Theme & Plugin File Editor
+	 */
 	public function deactivate_file_editor() {
 		if ( (isset($_POST['deactivate_file_editor']) && sanitize_text_field($_POST['deactivate_file_editor']) == 'on') || !isset($_POST['deactivate_file_editor']) && isset($_POST['object_id']) && sanitize_text_field($_POST['object_id']) != 'wpezpz-tweaks-security' && isset($this->security_option['deactivate_file_editor']) && $this->security_option['deactivate_file_editor'] == 'on' ) {
 			define( 'DISALLOW_FILE_EDIT', true );
@@ -252,13 +268,10 @@ class Settings_Page {
 		}
 	}
 
-	public function remove_google_fonts() {
-		// Unload Open Sans
-		wp_deregister_style( 'open-sans' );
-		wp_register_style( 'open-sans', false );
 
-	}
-
+	/**
+	 * Related feature: Hide Update Notifications
+	 */
 	public function hide_core_update_notifications_from_users() {
 		if ( isset( $this->security_option['hide_update_notifications'] ) ) {
 			$user_roles = $this->security_option['hide_update_notifications'];
@@ -273,12 +286,19 @@ class Settings_Page {
 		}
 	}
 
+	/**
+	 * Related feature: Remove Welcome Panel
+	 */
 	public function remove_welcome_panel() {
 		if ( isset( $this->customizing_option['remove_welcome_panel'] ) ) {
 			remove_action( 'welcome_panel', 'wp_welcome_panel' );
 		}
 	}
 
+
+	/**
+	 * Related feature: Remove Dashboard Widgets
+	 */
 	function get_dashboard_widgets() {
 		global $wp_meta_boxes;
 
@@ -302,6 +322,9 @@ class Settings_Page {
 		return $widgets;
 	}
 
+	/**
+	 * Related feature: Remove Dashboard Widgets
+	 */
 	function dashboard_widgets_options() {
 		$widgets = get_option('ezpz_tweaks_dashboard_widgets');
 		$options = [];
@@ -315,6 +338,9 @@ class Settings_Page {
 		return $options;
 	}
 
+	/**
+	 * Related feature: Remove Dashboard Widgets
+	 */
 	function remove_dashboard_widgets() {
 		$widgets = $this->get_dashboard_widgets();
 
@@ -333,6 +359,10 @@ class Settings_Page {
 		}
 	}
 
+
+	/**
+	 * Related feature: Change WP Login URL
+	 */
 	public function show_notices_on_custom_url_change( $object_id, $updated, $cmb ) {
 		if( in_array( 'custom_login_url', $cmb ) ) {
 			$hide_login = new \EZPZ_TWEAKS\Integrations\Custom_Login_Url();
@@ -341,6 +371,10 @@ class Settings_Page {
 		}
 	}
 
+	/**
+	 * Related feature: Disable Block Editor
+	 * Disable Block Editor And Switch to Classic Editor or reverse
+	 */
 	public function disable_block_editor() {
 		if (!is_admin() && !current_user_can('administrator')) {
 			return;
@@ -403,8 +437,12 @@ class Settings_Page {
 
 
 		return;
-  }
+	}
 
+
+	/**
+	 * Related feature: Custom Fonts
+	 */
 	public function allowed_wp_upload_mimes( $mimes ) {
 		$mimes['woff']  = 'application/x-font-woff';
 		$mimes['woff2'] = 'application/x-font-woff2';
@@ -413,6 +451,9 @@ class Settings_Page {
 		return $mimes;
 	}
 
+	/**
+	 * Related feature: Custom Fonts
+	 */
 	public function maybe_update_mime_types( $data, $file, $filename, $mimes ) {
 		$filetype = wp_check_filetype( $filename, $mimes );
   
@@ -422,12 +463,21 @@ class Settings_Page {
 			'proper_filename' => $data['proper_filename']
 		];
 	}
+
+	/**
+	 * Show notice on save
+	 */
 	public function show_notices_on_performance_change( ) {
 		if( isset($_POST['disable_wp_emoji']) ) {
 			echo '<div class="updated notice is-dismissible"><p>' .  __( 'Your performance settings saved.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
 		}
 
 	}
+
+	/**
+	 * Related feature: Hide user in admin panel
+	 * Change query for hiding users if user is not in EZPZ-setting
+	 */
 	function ezpz_pre_user_query($user_search) {
 		global $pagenow;
 		if (!isset($this->security_option['hide_user_in_admin']) || empty($this->security_option['hide_user_in_admin'])) {
@@ -441,7 +491,8 @@ class Settings_Page {
 			return $user_search;
 		}
 
-		if ( !empty($userids) && !(( $pagenow == 'admin.php' ) && ( sanitize_text_field($_GET['page']) == 'wpezpz-tweaks'))) {
+		// if user is not in EZPZ-setting, Hide the hidden users
+		if ( !empty($userids) && !( ( $pagenow == 'admin.php' ) && ( sanitize_text_field($_GET['page']) == 'wpezpz-tweaks')) ) {
 			global $wpdb;
 			$query = '';
 
@@ -449,12 +500,15 @@ class Settings_Page {
 				$query .= " AND {$wpdb->users}.ID != '$userid'";
 			}
 
-			$user_search->query_where = str_replace('WHERE 1=1',
-			"WHERE 1=1$query",
-			$user_search->query_where);
+			$user_search->query_where = str_replace( 'WHERE 1=1', "WHERE 1=1$query", $user_search->query_where );
 		}
 	}
 
+
+	/**
+	 * Related feature: Hide user in admin panel
+	 * Re-Count the users after hide some users
+	 */
 	function reset_count_of_visible_users($views){
 		if (!isset($this->security_option['hide_user_in_admin']) || empty($this->security_option['hide_user_in_admin'])) {
 			return $views;
@@ -503,6 +557,10 @@ class Settings_Page {
 	}
 
 
+	/**
+	 * Related feature: Custom Admin CSS
+	 * Load custom admin css that user entered into branding options
+	 */
 	public function custom_admin_css() {
 		if (isset( $_POST['custom_admin_css'] ) && !empty($_POST['custom_admin_css']) && isset($_POST['custom_admin_css']['cm_code'])) {
 			echo '<style type="text/css">' . $_POST['custom_admin_css']['cm_code'] . '</style>';

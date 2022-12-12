@@ -80,6 +80,10 @@ class Import_Export {
         <?php
     }
 
+    /**
+     * Related feature: Settings Backup
+     * Register AJAX for create, delete or restore a backup file
+     */
     public function register_ajax() {
         add_action( 'wp_ajax_ezpz_tweaks_create_backup', array( $this, 'create_backup') );
         add_action( 'wp_ajax_ezpz_tweaks_delete_backup', array( $this, 'delete_backup') );
@@ -88,6 +92,9 @@ class Import_Export {
         return $this;
     }
 
+    /**
+     * helper method for ajax calls
+     */
     private function error( $message = '' ) {
         if ( empty( $message ) ) {
             $message = __( 'An error occurred.', EZPZ_TWEAKS_TEXTDOMAIN );
@@ -99,11 +106,17 @@ class Import_Export {
         wp_die();
     }
 
+    /**
+     * helper method for ajax calls
+     */
     private function success( $data = '' ) {
         wp_send_json_success( $data );
         wp_die();
     }
 
+    /**
+     * helper method for ajax calls
+     */
     private function checking_nonce( $nonce_key ) {
         if ( ! check_ajax_referer( $nonce_key, 'security', false ) ) {
             
@@ -113,6 +126,9 @@ class Import_Export {
         }
     }
 
+    /**
+     * import data from a backup file
+     */
     private function do_import_data( array $data ) {
         if ( !\current_user_can( 'manage_options' ) ) {
 			return false;
@@ -125,6 +141,9 @@ class Import_Export {
 		return true;
 	}
 
+    /**
+     * Store Backup
+     */
     public function run_backup( $action = 'add', $key = null ) {
 		$backups = get_option( 'ezpz_tweeks_backups', [] );
 
