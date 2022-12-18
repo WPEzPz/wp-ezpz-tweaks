@@ -9,7 +9,7 @@
  * @license   GPL 3.0+
  * @link      https://wpezpzdev.com/
  */
-namespace EZPZ_TWEAKS\Engine\Font;
+namespace EZPZ_TWEAKS\Engine\Features\Font;
 
 
 class Google_Font {
