@@ -13,7 +13,8 @@
 namespace EZPZ_TWEAKS\Engine\Settings;
 
 use EZPZ_TWEAKS\Backend\Settings_Page;
-use EZPZ_TWEAKS\Engine\Font\Font;
+use EZPZ_TWEAKS\Engine\Features\Font\Font;
+use EZPZ_TWEAKS\Engine\Features\Dashboard_Widgets;
 
 class Register extends Settings {
     public function init() {
@@ -138,7 +139,7 @@ class Register extends Settings {
 					'attributes' => array(
 						'data-placeholder' => __( 'Select Widgets', EZPZ_TWEAKS_TEXTDOMAIN ),
 					),
-					'options' => $settings_page->dashboard_widgets_options(),
+					'options' => (new Dashboard_Widgets)->dashboard_widgets_options(),
 				),
 				'priority' => 50,
 			],

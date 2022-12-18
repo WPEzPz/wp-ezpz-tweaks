@@ -13,7 +13,6 @@
 namespace EZPZ_TWEAKS\Backend;
 
 use EZPZ_TWEAKS\Engine\MenuEditor\Admin_Bar_Edit;
-use EZPZ_TWEAKS\Engine\Font\Font;
 /**
  * Create the settings page in the backend
  */
@@ -34,7 +33,14 @@ class Settings_Page {
 	 */
 	public function initialize() {
 
-		$font = new Font();
+		$font = new \EZPZ_TWEAKS\Engine\Features\Font\Font();
+
+		$impExp = new \EZPZ_TWEAKS\Engine\Backups\ImpExp();
+		$impExp->initialize();
+
+		$custom_admin_css = new \EZPZ_TWEAKS\Engine\Features\Custom_Admin_CSS();
+		$custom_admin_css->initialize();
+
 
 		add_action( 'admin_enqueue_scripts', array( $font, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $font, 'change_editor_font' ), 30 );
@@ -47,9 +53,12 @@ class Settings_Page {
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'hide_core_update_notifications_from_users' ), 1 );
 		add_action( 'admin_init', array( $this, 'remove_welcome_panel' ) );
-		add_action( 'admin_init', array( $this, 'dashboard_widgets_options' ) );
+
+
+		$Dashboard_widgets = new \EZPZ_TWEAKS\Engine\Features\Dashboard_Widgets();
+		$Dashboard_widgets->initialize();
+
 		add_action( 'admin_init', array( $this, 'disable_block_editor' ) );
-		add_action( 'wp_dashboard_setup', array( $this, 'remove_dashboard_widgets' ) );
 		add_action( "cmb2_save_options-page_fields", array( $this, 'show_notices_on_custom_url_change' ), 30, 3 );
 		add_action( "admin_notices", array( $this, 'show_notices_on_performance_change' ), 30 );
 		add_action( "admin_footer_text", array( $this, 'custom_footer' ), 30, 1 );
@@ -58,9 +67,10 @@ class Settings_Page {
 
 		add_filter( 'upload_mimes', array( $this, 'allowed_wp_upload_mimes' ) );
 		add_filter( 'wp_check_filetype_and_ext', array( $this, 'maybe_update_mime_types' ), 10, 4 );
-		add_action( 'pre_user_query',array( $this, 'ezpz_pre_user_query') );
-		add_action( 'views_users',array( $this, 'reset_count_of_visible_users') );
-		add_action( 'admin_footer', array( $this, 'custom_admin_css' ), 9999 );
+
+
+		$hidden_users = new \EZPZ_TWEAKS\Engine\Features\Hidden_Users();
+		$hidden_users->initialize();
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 
@@ -295,71 +305,6 @@ class Settings_Page {
 		}
 	}
 
-
-	/**
-	 * Related feature: Remove Dashboard Widgets
-	 */
-	function get_dashboard_widgets() {
-		global $wp_meta_boxes;
-
-		$widgets = array();
-
-		if ( isset( $wp_meta_boxes['dashboard'] ) ) {
-			foreach( $wp_meta_boxes['dashboard'] as $context => $data ) {
-				foreach( $data as $priority => $data ) {
-					foreach( $data as $widget=>$data ) {
-						$widgets[$widget] = [
-							'id' 	   => $widget,
-							'title'    => strip_tags( preg_replace( '/ <span.*span>/im', '', $data['title'] ) ),
-							'context'  => $context,
-							'priority' => $priority
-						];
-					}
-				}
-			}
-		}
-
-		return $widgets;
-	}
-
-	/**
-	 * Related feature: Remove Dashboard Widgets
-	 */
-	function dashboard_widgets_options() {
-		$widgets = get_option('ezpz_tweaks_dashboard_widgets');
-		$options = [];
-
-		if( $widgets ) {
-			foreach( $widgets as $widget ) {
-				$options[$widget['id']] = $widget['title'];
-			}
-		}
-
-		return $options;
-	}
-
-	/**
-	 * Related feature: Remove Dashboard Widgets
-	 */
-	function remove_dashboard_widgets() {
-		$widgets = $this->get_dashboard_widgets();
-
-		update_option('ezpz_tweaks_dashboard_widgets', $widgets);
-
-		if ( isset( $this->customizing_option['remove_dashboard_widgets'] ) ) {
-			global $wp_meta_boxes;
-
-			$selected_widgets = $this->customizing_option['remove_dashboard_widgets'];
-
-			foreach ( $widgets as $widget ) {
-				if( in_array( $widget['id'], $selected_widgets ) ) {
-					unset( $wp_meta_boxes['dashboard'][$widget['context']][$widget['priority']][$widget['id']] );
-				}
-			}
-		}
-	}
-
-
 	/**
 	 * Related feature: Change WP Login URL
 	 */
@@ -472,101 +417,6 @@ class Settings_Page {
 			echo '<div class="updated notice is-dismissible"><p>' .  __( 'Your performance settings saved.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
 		}
 
-	}
-
-	/**
-	 * Related feature: Hide user in admin panel
-	 * Change query for hiding users if user is not in EZPZ-setting
-	 */
-	function ezpz_pre_user_query($user_search) {
-		global $pagenow;
-		if (!isset($this->security_option['hide_user_in_admin']) || empty($this->security_option['hide_user_in_admin'])) {
-			return $user_search;
-		}
-		$userids = $this->security_option['hide_user_in_admin'];
-
-		// if current user is hidden, do nothing
-		$current_user_id = get_current_user_id();
-		if (in_array($current_user_id, $userids)) {
-			return $user_search;
-		}
-
-		// if user is not in EZPZ-setting, Hide the hidden users
-		if ( !empty($userids) && !( ( $pagenow == 'admin.php' ) && ( sanitize_text_field($_GET['page']) == 'wpezpz-tweaks')) ) {
-			global $wpdb;
-			$query = '';
-
-			foreach ($userids as $userid) {
-				$query .= " AND {$wpdb->users}.ID != '$userid'";
-			}
-
-			$user_search->query_where = str_replace( 'WHERE 1=1', "WHERE 1=1$query", $user_search->query_where );
-		}
-	}
-
-
-	/**
-	 * Related feature: Hide user in admin panel
-	 * Re-Count the users after hide some users
-	 */
-	function reset_count_of_visible_users($views){
-		if (!isset($this->security_option['hide_user_in_admin']) || empty($this->security_option['hide_user_in_admin'])) {
-			return $views;
-		}
-		$hidden_userids = $this->security_option['hide_user_in_admin'];
-		$hidden_userids_count = count($hidden_userids);
-
-		// if current user is hidden, do nothing
-		$current_user_id = get_current_user_id();
-		if (in_array($current_user_id, $hidden_userids)) {
-			return $views;
-		}
-
-		if ( $hidden_userids_count > 0 ) {
-			
-			$users = count_users();
-			$avail_roles = array_keys($users['avail_roles']);
-			
-			foreach ($hidden_userids as $hidden_userid) {
-				$hidden_user_roles = implode(', ', \get_userdata( $hidden_userid )->roles);
-
-				foreach ($avail_roles as $role) {
-					if ( $hidden_user_roles == $role ) {
-						$users['avail_roles'][$role]--;
-					}
-				}
-			}
-
-			
-			foreach($views as $key => $view) {
-				if ($key == 'all') {
-					$count = $users['total_users'] - $hidden_userids_count;
-				} else {
-					$count = $users['avail_roles'][$key];
-				}
-
-				if ($count == 0) {
-					unset($views[$key]);
-					break;
-				}
-				$views[$key] = preg_replace('/\d+/', $count, $views[$key]);
-			}
-		}
-
-		return $views;
-	}
-
-
-	/**
-	 * Related feature: Custom Admin CSS
-	 * Load custom admin css that user entered into branding options
-	 */
-	public function custom_admin_css() {
-		if (isset( $_POST['custom_admin_css'] ) && !empty($_POST['custom_admin_css']) && isset($_POST['custom_admin_css']['cm_code'])) {
-			echo '<style type="text/css">' . $_POST['custom_admin_css']['cm_code'] . '</style>';
-		} else if ( isset( $this->customizing_option['custom_admin_css'] ) && isset($this->customizing_option['custom_admin_css']['cm_code']) ) {
-			echo '<style type="text/css">' . $this->customizing_option['custom_admin_css']['cm_code'] . '</style>';
-		}
 	}
 
 }
