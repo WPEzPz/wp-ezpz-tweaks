@@ -26,6 +26,12 @@
 	color: #000;
 }
 
+.ezpz-tweaks-tabs .wp-tab-panel {
+	max-height: 100% !important;
+	max-width: 1280px !important;
+	padding: 20px !important;
+}
+
 .ezpz-tweaks-tabs li a:focus {
 	outline: none;
 	box-shadow: none;
@@ -207,6 +213,27 @@
 
 #import-export .hndle {
 	cursor: default;
+}
+
+.ezpz-customlinkdiv input[type="text"] {
+    width: 100% !important;
+    float: unset !important;
+}
+
+.ezpz-customlinkdiv > p {
+    margin-bottom: 0 !important;
+}
+
+.ezpz-customlinkdiv {
+    margin-top: -20px !important;
+}
+
+.ezpz-customlinkdiv .button-controls {
+	margin-top: 10px !important;
+}
+
+.ezpz-customlinkdiv > p label {
+	margin-bottom: 4px;
 }
 
 .ezpz_tweeks_backups .hndle {
@@ -418,4 +445,13 @@
 }
 .cmb-type-code-editor .CodeMirror {
 	border: solid 1px #ccc;
+}
+.ezpz-admin-bar-manage #nav-menu-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.ezpz-admin-bar-manage .submitreset {
+	color: #b32d2e;
 }

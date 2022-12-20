@@ -9,7 +9,7 @@ if (!function_exists('wp_initial_nav_menu_meta_boxes')) {
 
 $page = 'wpezpz-tweaks-edit-admin-bar';
 $current_tab = isset( $_GET['user_role'] ) ? sanitize_text_field($_GET['user_role']) : 'general';
-$user_role = $current_tab;
+$user_role = sanitize_text_field($current_tab);
 
 do_action('wpezpz_tweaks_admin_bar_edit_before_render');
 // Permissions check.
@@ -36,7 +36,7 @@ $nav_menu_selected_preset = '';
 // wp_nav_menu_setup();
 
 wp_nav_menu_post_type_meta_boxes();
-add_meta_box( 'add-custom-links', __( 'Custom Links' ), 'wp_nav_menu_item_link_meta_box', 'admin-bar-editor', 'side', 'default' );
+add_meta_box( 'add-custom-links', __( 'Custom Links' ), array('EZPZ_TWEAKS\Engine\MenuEditor\Admin_Bar_Helper', 'nav_menu_item_link_meta_box'), 'admin-bar-editor', 'side', 'default' );
 // $taxonomies = get_taxonomies( array( 'show_in_nav_menus' => true ), 'object' );
 
 // foreach ( $taxonomies as $tax ) {
@@ -64,17 +64,20 @@ $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'edit';
 $walker = new Walker_Admin_Bar_Edit();
 
 $Walker_Nav_Menu_Edit = Admin_Bar_Edit::get_walker();
-// delete_option( 'wpezpz_tweaks_admin_bar_edit' );
+
 
 if ( empty(get_option('wpezpz_tweaks_admin_bar_edit-' . $user_role) ) ) {
 	update_option(
 		'wpezpz_tweaks_admin_bar_edit-' . $user_role,
-		Admin_Bar_Edit::get_nodes(),
+		Admin_Bar_Edit::sort_nodes_by_periority(Admin_Bar_Edit::get_nodes()),
 		true
 	);
 }
 $data = get_option('wpezpz_tweaks_admin_bar_edit-' . $user_role);
 
+foreach ($data as $node) {
+	$node->visibility = isset($node->visibility) ? $node->visibility : 'default';
+}
 
 $result = '<ul class="menu" id="menu-to-edit"> ';
 $result .= $walker->walk( $data, 4 );
@@ -117,10 +120,14 @@ $result .= ' </ul> ';
 	</p>
 	<!-- Start tabs -->
 	<ul class="wp-admin-bar-tab-bar">
+		<?php 
+		$tabs = apply_filters('wpezpz_tweaks_admin_bar_tabs', '');
+		$defualt_tab =  empty($tabs) ? __('WordPress Admin Bar Editor', EZPZ_TWEAKS_TEXTDOMAIN) : __('General', EZPZ_TWEAKS_TEXTDOMAIN);
+		?>
 		<li class="<?php echo $current_tab == 'general' ? 'wp-tab-active' : ''; ?>">
-			<a href="<?php echo admin_url( 'admin.php?page='. $page ); ?>"><?php _e('General', EZPZ_TWEAKS_TEXTDOMAIN); ?></a>
+			<a href="<?php echo admin_url( 'admin.php?page='. $page ); ?>"><?php echo $defualt_tab ?></a>
 		</li>
-		<?php echo apply_filters('wpezpz_tweaks_admin_bar_tabs', ''); ?>
+		<?php echo $tabs; ?>
 	</ul>
 	<!-- End tabs -->
 
@@ -140,7 +147,7 @@ $result .= ' </ul> ';
 
 			</div><!-- /#menu-settings-column -->
 			<div id="menu-management-liquid">
-				<div id="menu-management">
+				<div id="menu-management" class="ezpz-admin-bar-manage">
 					<form id="update-nav-menu" method="post" enctype="multipart/form-data">
 						<h2><?php _e('Admin Bar structure', EZPZ_TWEAKS_TEXTDOMAIN); ?></h2>
 						<div class="menu-edit">
@@ -157,6 +164,19 @@ $result .= ' </ul> ';
 											class="button button-primary button-large menu-save" value="Save Menu">
 									</div><!-- END .publishing-action -->
 								</div><!-- END .major-publishing-actions -->
+								<span class="reset-action">
+									<?php $reset_url = add_query_arg( array(
+											'page' => $page,
+											'action' => 'reset',
+											'role' => $user_role,
+											'_wpnonce' => wp_create_nonce('reset-menu'),
+										),
+										admin_url( 'admin.php' )
+									); ?>
+									<a class="submitreset menu-reset" href="<?php echo esc_url( $reset_url ) ?>">
+										<?php _e('Reset Menu', EZPZ_TWEAKS_TEXTDOMAIN) ?>
+									</a>
+								</span>
 							</div><!-- END .nav-menu-header -->
 							<div id="post-body">
 								<div id="post-body-content" class="wp-clearfix">
@@ -165,33 +185,11 @@ $result .= ' </ul> ';
 											item to reveal additional configuration options.</p>
 									</div>
 
-									<div id="nav-menu-bulk-actions-top" class="bulk-actions">
-										<label class="bulk-select-button" for="bulk-select-switcher-top">
-											<input type="checkbox" id="bulk-select-switcher-top"
-												name="bulk-select-switcher-top" class="bulk-select-switcher">
-											<span class="bulk-select-button-label">Bulk Select</span>
-										</label>
-									</div>
-
 									<div id="menu-instructions" class="post-body-plain menu-instructions-inactive">
 										<p>Add menu items from the column on the left.</p>
 									</div>
 									<?php echo $result; ?>
 
-
-									<div id="nav-menu-bulk-actions-bottom" class="bulk-actions">
-										<label class="bulk-select-button" for="bulk-select-switcher-bottom">
-											<input type="checkbox" id="bulk-select-switcher-bottom"
-												name="bulk-select-switcher-top" class="bulk-select-switcher">
-											<span class="bulk-select-button-label">Bulk Select</span>
-										</label>
-										<input type="button" class="deletion menu-items-delete disabled"
-											value="Remove Selected Items">
-										<div id="pending-menu-items-to-delete">
-											<p>List of menu items selected for deletion:</p>
-											<ul></ul>
-										</div>
-									</div>
 								</div><!-- /#post-body-content -->
 							</div><!-- /#post-body -->
 							<div id="nav-menu-footer">
