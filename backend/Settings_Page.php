@@ -33,6 +33,11 @@ class Settings_Page {
 	 */
 	public function initialize() {
 
+		// for edit admin bar
+		// this has to be here, otherwise it will not work. the priority is high.
+		add_filter( 'admin_body_class', array($this, 'maybe_add_body_class') );
+		new Admin_Bar_Edit();
+
 		$font = new \EZPZ_TWEAKS\Engine\Features\Font\Font();
 
 		$impExp = new \EZPZ_TWEAKS\Engine\Backups\ImpExp();
@@ -73,10 +78,6 @@ class Settings_Page {
 		$hidden_users->initialize();
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
-
-		add_filter( 'admin_body_class', array($this, 'maybe_add_body_class') );
-
-		new Admin_Bar_Edit();
 		
 	}
 
