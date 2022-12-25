@@ -13,7 +13,7 @@ namespace EZPZ_TWEAKS\Frontend;
 
 use EZPZ_TWEAKS\Engine\Backups\Import_Export;
 use EZPZ_TWEAKS\Backend\Settings_Page;
-use EZPZ_TWEAKS\Engine\Font\Font;
+use EZPZ_TWEAKS\Engine\Features\Font\Font;
 
 class Settings {
 	/**
