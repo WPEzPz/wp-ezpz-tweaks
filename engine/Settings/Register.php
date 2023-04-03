@@ -248,7 +248,7 @@ class Register extends Settings {
 				),
 				'priority' => 120,
 			],
-			
+
 			],
 			'wpezpz-tweaks',
 			'customizing-branding'
@@ -507,7 +507,7 @@ class Register extends Settings {
 							]
 						];
 
-						
+
 						if (!$options['classic']['installed']) {
 							$options['classic']['install'] = wp_nonce_url(
 								add_query_arg(
@@ -567,7 +567,7 @@ class Register extends Settings {
 									<button class="button-primary ezpz-install-editor "><?php _e('Activate', EZPZ_TWEAKS_TEXTDOMAIN) ?></button>
 								</div>
 
-								<p class="cmb2-metabox-description"><?php _e( 'If you want to continue to use the previous (“classic”) editor in WordPress 5.0 and newer, this plugin has an option to replace the new editor with the previous one. If you prefer to have access to both editors side by side or to allow your users to switch editors, it would be better to install the Classic Editor plugin. Advanced Editor Tools is fully compatible with the classic editor plugin and similar plugins that restore use of the previous WordPress editor.', EZPZ_TWEAKS_TEXTDOMAIN ) ?></p>
+								<p class="cmb2-metabox-description"><?php _e( 'If you want to continue to use the previous (“classic”) editor in WordPress 5.0 and newer, this plugin has an option to replace the new editor with the previous one. If you prefer to have access to both editors side by side or to allow your users to switch editors, it would be better to install the Classic Editor plugin.', EZPZ_TWEAKS_TEXTDOMAIN ) ?></p>
 
 							</div>
 						</div>
