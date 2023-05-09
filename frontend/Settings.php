@@ -57,7 +57,7 @@ class Settings {
 
 		// Backups
 		add_action( 'ezpz_register_fields', array( $Backups, 'add_options' ) );
-    
+
 		add_filter( 'login_errors', array( $this, 'no_wordpress_errors') );
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
@@ -82,7 +82,7 @@ class Settings {
 		if ( isset( $this->performance_option['limit_post_revisions'] ) ) {
 
 			add_filter( 'wp_revisions_to_keep', function ( $num, $post ) {
-     
+
 				$max_revisions = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-performance' )['limit_post_revisions'];
 				if ( $max_revisions ) {
 					return $max_revisions;
@@ -112,7 +112,7 @@ class Settings {
 	}
 
 	function no_wordpress_errors( $errors ) {
-		if ( isset( $this->security_option['hide_login_error_messages'] ) ) {	
+		if ( isset( $this->security_option['hide_login_error_messages'] ) ) {
 			return sprintf(
 				/* translators: %s: URL that allows the user to retrieve the lost password */
 				__( '<strong>Error:</strong> The username or password you entered is incorrect. <a href="%s">Lost your password?</a>', EZPZ_TWEAKS_TEXTDOMAIN ),
@@ -261,9 +261,22 @@ class Settings {
 		}
 	}
 
-	public function change_adminbar_font( $font_name ) {
+	public function change_adminbar_font() {
 		if( is_admin_bar_showing() ) {
-			(new Settings_Page)->change_adminbar_font( $font_name );
+			$field_name  = $this->get_locale == 'fa_IR' ? 'admin-font-fa': 'admin-font';
+			$admin_font  = $this->customizing_option[ $field_name ] ?? false;
+
+			if ( isset( $admin_font ) && $admin_font != 'wp-default' ) {
+				if ( $this->get_locale == 'fa_IR' ) {
+					wp_register_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '' );
+					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name );
+				} else {
+					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, 'https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) );
+					$admin_font = ezpz_tweaks_get_google_font_name( $admin_font );
+				}
+
+				wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '#wpadminbar *:not([class="ab-icon"]) {font-family:"' . esc_html( $admin_font ) . '" !important;}' );
+			}
 		}
 	}
 
@@ -275,8 +288,8 @@ class Settings {
 			$custom_logo = isset( $_POST['custom_logo'] ) ? sanitize_text_field( $_POST['custom_logo'] ) : $this->customizing_option['custom_logo'];
 
 			wp_register_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo', false );
-			
-			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo', 
+
+			wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo',
 				'#wpadminbar #wp-admin-bar-wp-logo>.ab-item {
 					padding: 0 7px;
 					background-image: url(' . esc_url( $custom_logo ) . ') !important;
@@ -288,7 +301,7 @@ class Settings {
 				#wpadminbar #wp-admin-bar-wp-logo>.ab-item .ab-icon:before {
 					content: " ";
 					top: 2px;
-				}' 
+				}'
 			);
 			wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-adminbar-logo' );
 		}
@@ -309,7 +322,7 @@ class Settings {
 					wp_enqueue_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, 'https://fonts.googleapis.com/css?family=' . esc_attr( $admin_font ) );
 					$admin_font = ezpz_tweaks_get_google_font_name( $admin_font );
 				}
-	
+
 				wp_add_inline_style( EZPZ_TWEAKS_TEXTDOMAIN . '-' . $field_name, '* {font-family:"' . esc_html( $admin_font ) . '" !important;}' );
 			}
 		}
@@ -416,7 +429,7 @@ class Settings {
 				if ( array_key_exists( 'value', $rule ) && 'modify' === $rule['value'] ) {
 					if ( $this->check_location_for_heartbeat( $location ) ) {
 						$s['interval'] = intval( $rule['range'] );
-	
+
 						return $s;
 					}
 				}
