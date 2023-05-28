@@ -41,7 +41,7 @@ class Settings {
 		add_action( 'init', array( $this, 'disable_emojis' ) );
 		add_action( 'init', array( $this, 'disable_embeds_code_init' ), 9999 );
 		add_action( 'init', array( $this, 'disable_xmlrpc' ) );
-		add_action( 'init', array( $this, 'hide_admin_bar' ), 9999 );
+
 		add_action( 'init', array( $this, 'limit_post_revisions' ));
 		add_action( 'wp_head', array( $this, 'change_adminbar_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'adminbar_logo' ) );
@@ -248,18 +248,7 @@ class Settings {
 		return $output;
 	}
 
-	public function hide_admin_bar() {
-		if ( isset( $this->customizing_option['hide_admin_bar'] ) ) {
-			$user_roles = ezpz_tweaks_wp_roles_array();
 
-			foreach ( $user_roles as $role => $name ) {
-				if ( current_user_can( $role ) ) {
-					show_admin_bar( false );
-					break;
-				}
-			}
-		}
-	}
 
 	public function change_adminbar_font() {
 		if( is_admin_bar_showing() ) {
