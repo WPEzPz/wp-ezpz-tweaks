@@ -78,7 +78,7 @@ class Settings_Page {
 		$hidden_users->initialize();
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
-		
+
 	}
 
 	// get options data and set to variables
@@ -134,7 +134,7 @@ class Settings_Page {
 				);
 			}
 
-			add_submenu_page( EZPZ_TWEAKS_TEXTDOMAIN, __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN . '-edit-menu', '' );
+
 		}
 
 		if( ( isset( $this->customizing_option['enable_branding'] ) && !isset( $_POST['object_id'] ) && !isset( $_POST['enable_branding'] ) ) || ( isset( $_POST['enable_branding'] ) && !empty( $_POST['enable_branding'] ) ) ) {
@@ -402,7 +402,7 @@ class Settings_Page {
 	 */
 	public function maybe_update_mime_types( $data, $file, $filename, $mimes ) {
 		$filetype = wp_check_filetype( $filename, $mimes );
-  
+
 		return [
 			'ext'             => $filetype['ext'],
 			'type'            => $filetype['type'],
