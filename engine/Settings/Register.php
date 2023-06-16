@@ -117,19 +117,7 @@ class Register extends Settings {
 				),
 				'priority' => 30,
 			],
-			[
-				'field_id' => 'hide_admin_bar',
-				'title' => __( 'Hide Admin Bar', EZPZ_TWEAKS_TEXTDOMAIN ),
-				'description' => __( 'Hide admin bar for user roles', EZPZ_TWEAKS_TEXTDOMAIN ),
-				'cmb2_args' => array(
-					'type'    => 'select2multiple',
-					'attributes' => array(
-						'data-placeholder' => __( 'Select user roles', EZPZ_TWEAKS_TEXTDOMAIN ),
-					),
-					'options' => $user_roles,
-				),
-				'priority' => 40,
-			],
+
 			[
 				'field_id' => 'remove_dashboard_widgets',
 				'title' => __( 'Remove Dashboard Widgets', EZPZ_TWEAKS_TEXTDOMAIN ),

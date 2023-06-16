@@ -12,7 +12,7 @@
 
 namespace EZPZ_TWEAKS\Backend;
 
-use EZPZ_TWEAKS\Engine\MenuEditor\Admin_Bar_Edit;
+
 /**
  * Create the settings page in the backend
  */
@@ -36,7 +36,7 @@ class Settings_Page {
 		// for edit admin bar
 		// this has to be here, otherwise it will not work. the priority is high.
 		add_filter( 'admin_body_class', array($this, 'maybe_add_body_class') );
-		new Admin_Bar_Edit();
+
 
 		$font = new \EZPZ_TWEAKS\Engine\Features\Font\Font();
 
@@ -50,7 +50,7 @@ class Settings_Page {
 		add_action( 'admin_enqueue_scripts', array( $font, 'change_admin_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $font, 'change_editor_font' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $font, 'render_fonts_css' ), 30 );
-		add_filter( 'admin_enqueue_scripts', array($this, 'maybe_enqueue_nav_menu_editor_scripts') );
+
 
         add_action( 'wp_enqueue_scripts', array( $font, 'render_fonts_css' ), 30 );
         add_action( 'login_head', array( $font, 'wp_change_login_font' ), 999 );
@@ -78,7 +78,7 @@ class Settings_Page {
 		$hidden_users->initialize();
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
-		
+
 	}
 
 	// get options data and set to variables
@@ -124,14 +124,6 @@ class Settings_Page {
 					[ $this, 'display_plugin_settings_page' ]
 				);
 
-				add_submenu_page(
-						EZPZ_TWEAKS_TEXTDOMAIN,
-						__( 'WordPress Admin Bar Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
-						__( 'Admin Bar Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
-						$capability,
-						EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar',
-						[ $this, 'display_plugin_admin_bar_edit_page' ]
-				);
 			}
 
 			add_submenu_page( EZPZ_TWEAKS_TEXTDOMAIN, __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN . '-edit-menu', '' );
@@ -190,43 +182,7 @@ class Settings_Page {
 		include EZPZ_TWEAKS_PLUGIN_ROOT . "backend/views/settings.php";
 	}
 
-	/**
-	 * Related feature: OLD Edit Admin Bar
-	 */
-	public function maybe_enqueue_nav_menu_editor_scripts() {
-		$page = !empty($_GET['page']) ? sanitize_text_field($_GET['page']) : '' ;
-		if ($page == EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar') {
-			wp_enqueue_script( 'nav-menu');
-			wp_enqueue_style( 'nav-menus');
-			wp_enqueue_style( 'wp-color-picker');
-			wp_enqueue_style( 'wp-codemirror');
 
-			wp_enqueue_script( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-bar', plugins_url( 'assets/js/admin_bar_editor.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ), array( 'jquery' ), EZPZ_TWEAKS_VERSION, false );
-
-		}
-	}
-
-	/**
-	 * Related feature: Edit Admin Bar
-	 */
-	public function display_plugin_admin_bar_edit_page() {
-
-		include EZPZ_TWEAKS_PLUGIN_ROOT . "backend/views/edit_admin_bar.php";
-	}
-
-	/**
-	 * Related feature: Edit Admin Bar
-	 */
-	public function maybe_add_body_class($classes): string
-	{
-		$new_classes = '';
-		$page = !empty($_GET['page']) ? sanitize_text_field($_GET['page']) : '' ;
-		if ($page == EZPZ_TWEAKS_TEXTDOMAIN . '-edit-admin-bar') {
-			$new_classes .= 'nav-menus-php';
-		}
-
-		return "$classes $new_classes";
-	}
 
 	/**
 	 * Add settings action link to the plugins page.
@@ -402,7 +358,7 @@ class Settings_Page {
 	 */
 	public function maybe_update_mime_types( $data, $file, $filename, $mimes ) {
 		$filetype = wp_check_filetype( $filename, $mimes );
-  
+
 		return [
 			'ext'             => $filetype['ext'],
 			'type'            => $filetype['type'],
