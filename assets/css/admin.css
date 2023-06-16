@@ -27,6 +27,7 @@
 }
 
 .ezpz-tweaks-tabs .wp-tab-panel {
+	width: 978px;
 	max-height: 100% !important;
 	max-width: 1280px !important;
 	padding: 20px !important;
@@ -207,7 +208,7 @@
 	transition: height .5s ease-in-out, border .5s ease-in-out, margin .5s ease-in-out;
 }
 
-.cmb-td {
+.ezpz-tweaks-tabs .cmb-td {
 	max-width: 50% !important;
 }
 
@@ -260,12 +261,12 @@
     vertical-align: middle;
 }
 
-.cmb-field-list {
+.ezpz-tweaks-tabs .cmb-field-list {
     max-width: 100% !important;
 }
 
-.cmb2-wrap input:not([type=hidden]) + .button-secondary,
-.cmb2-wrap input:not([type=hidden]) + input  {
+.ezpz-tweaks-tabs .cmb2-wrap input:not([type=hidden]) + .button-secondary,
+.ezpz-tweaks-tabs .cmb2-wrap input:not([type=hidden]) + input  {
     margin-left: 0 !important;
 }
 
@@ -274,14 +275,14 @@
 	height: auto !important;
 }
 /* Range field */
-.cmb2-range {
+.ezpz-tweaks-tabs .cmb2-range {
 	width: 70%;
 	float: left;
 	opacity: 0.75;
 	-webkit-transition: .2s;
 	transition: opacity .2s;
 }
-.cmb2-range:hover {
+.ezpz-tweaks-tabs .cmb2-range:hover {
 	opacity: 1;
 }
 .range-text {

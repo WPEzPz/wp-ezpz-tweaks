@@ -35,7 +35,7 @@ class Settings_Page {
 
 		// for edit admin bar
 		// this has to be here, otherwise it will not work. the priority is high.
-		add_filter( 'admin_body_class', array($this, 'maybe_add_body_class') );
+		// add_filter( 'admin_body_class', array($this, 'maybe_add_body_class') );
 
 
 		$font = new \EZPZ_TWEAKS\Engine\Features\Font\Font();
