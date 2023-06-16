@@ -12,8 +12,12 @@
 namespace EZPZ_TWEAKS\Engine;
 
 use Composer\Autoload\ClassLoader;
+use EZPZ_TWEAKS\Engine\cmb2\Type_Select_Multiple;
 use Exception;
 use EZPZ_TWEAKS\Engine;
+use EZPZ_TWEAKS\Engine\cmb2\Type_Select2;
+use EZPZ_TWEAKS\Engine\cmb2\Type_Select2_Multiple;
+use EZPZ_TWEAKS\Engine\cmb2\Type_Code_Editor;
 use Throwable;
 use function apply_filters;
 use function array_diff;
@@ -80,6 +84,8 @@ class Initialize {
 		}
 
 		$this->load_classes();
+
+		$this->register_cmb2_custom_types();
 	}
 
 	/**
@@ -202,6 +208,14 @@ class Initialize {
 				}
 			}
 		}
+	}
+
+	private function register_cmb2_custom_types() {
+
+		new Type_Select2_Multiple();
+		new Type_Select_Multiple();
+		new Type_Select2();
+		new Type_Code_Editor();
 	}
 
 }

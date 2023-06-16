@@ -11,6 +11,8 @@
 
 namespace EZPZ_TWEAKS\Backend;
 
+use EZPZ_TWEAKS\Engine\Settings\Settings;
+
 use function add_action;
 use function plugins_url;
 use function wp_enqueue_script;
@@ -56,9 +58,33 @@ class Enqueue {
 			wp_enqueue_script( EZPZ_TWEAKS_TEXTDOMAIN . 'cmb2_conditional_logic', plugins_url( 'assets/js/cmb2-conditional-logic.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ), array( 'jquery' ), '1.0.0' );
 		}
 
-		wp_enqueue_script( EZPZ_TWEAKS_TEXTDOMAIN . '-fontselect', plugins_url( 'assets/js/jquery.fontselect.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ), array( 'jquery' ), EZPZ_TWEAKS_VERSION, false );
+		wp_enqueue_script(
+			EZPZ_TWEAKS_TEXTDOMAIN . '-admin-script',
+			plugins_url( 'assets/js/admin.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ),
+			array( 'jquery', 'jquery-ui-sortable', 'underscore' ),
+			EZPZ_TWEAKS_VERSION,
+			false
+		);
+		$cm_settings['codeEditor'] = wp_enqueue_code_editor(array('type' => 'text/css'));
+  		wp_localize_script('jquery', 'cm_settings', $cm_settings);
+
 		wp_enqueue_script( EZPZ_TWEAKS_TEXTDOMAIN . '-admin-script', plugins_url( 'assets/js/admin.js', EZPZ_TWEAKS_PLUGIN_ABSOLUTE ), array( 'jquery', 'jquery-ui-sortable', 'underscore' ), EZPZ_TWEAKS_VERSION, false );
 		wp_enqueue_code_editor( array( 'type' => 'text/css' ) );
+
+		wp_localize_script(
+			EZPZ_TWEAKS_TEXTDOMAIN . '-admin-script',
+			'ezpz_object',
+			[
+				'ajax_url'  => admin_url( 'admin-ajax.php' ),
+				'security'  => wp_create_nonce( 'ezpz-nonce' ),
+				'is_rtl'	=> is_rtl(),
+				'strings'	=> [
+					'delete' 	=> __( 'Delete', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'restore'	=> __( 'Restore', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'restoreConfirm'	=> __( 'Are you sure you want to restore this this backup? Your current configuration will be overwritten.', EZPZ_TWEAKS_TEXTDOMAIN ),
+				]
+			],
+		);
 	}
 
 }

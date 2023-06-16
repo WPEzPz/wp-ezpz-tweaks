@@ -9,7 +9,7 @@
  * @link      https://wpezpzdev.com/
  */
 
-namespace EZPZ_TWEAKS\Backend;
+namespace EZPZ_TWEAKS\Engine\Backups;
 /**
  * Provide Import and Export of the settings of the plugin
  */
