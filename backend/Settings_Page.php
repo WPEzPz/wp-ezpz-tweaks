@@ -126,7 +126,7 @@ class Settings_Page {
 
 			}
 
-			add_submenu_page( EZPZ_TWEAKS_TEXTDOMAIN, __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), __( 'Edit Menu', EZPZ_TWEAKS_TEXTDOMAIN ), $capability, EZPZ_TWEAKS_TEXTDOMAIN . '-edit-menu', '' );
+
 		}
 
 		if( ( isset( $this->customizing_option['enable_branding'] ) && !isset( $_POST['object_id'] ) && !isset( $_POST['enable_branding'] ) ) || ( isset( $_POST['enable_branding'] ) && !empty( $_POST['enable_branding'] ) ) ) {
