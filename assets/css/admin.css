@@ -27,6 +27,7 @@
 }
 
 .ezpz-tweaks-tabs .wp-tab-panel {
+	width: 978px;
 	max-height: 100% !important;
 	max-width: 1280px !important;
 	padding: 20px !important;
