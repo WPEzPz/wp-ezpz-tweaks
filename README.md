@@ -16,7 +16,7 @@
 ## Install
 
 ```sh
-composer update
+composer install --no-dev --optimize-autoloader
 ```
 
 ## Author
