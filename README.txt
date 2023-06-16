@@ -1,9 +1,9 @@
 === WP EzPz Tweaks ===
-Contributors: wpezpz
+Contributors: wpezpz, khorshidlab
 Tags: optimization, performance, customization, admin menu editor, security, tweaks, custom login url, wp login, branding
 Requires at least: 5.6
-Tested up to: 5.9.2
-Stable tag: 1.0.17
+Tested up to: 6.2
+Stable tag: 1.1.0
 License: GPL-3.0 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 Requires PHP: 7.0
@@ -46,6 +46,10 @@ EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the adm
 4. Import & Export
 
 == Changelog ==
+
+= 1.1.0 - 2023-06-16 =
+* Some imporvement in UI and features
+* Tested up to WordPress 6.2
 
 = 1.0.17 - 2022-03-31 =
 * fix: Show changed Admin Bar logo in frontend
