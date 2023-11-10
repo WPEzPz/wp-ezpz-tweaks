@@ -22,6 +22,7 @@ class Settings {
 	private $customizing_option;
 	private $performance_option;
 	private $security_option;
+	private $get_locale;
 
 	/**
 	 * Initialize the class.
@@ -37,6 +38,7 @@ class Settings {
 
 		$Backups = new Import_Export();
 		$font = new Font();
+
 
 		add_action( 'init', array( $this, 'disable_emojis' ) );
 		add_action( 'init', array( $this, 'disable_embeds_code_init' ), 9999 );

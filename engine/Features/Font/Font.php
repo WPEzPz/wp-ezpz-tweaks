@@ -31,7 +31,7 @@ class Font {
     public function enqueue_font( $handel, $css_selector ) {
         $font_key = $this->get_font_key();
 		$font_name = $this->get_selected_font($font_key);
-		if ( $font_name === 'wp_default_font' ) {
+		if ( empty( $font_name ) || $font_name === 'wp_default_font' ) {
 			return;
 		}
         wp_add_inline_style( $handel, $css_selector . ' {font-family:"' . esc_html( $font_name ) . '" !important;}' );
@@ -108,6 +108,11 @@ class Font {
 
 	public function get_selected_font($font_key = '') {
 
+		// When CMB2 form is submitted, get the value from $_POST
+		if ( isset( $_POST['submit-cmb'] ) && isset( $_POST[$font_key] ) ) {
+			return sanitize_text_field( $_POST[$font_key] );
+		}
+
 		if ( empty( $font_key ) ) {
 			$font_key = $this->get_font_key();
 		}
@@ -122,9 +127,9 @@ class Font {
 	public function render_fonts_css($is_login = false) {
 		$font_key       = $this->get_font_key();
 		$selected_font  = $this->get_selected_font($font_key);
-		
+
 		// nothing to do if selected font is default
-		if ( $selected_font === 'wp_default_font' ) {
+		if ( empty( $selected_font ) || $selected_font === 'wp_default_font' ) {
 			return;
 		}
 		
