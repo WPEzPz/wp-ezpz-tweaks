@@ -180,7 +180,7 @@ function ezpz_tweaks_admin_notice_dissmiss() {
 }
 
 
-add_action( 'admin_init', 'ezpz_tweaks_admin_notice' );
+add_action( 'admin_notices', 'ezpz_tweaks_admin_notice' );
 add_action( 'admin_init', 'ezpz_tweaks_admin_notice_dissmiss' );
 
 function ezpz_tweaks_admin_set_install_time() {
