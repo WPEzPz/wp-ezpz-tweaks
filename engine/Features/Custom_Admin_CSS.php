@@ -13,6 +13,13 @@
 namespace EZPZ_TWEAKS\Engine\Features;
 
 class Custom_Admin_CSS {
+
+	public $customizing_option;
+
+	public function __construct() {
+		$this->customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
+	}
+
     /**
 	 * Initialize the class.
 	 *
