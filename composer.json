@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=7.0",
-        "cmb2\/cmb2": "2.9.0",
+        "cmb2\/cmb2": "2.10.x",
         "composer\/installers": "1.x",
         "wpbp\/template": "1.0.*",
         "micropackage\/requirements": "^1.0"
