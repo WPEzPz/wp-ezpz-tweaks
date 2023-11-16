@@ -4,7 +4,7 @@
  * Related feature: Custom Admin CSS
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */

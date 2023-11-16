@@ -5,7 +5,7 @@
  * Register field and sections for CMB2
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @copyright 2022 WP EzPz
  * @license   GPL 3.0+
  * @link      https://wpezpzdev.com/
