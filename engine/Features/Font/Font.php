@@ -34,6 +34,7 @@ class Font {
 		if ( empty( $font_name ) || $font_name === 'wp_default_font' ) {
 			return;
 		}
+		$font_name = strtolower( str_replace( ' ', '-', $font_name ) );
         wp_add_inline_style( $handel, $css_selector . ' {font-family:"' . esc_html( $font_name ) . '" !important;}' );
     }
 

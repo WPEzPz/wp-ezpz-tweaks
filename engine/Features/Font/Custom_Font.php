@@ -26,11 +26,26 @@ class Custom_Font {
             if ( $custom_font['custom_font_name'] !== $selected_font ) {
                 return;
             }
+
+            $font_name = esc_html( strtolower( str_replace( ' ', '-', $custom_font['custom_font_name'] ) ) );
+
+            $font_src = '';
+            if ( ! empty( $custom_font['custom_font_woff2'] ) ) {
+                $font_src .= 'url("' . $custom_font['custom_font_woff2'] . '") format("woff2"),';
+            }
+            if ( ! empty( $custom_font['custom_font_woff'] ) ) {
+                $font_src .= 'url("' . $custom_font['custom_font_woff'] . '") format("woff"),';
+            }
+            if ( ! empty( $custom_font['custom_font_ttf'] ) ) {
+                $font_src .= 'url("' . $custom_font['custom_font_ttf'] . '") format("truetype"),';
+            }
+
+            $font_src = rtrim( $font_src, ',' );
+            $font_src .= ';';
+
             return '@font-face {
-                font-family: "' . $custom_font['custom_font_name'] . '";
-                src: url("' . $custom_font['custom_font_woff2'] . '") format("woff2"),
-                    url("' . $custom_font['custom_font_woff'] . '") format("woff"),
-                    url("' . $custom_font['custom_font_ttf'] . '") format("truetype");
+                font-family: "' . $font_name . '";
+                src: ' . $font_src . '
                 font-weight: normal;
                 font-style: normal;
             }';
