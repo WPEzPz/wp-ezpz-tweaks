@@ -4,7 +4,6 @@
  *
  * @package   EZPZ_TWEAKS
  * @author    WP EzPz <info@wpezpz.dev>
- * @copyright 2020 WP EzPz
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */
