@@ -76,11 +76,14 @@ class Enqueue {
 			[
 				'ajax_url'  => admin_url( 'admin-ajax.php' ),
 				'security'  => wp_create_nonce( 'ezpz-nonce' ),
+				'security_update' => wp_create_nonce( 'updates' ),
 				'is_rtl'	=> is_rtl(),
 				'strings'	=> [
 					'delete' 	=> __( 'Delete', EZPZ_TWEAKS_TEXTDOMAIN ),
 					'restore'	=> __( 'Restore', EZPZ_TWEAKS_TEXTDOMAIN ),
 					'restoreConfirm'	=> __( 'Are you sure you want to restore this this backup? Your current configuration will be overwritten.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'changeEditorSuccess' => __( 'The desired editor successfully installed and activated.', EZPZ_TWEAKS_TEXTDOMAIN ),
+					'changeEditorFailed' => __( 'Changing editor failed. Please contact us or try changing it manually.', EZPZ_TWEAKS_TEXTDOMAIN )
 				]
 			],
 		);
