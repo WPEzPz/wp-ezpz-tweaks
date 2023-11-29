@@ -271,10 +271,22 @@ class Settings_Page {
 	 * Related feature: Change WP Login URL
 	 */
 	public function show_notices_on_custom_url_change( $object_id, $updated, $cmb ) {
-		if( in_array( 'custom_login_url', $cmb ) ) {
+		
+		if( in_array( 'custom_login_url', $cmb ) && isset( $_POST['custom_login_url'] ) ) {
+			if ( empty( $_POST['custom_login_url'] ) ) {
+				if ( isset( $this->security_option['custom_login_url'] ) ) {
+					echo '<div class="updated notice is-dismissible"><p>' . __( 'The login page is reset to default.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
+				}
+				return;
+			}
+			
 			$hide_login = new \EZPZ_TWEAKS\Integrations\Custom_Login_Url();
-
-			echo '<div class="updated notice is-dismissible"><p>' . sprintf( __( 'Your login page is now here: <strong><a href="%1$s">%2$s</a></strong>. Bookmark this page!', EZPZ_TWEAKS_TEXTDOMAIN ), $hide_login->new_login_url(), $hide_login->new_login_url() ) . '</p></div>';
+			$login_url  = $hide_login->new_login_url();
+			echo '<div class="updated notice is-dismissible"><p>' . sprintf(
+				__( 'Your login page is now here: <strong><a href="%1$s">%2$s</a></strong>. Bookmark this page!', EZPZ_TWEAKS_TEXTDOMAIN ),
+				esc_url($login_url),
+				esc_html($login_url)
+			) . '</p></div>';
 		}
 	}
 

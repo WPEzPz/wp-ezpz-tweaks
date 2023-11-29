@@ -84,9 +84,9 @@ class Custom_Login_Url {
 
 		if ( !empty( $this->security_option['custom_login_url'] ) ) {
 			return $this->security_option['custom_login_url'];
-		} else if ( $slug = 'login' ) {
-			return $slug;
 		}
+
+		return '';
 	}
 
 	public function new_login_url( $scheme = null ) {
