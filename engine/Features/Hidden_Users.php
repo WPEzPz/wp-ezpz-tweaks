@@ -12,6 +12,13 @@
 namespace EZPZ_TWEAKS\Engine\Features;
 
 class Hidden_Users {
+
+	protected $security_option;
+
+	public function __construct() {
+		$this->security_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
+	}
+
     /**
 	 * Initialize the class.
 	 *
