@@ -56,7 +56,13 @@ class Custom_Font {
         if ( empty( self::$customizing_option ) ) {
             self::$customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
         }
-		$custom_fonts_repeat_group = self::$customizing_option['custom_fonts_repeat_group'] ?? [];
+
+        if ( isset( $_POST['submit-cmb'] ) ) {
+            $custom_fonts_repeat_group = $_POST['custom_fonts_repeat_group'];
+        } else {
+            $custom_fonts_repeat_group = self::$customizing_option['custom_fonts_repeat_group'] ?? [];
+        }
+
 		$fonts = [];
 
 		foreach ( $custom_fonts_repeat_group as $font ) {
