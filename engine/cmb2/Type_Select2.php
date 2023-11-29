@@ -49,8 +49,8 @@ class Type_Select2 extends Abstract_Custom_CMB2_Type {
 
             return $value;
         }
-
-        return;
+        
+        return sanitize_text_field( $value );
     }
 
     /**

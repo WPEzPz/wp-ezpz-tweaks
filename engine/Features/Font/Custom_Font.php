@@ -24,7 +24,7 @@ class Custom_Font {
         }
         foreach ( $custom_fonts as $custom_font ) {
             if ( $custom_font['custom_font_name'] !== $selected_font ) {
-                return;
+                continue;
             }
 
             $font_name = esc_html( strtolower( str_replace( ' ', '-', $custom_font['custom_font_name'] ) ) );
