@@ -204,24 +204,28 @@ class Settings_Page {
 	 */
 	public function custom_footer( $text ) {
 
-		// earlly exit if footer text not on the settings page
-		if( !isset( $this->customizing_option['footer_visibility'] ) && !isset( $_POST['footer_text'] ) ) {
-			return $text;
+		if (isset($_POST['submit-cmb'])) {
+			// Set footer visibility option
+			if (isset($_POST['footer_visibility']) && $_POST['footer_visibility'] == 'on') {
+				return;
+			} else {
+				$this->customizing_option['footer_visibility'] = 'off';
+			}
+		
+			// Set footer text option
+			if (isset($_POST['footer_text'])) {
+				$this->customizing_option['footer_text'] = sanitize_text_field($_POST['footer_text']);
+			}
 		}
-
-		if( isset( $_POST['submit-cmb'] ) && isset( $this->customizing_option['footer_visibility'] ) ) {
-			$this->customizing_option['footer_visibility'] = sanitize_text_field( $_POST['footer_visibility'] );
-		}
-
-		if( isset( $this->customizing_option['footer_visibility'] ) && $this->customizing_option['footer_visibility'] == 'on' ) {
+		
+		// Check and return based on footer visibility and text options
+		if (isset($this->customizing_option['footer_visibility']) && $this->customizing_option['footer_visibility'] == 'on') {
 			return;
 		} else {
-			if ( ( isset( $this->customizing_option['footer_text'] ) && !isset( $_POST['footer_text'] ) ) || ( isset( $_POST['footer_text'] ) && !empty( $_POST['footer_text'] ) ) ) {
-				$footer_text = isset( $_POST['footer_text'] ) ? sanitize_text_field( $_POST['footer_text'] ) : $this->customizing_option['footer_text'];
-				return wp_kses_post( $footer_text );
-			} else {
-				return $text;
+			if (isset($this->customizing_option['footer_text']) && !empty($this->customizing_option['footer_text'])) {
+				return $this->customizing_option['footer_text'];
 			}
+			return $text;
 		}
 	}
 
