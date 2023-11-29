@@ -55,7 +55,7 @@ class Dashboard_Widgets {
 	 * Related feature: Remove Dashboard Widgets
 	 */
 	public function dashboard_widgets_options() {
-		$widgets = get_option('ezpz_tweaks_dashboard_widgets');
+		$widgets = get_option('wpezpz_dashboard_widgets');
 		$options = [];
 
 		if( $widgets ) {
@@ -73,7 +73,7 @@ class Dashboard_Widgets {
 	public function remove_dashboard_widgets() {
 		$widgets = $this->get_dashboard_widgets();
 
-		update_option('ezpz_tweaks_dashboard_widgets', $widgets);
+		update_option('wpezpz_dashboard_widgets', $widgets);
 
 		if ( isset( $this->customizing_option['remove_dashboard_widgets'] ) ) {
 			global $wp_meta_boxes;

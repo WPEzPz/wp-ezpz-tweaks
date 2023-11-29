@@ -76,6 +76,8 @@ class Settings_Page {
 		$hidden_users = new \EZPZ_TWEAKS\Engine\Features\Hidden_Users();
 		$hidden_users->initialize();
 
+		(new \EZPZ_TWEAKS\Engine\Features\Editor_Changer)->initialize();
+
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 
 	}

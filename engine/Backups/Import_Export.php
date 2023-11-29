@@ -31,7 +31,7 @@ class Import_Export {
     }
 
     public function option_callback() {
-        $backups = get_option( 'ezpz_tweeks_backups', [] );
+        $backups = get_option( 'wpezpz_backups', [] );
         ?>
         <div class="postbox ezpz_tweeks_backups">
             
@@ -145,7 +145,7 @@ class Import_Export {
      * Store Backup
      */
     public function run_backup( $action = 'add', $key = null ) {
-		$backups = get_option( 'ezpz_tweeks_backups', [] );
+		$backups = get_option( 'wpezpz_backups', [] );
 
 		// Restore.
 		if ( 'restore' === $action ) {
@@ -173,7 +173,7 @@ class Import_Export {
 			unset( $backups[ $key ] );
 		}
 
-		update_option( 'ezpz_tweeks_backups', $backups, false );
+		update_option( 'wpezpz_backups', $backups, false );
 
 		return $key;
 	}
