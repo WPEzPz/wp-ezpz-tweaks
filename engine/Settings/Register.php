@@ -236,6 +236,52 @@ class Register extends Settings {
 				),
 				'priority' => 120,
 			],
+			[
+				'field_id' => 'admin_colors__base',
+				'title' => __( 'Base', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'before_row' => '<h2 class="title">'. __( 'Admin Colors', EZPZ_TWEAKS_TEXTDOMAIN ) .'</h2>',
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
+			[
+				'field_id' => 'admin_colors__text',
+				'title' => __( 'Text', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
+			[
+				'field_id' => 'admin_colors__highlight',
+				'title' => __( 'Highlight', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
+			[
+				'field_id' => 'admin_colors__icon',
+				'title' => __( 'Icon', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
+			[
+				'field_id' => 'admin_colors__notification',
+				'title' => __( 'Notification', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
 
 			],
 			'wpezpz-tweaks',
