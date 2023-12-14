@@ -5,7 +5,7 @@
  * Register field and sections for CMB2
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @copyright 2022 WP EzPz
  * @license   GPL 3.0+
  * @link      https://wpezpzdev.com/
@@ -235,6 +235,52 @@ class Register extends Settings {
 					),
 				),
 				'priority' => 120,
+			],
+			[
+				'field_id' => 'admin_colors__base',
+				'title' => __( 'Base', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'before_row' => '<h2 class="title">'. __( 'Admin Colors', EZPZ_TWEAKS_TEXTDOMAIN ) .'</h2>',
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
+			[
+				'field_id' => 'admin_colors__text',
+				'title' => __( 'Text', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
+			[
+				'field_id' => 'admin_colors__highlight',
+				'title' => __( 'Highlight', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
+			[
+				'field_id' => 'admin_colors__icon',
+				'title' => __( 'Icon', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
+			],
+			[
+				'field_id' => 'admin_colors__notification',
+				'title' => __( 'Notification', EZPZ_TWEAKS_TEXTDOMAIN ),
+				'cmb2_args' => array(
+					'type' => 'colorpicker',
+					'sanitization_cb'  => 'sanitize_color',
+				),
+				'priority' => 130,
 			],
 
 			],
@@ -484,59 +530,12 @@ class Register extends Settings {
 							'block' => [
 								'label' 	=> __( 'Block Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
 								'value' 	=> 'block',
-								'selected' 	=> false,
-								'install' 	=> false,
 							],
 							'classic' => [
 								'label' 	=> __( 'Classic Editor', EZPZ_TWEAKS_TEXTDOMAIN ),
-								'value' 	=> 'classic',
-								'selected' 	=> in_array( 'classic-editor/classic-editor.php' , $plugin_list ),
-								'installed' => file_exists( WP_PLUGIN_DIR . '/classic-editor/classic-editor.php' ),
+								'value' 	=> 'classic-editor',
 							]
 						];
-
-
-						if (!$options['classic']['installed']) {
-							$options['classic']['install'] = wp_nonce_url(
-								add_query_arg(
-									array(
-										'action' => 'install-plugin',
-										'plugin' => 'classic-editor'
-									),
-									admin_url( 'update.php' )
-								),
-								'install-plugin' .'_'. 'classic-editor'
-							);
-						} else {
-							$options['classic']['install'] = wp_nonce_url(
-								add_query_arg(
-									array(
-										'action' => 'activate',
-										'plugin' => 'classic-editor/classic-editor.php',
-										'plugin_status' => 'all',
-										'paged' => '1',
-									),
-									admin_url( 'plugins.php' )
-								),
-								'activate-plugin' .'_'.'classic-editor/classic-editor.php'
-							);
-						}
-
-						$options['classic']['install'] = add_query_arg(
-							array(
-								'action' => 'activate',
-								'plugin' => 'classic-editor',
-							),
-							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
-						);
-
-						$options['block']['install'] = add_query_arg(
-							array(
-								'action' => 'activate',
-								'plugin' => 'block-editor',
-							),
-							admin_url( 'admin.php?page=' . EZPZ_TWEAKS_TEXTDOMAIN )
-						);
 
 						?>
 						<div class="cmb-row cmb-type-select cmb2-id-disable-blockeditor" data-fieldtype="select">
@@ -548,7 +547,7 @@ class Register extends Settings {
 									<select class="cmb2_select" name="disable_block_editor" id="disable_block_editor">
 										<?php
 										foreach ( $options as $option ) {
-											echo '<option value="' . $option['value'] . '" data-install="'. $option['install'] .'" >' . $option['label'] . '</option>';
+											echo '<option value="' . $option['value'] . '"  >' . $option['label'] . '</option>';
 										}
 										?>
 									</select>

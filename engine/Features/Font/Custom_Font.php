@@ -4,7 +4,7 @@
  * EZPZ_TWEAKS
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @copyright 2022 WP EzPz
  * @license   GPL 3.0+
  * @link      https://wpezpzdev.com/
@@ -24,13 +24,28 @@ class Custom_Font {
         }
         foreach ( $custom_fonts as $custom_font ) {
             if ( $custom_font['custom_font_name'] !== $selected_font ) {
-                return;
+                continue;
             }
+
+            $font_name = esc_html( strtolower( str_replace( ' ', '-', $custom_font['custom_font_name'] ) ) );
+
+            $font_src = '';
+            if ( ! empty( $custom_font['custom_font_woff2'] ) ) {
+                $font_src .= 'url("' . $custom_font['custom_font_woff2'] . '") format("woff2"),';
+            }
+            if ( ! empty( $custom_font['custom_font_woff'] ) ) {
+                $font_src .= 'url("' . $custom_font['custom_font_woff'] . '") format("woff"),';
+            }
+            if ( ! empty( $custom_font['custom_font_ttf'] ) ) {
+                $font_src .= 'url("' . $custom_font['custom_font_ttf'] . '") format("truetype"),';
+            }
+
+            $font_src = rtrim( $font_src, ',' );
+            $font_src .= ';';
+
             return '@font-face {
-                font-family: "' . $custom_font['custom_font_name'] . '";
-                src: url("' . $custom_font['custom_font_woff2'] . '") format("woff2"),
-                    url("' . $custom_font['custom_font_woff'] . '") format("woff"),
-                    url("' . $custom_font['custom_font_ttf'] . '") format("truetype");
+                font-family: "' . $font_name . '";
+                src: ' . $font_src . '
                 font-weight: normal;
                 font-style: normal;
             }';
@@ -41,7 +56,13 @@ class Custom_Font {
         if ( empty( self::$customizing_option ) ) {
             self::$customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
         }
-		$custom_fonts_repeat_group = self::$customizing_option['custom_fonts_repeat_group'] ?? [];
+
+        if ( isset( $_POST['submit-cmb'] ) ) {
+            $custom_fonts_repeat_group = $_POST['custom_fonts_repeat_group'];
+        } else {
+            $custom_fonts_repeat_group = self::$customizing_option['custom_fonts_repeat_group'] ?? [];
+        }
+
 		$fonts = [];
 
 		foreach ( $custom_fonts_repeat_group as $font ) {

@@ -101,7 +101,7 @@ function ezpz_tweaks_activate() {
 register_activation_hook( __FILE__, 'ezpz_tweaks_activate' );
 
 function ezpz_tweaks_deactivate() {
-	delete_option( 'ezpz_tweaks_dashboard_widgets' );
+	delete_option( 'wpezpz_dashboard_widgets' );
 
 	flush_rewrite_rules();
 }
@@ -127,13 +127,13 @@ function ezpz_tweaks_upgrade_procedure() {
 		return;
 	}
 
-	$version = get_option( 'ezpz-tweaks-version' );
+	$version = get_option( 'wpezpz_version' );
 
 	if ( ! version_compare( EZPZ_TWEAKS_VERSION, $version, '>' ) ) {
 		return;
 	}
 
-	update_option( 'ezpz-tweaks-version', EZPZ_TWEAKS_VERSION );
+	update_option( 'wpezpz_version', EZPZ_TWEAKS_VERSION );
 	delete_option( EZPZ_TWEAKS_TEXTDOMAIN . '_fake-meta' );
 }
 
@@ -145,7 +145,7 @@ function ezpz_tweaks_admin_notice() {
 		return;
 	}
 	
-	$install_date = get_option( 'ezpz-tweaks-install-time' );
+	$install_date = get_option( 'wpezpz_tweaks_install_time' );
 	
 	if ( ! $install_date ) {
 		return;
@@ -180,7 +180,7 @@ function ezpz_tweaks_admin_notice_dissmiss() {
 }
 
 
-add_action( 'admin_init', 'ezpz_tweaks_admin_notice' );
+add_action( 'admin_notices', 'ezpz_tweaks_admin_notice' );
 add_action( 'admin_init', 'ezpz_tweaks_admin_notice_dissmiss' );
 
 function ezpz_tweaks_admin_set_install_time() {
@@ -188,10 +188,10 @@ function ezpz_tweaks_admin_set_install_time() {
 		return;
 	}
 
-	if ( empty(get_option( 'ezpz-tweaks-install-time')) ) {
-		add_option( 'ezpz-tweaks-install-time', date('Y-m-d H:i:s') );
+	if ( empty(get_option( 'wpezpz_tweaks_install_time')) ) {
+		add_option( 'wpezpz_tweaks_install_time', date('Y-m-d H:i:s') );
 	} else {
-		update_option( 'ezpz-tweaks-install-time', date('Y-m-d H:i:s') );
+		update_option( 'wpezpz_tweaks_install_time', date('Y-m-d H:i:s') );
 	}
 }
 

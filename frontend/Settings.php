@@ -3,8 +3,7 @@
  * EZPZ_TWEAKS
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
- * @copyright 2020 WP EzPz
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */
@@ -22,6 +21,7 @@ class Settings {
 	private $customizing_option;
 	private $performance_option;
 	private $security_option;
+	private $get_locale;
 
 	/**
 	 * Initialize the class.
@@ -37,6 +37,7 @@ class Settings {
 
 		$Backups = new Import_Export();
 		$font = new Font();
+
 
 		add_action( 'init', array( $this, 'disable_emojis' ) );
 		add_action( 'init', array( $this, 'disable_embeds_code_init' ), 9999 );

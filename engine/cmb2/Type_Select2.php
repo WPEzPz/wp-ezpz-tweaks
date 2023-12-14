@@ -4,7 +4,7 @@
  * EZPZ_TWEAKS
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @copyright 2022 WP EzPz
  * @license   GPL 3.0+
  * @link      https://wpezpzdev.com/
@@ -49,8 +49,8 @@ class Type_Select2 extends Abstract_Custom_CMB2_Type {
 
             return $value;
         }
-
-        return;
+        
+        return sanitize_text_field( $value );
     }
 
     /**

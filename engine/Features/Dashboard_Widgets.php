@@ -4,8 +4,7 @@
  * Related feature: Custom Admin CSS
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
- * @copyright 2020 WP EzPz
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */
@@ -56,7 +55,7 @@ class Dashboard_Widgets {
 	 * Related feature: Remove Dashboard Widgets
 	 */
 	public function dashboard_widgets_options() {
-		$widgets = get_option('ezpz_tweaks_dashboard_widgets');
+		$widgets = get_option('wpezpz_dashboard_widgets');
 		$options = [];
 
 		if( $widgets ) {
@@ -74,7 +73,7 @@ class Dashboard_Widgets {
 	public function remove_dashboard_widgets() {
 		$widgets = $this->get_dashboard_widgets();
 
-		update_option('ezpz_tweaks_dashboard_widgets', $widgets);
+		update_option('wpezpz_dashboard_widgets', $widgets);
 
 		if ( isset( $this->customizing_option['remove_dashboard_widgets'] ) ) {
 			global $wp_meta_boxes;

@@ -116,9 +116,24 @@
 			}
 
 			$('.ezpz-install-editor').on('click', function() {
-				const selected = $('select[name="disable_block_editor"] option:selected')
-				const selected_install_url = $(selected).attr('data-install')
-				window.location.href = selected_install_url;
+				const selected = $('select[name="disable_block_editor"] option:selected')				
+				var data = {
+					action: 'wpezpz_change_page_editor',
+					_ajax_nonce: ezpz_object.security_update,
+					slug: $(selected).val()
+				};
+				jQuery.post( ezpz_object.ajax_url, data, function(response) {
+					if ( response.success && typeof response.data !== 'undefined' ) {
+						jQuery.post( ezpz_object.ajax_url, data, function(newResponse) {
+							let str = newResponse.success ? ezpz_object.strings.changeEditorSuccess : ezpz_object.strings.changeEditorFailed;
+							alert(str);
+						});
+					} else if ( response.success ) {
+						alert( ezpz_object.strings.changeEditorSuccess );
+					} else {
+						alert( response.data.errorMessage )
+					}
+				});
 			})
 			// CMB2 range
 			$('.cmb2-range').each(function() {

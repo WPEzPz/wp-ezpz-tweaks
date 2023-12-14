@@ -4,8 +4,7 @@
  * EZPZ_TWEAKS
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
- * @copyright 2020 WP EzPz
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */
@@ -76,6 +75,9 @@ class Settings_Page {
 
 		$hidden_users = new \EZPZ_TWEAKS\Engine\Features\Hidden_Users();
 		$hidden_users->initialize();
+
+		(new \EZPZ_TWEAKS\Engine\Features\Editor_Changer)->initialize();
+		(new \EZPZ_TWEAKS\Engine\Features\Dashboard_Colors)->initialize();
 
 		add_filter( 'plugin_action_links_' . EZPZ_TWEAKS_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
 
@@ -203,24 +205,28 @@ class Settings_Page {
 	 */
 	public function custom_footer( $text ) {
 
-		// earlly exit if footer text not on the settings page
-		if( !isset( $this->customizing_option['footer_visibility'] ) && !isset( $_POST['footer_text'] ) ) {
-			return $text;
+		if (isset($_POST['submit-cmb'])) {
+			// Set footer visibility option
+			if (isset($_POST['footer_visibility']) && $_POST['footer_visibility'] == 'on') {
+				return;
+			} else {
+				$this->customizing_option['footer_visibility'] = 'off';
+			}
+		
+			// Set footer text option
+			if (isset($_POST['footer_text'])) {
+				$this->customizing_option['footer_text'] = sanitize_text_field($_POST['footer_text']);
+			}
 		}
-
-		if( isset( $_POST['submit-cmb'] ) && isset( $this->customizing_option['footer_visibility'] ) ) {
-			$this->customizing_option['footer_visibility'] = sanitize_text_field( $_POST['footer_visibility'] );
-		}
-
-		if( isset( $this->customizing_option['footer_visibility'] ) && $this->customizing_option['footer_visibility'] == 'on' ) {
+		
+		// Check and return based on footer visibility and text options
+		if (isset($this->customizing_option['footer_visibility']) && $this->customizing_option['footer_visibility'] == 'on') {
 			return;
 		} else {
-			if ( ( isset( $this->customizing_option['footer_text'] ) && !isset( $_POST['footer_text'] ) ) || ( isset( $_POST['footer_text'] ) && !empty( $_POST['footer_text'] ) ) ) {
-				$footer_text = isset( $_POST['footer_text'] ) ? sanitize_text_field( $_POST['footer_text'] ) : $this->customizing_option['footer_text'];
-				return wp_kses_post( $footer_text );
-			} else {
-				return $text;
+			if (isset($this->customizing_option['footer_text']) && !empty($this->customizing_option['footer_text'])) {
+				return $this->customizing_option['footer_text'];
 			}
+			return $text;
 		}
 	}
 
@@ -266,10 +272,22 @@ class Settings_Page {
 	 * Related feature: Change WP Login URL
 	 */
 	public function show_notices_on_custom_url_change( $object_id, $updated, $cmb ) {
-		if( in_array( 'custom_login_url', $cmb ) ) {
+		
+		if( in_array( 'custom_login_url', $cmb ) && isset( $_POST['custom_login_url'] ) ) {
+			if ( empty( $_POST['custom_login_url'] ) ) {
+				if ( isset( $this->security_option['custom_login_url'] ) ) {
+					echo '<div class="updated notice is-dismissible"><p>' . __( 'The login page is reset to default.', EZPZ_TWEAKS_TEXTDOMAIN ) . '</p></div>';
+				}
+				return;
+			}
+			
 			$hide_login = new \EZPZ_TWEAKS\Integrations\Custom_Login_Url();
-
-			echo '<div class="updated notice is-dismissible"><p>' . sprintf( __( 'Your login page is now here: <strong><a href="%1$s">%2$s</a></strong>. Bookmark this page!', EZPZ_TWEAKS_TEXTDOMAIN ), $hide_login->new_login_url(), $hide_login->new_login_url() ) . '</p></div>';
+			$login_url  = $hide_login->new_login_url();
+			echo '<div class="updated notice is-dismissible"><p>' . sprintf(
+				__( 'Your login page is now here: <strong><a href="%1$s">%2$s</a></strong>. Bookmark this page!', EZPZ_TWEAKS_TEXTDOMAIN ),
+				esc_url($login_url),
+				esc_html($login_url)
+			) . '</p></div>';
 		}
 	}
 

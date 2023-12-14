@@ -4,8 +4,7 @@
  * Related feature: Hide user in admin panel
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
- * @copyright 2020 WP EzPz
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */
@@ -13,6 +12,13 @@
 namespace EZPZ_TWEAKS\Engine\Features;
 
 class Hidden_Users {
+
+	protected $security_option;
+
+	public function __construct() {
+		$this->security_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-security' );
+	}
+
     /**
 	 * Initialize the class.
 	 *

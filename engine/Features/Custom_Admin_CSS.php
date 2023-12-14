@@ -4,8 +4,7 @@
  * Related feature: Custom Admin CSS
  *
  * @package   EZPZ_TWEAKS
- * @author    WP EzPz <info@wpezpz.dev>
- * @copyright 2020 WP EzPz
+ * @author    WP EzPz <info@wpezpzdev.com>
  * @license   GPL 2.0+
  * @link      https://wpezpzdev.com/
  */
@@ -13,6 +12,13 @@
 namespace EZPZ_TWEAKS\Engine\Features;
 
 class Custom_Admin_CSS {
+
+	public $customizing_option;
+
+	public function __construct() {
+		$this->customizing_option = get_option( EZPZ_TWEAKS_TEXTDOMAIN . '-customizing-branding' );
+	}
+
     /**
 	 * Initialize the class.
 	 *
