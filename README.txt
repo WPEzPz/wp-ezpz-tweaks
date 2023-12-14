@@ -1,9 +1,9 @@
 === WP EzPz Tweaks ===
 Contributors: wpezpz, khorshidlab
-Tags: optimization, performance, customization, admin menu editor, security, tweaks, custom login url, wp login, branding
+Tags: optimization, performance, customization, admin menu editor, security, tweaks, custom login url, wp login, branding, color
 Requires at least: 5.6
-Tested up to: 6.2
-Stable tag: 1.1.0
+Tested up to: 6.4
+Stable tag: 1.2.0
 License: GPL-3.0 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 Requires PHP: 7.0
@@ -46,6 +46,16 @@ EzPz Tweaks is an all-in-one WordPress plugin that helps you personalize the adm
 4. Import & Export
 
 == Changelog ==
+
+= 1.2.0 - 2023-12-14 =
+* feature: Ability to change WordPress Default color scheme for Admin Panel
+* fix: Hidden users issue
+* fix: Empty WP Login URL issue
+* fix: Admin Custom CSS issue
+* fix: Admin Panel custom fonts issue
+* fix: Update Admin Panel footer text issue
+* Some imporvement in UI and features
+* Tested up to WordPress 6.4
 
 = 1.1.0 - 2023-06-16 =
 * Some imporvement in UI and features
