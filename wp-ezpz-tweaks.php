@@ -66,8 +66,8 @@ if ( version_compare( PHP_VERSION, '7.0.0', '<=' ) ) {
 $ezpz_tweaks_libraries = require_once EZPZ_TWEAKS_PLUGIN_ROOT . 'vendor/autoload.php';
 
 require_once EZPZ_TWEAKS_PLUGIN_ROOT . 'vendor/cmb2/init.php';
-
 require_once EZPZ_TWEAKS_PLUGIN_ROOT . 'functions/functions.php';
+require_once EZPZ_TWEAKS_PLUGIN_ROOT . 'functions/actions.php';
 
 $requirements = new \Micropackage\Requirements\Requirements(
 	EZPZ_TWEAKS_TEXTDOMAIN,

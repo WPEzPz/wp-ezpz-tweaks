@@ -143,6 +143,9 @@ class Initialize {
 	 * @since 1.0.0
 	 */
 	private function scandir( string $folder ) {
+        //$folder = str_replace('../','',$folder);
+        //if(!file_exists($folder))
+        //return [];
 		$temp_files = scandir( $folder );
 		$files      = array();
 

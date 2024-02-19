@@ -100,7 +100,7 @@ class Type_Select2_Multiple extends Abstract_Custom_CMB2_Type {
 
 		$selected_items = '';
 		$other_items = '';
-
+var_dump($options);
 		foreach ( $options as $option_value => $option_label ) {
 
 			// Clone args & modify for just this item
@@ -110,6 +110,7 @@ class Type_Select2_Multiple extends Abstract_Custom_CMB2_Type {
 			);
 
 			// Split options into those which are selected and the rest
+            
 			if ( in_array( $option_value, (array) $field_escaped_value ) ) {
 				$option['checked'] = true;
 				$selected_items .= $field_type_object->select_option( $option );
