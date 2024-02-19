@@ -100,7 +100,7 @@ class Type_Select2_Multiple extends Abstract_Custom_CMB2_Type {
 
 		$selected_items = '';
 		$other_items = '';
-var_dump($options);
+
 		foreach ( $options as $option_value => $option_label ) {
 
 			// Clone args & modify for just this item

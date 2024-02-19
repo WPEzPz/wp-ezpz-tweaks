@@ -32,7 +32,7 @@ class Type_Select2 extends Abstract_Custom_CMB2_Type {
             $options_html = '<option></option>' . $field_type_object->concat_items();
         }
         
-        echo $field_type_object->select( array(
+        echo @$field_type_object->select( array(
 			'class'            => 'cmb2_type_select2_select',
 			'desc'             => $field_type_object->_desc( true ),
 			'options'          => $options_html,
