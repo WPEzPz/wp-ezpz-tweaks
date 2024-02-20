@@ -63,7 +63,9 @@ class Settings {
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
 		add_filter( 'heartbeat_settings', array( $this, 'maybe_modify_heartbeat' ), 99, 1 );
+
 	}
+
 
 	public function disable_emojis() {
 		if ( isset( $this->performance_option['disable_wp_emoji'] ) ) {

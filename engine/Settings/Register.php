@@ -536,7 +536,6 @@ class Register extends Settings {
 								'value' 	=> 'classic-editor',
 							]
 						];
-
 						?>
 						<div class="cmb-row cmb-type-select cmb2-id-disable-blockeditor" data-fieldtype="select">
 							<div class="cmb-th">
@@ -547,7 +546,8 @@ class Register extends Settings {
 									<select class="cmb2_select" name="disable_block_editor" id="disable_block_editor">
 										<?php
 										foreach ( $options as $option ) {
-											echo '<option value="' . $option['value'] . '"  >' . $option['label'] . '</option>';
+				                            
+											echo '<option value="' . $option['value'] . '"  '.selected((isset($plugin_list[3]) and $option['value']=='classic-editor'),true,false).'>' . $option['label'] . '</option>';
 										}
 										?>
 									</select>

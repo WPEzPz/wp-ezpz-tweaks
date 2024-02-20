@@ -56,6 +56,7 @@ class Dashboard_Widgets {
 	 */
 	public function dashboard_widgets_options() {
 		$widgets = get_option('wpezpz_dashboard_widgets');
+
 		$options = [];
 
 		if( $widgets ) {

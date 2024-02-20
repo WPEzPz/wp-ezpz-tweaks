@@ -116,7 +116,14 @@
 			}
 
 			$('.ezpz-install-editor').on('click', function() {
-				const selected = $('select[name="disable_block_editor"] option:selected')				
+			 const selected = $('select[name="disable_block_editor"] option:selected');
+
+             if(selected.val() == 'classic-editor'){
+                if(!confirm('Do you want to install Classic Editor Plugin?'))
+                return;
+             }
+             
+								
 				var data = {
 					action: 'wpezpz_change_page_editor',
 					_ajax_nonce: ezpz_object.security_update,
