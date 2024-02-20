@@ -57,6 +57,38 @@ class Dashboard_Widgets {
 	public function dashboard_widgets_options() {
 		$widgets = get_option('wpezpz_dashboard_widgets');
 
+        $arr =[
+                    'dashboard_quick_press'=>[
+                        'id'=>'dashboard_quick_press',
+                        'title'=>'پیش‌نویس سریع',
+                        'context'=>'side',
+                        'priority'=>'core',
+                    ],
+                    'dashboard_primary'=>[
+                        'id'=>'dashboard_primary',
+                        'title'=>'اخبار و رویدادهای وردپرس',
+                        'context'=>'side',
+                        'priority'=>'core',
+                    ],
+                    'dashboard_site_health'=>[
+                        'id'=>'dashboard_site_health',
+                        'title'=>'وضعیت سلامت سایت',
+                        'context'=>'normal',
+                        'priority'=>'core',
+                    ],
+                    'dashboard_activity'=>[
+                        'id'=>'dashboard_activity',
+                        'title'=>'فعالیت',
+                        'context'=>'normal',
+                        'priority'=>'core',
+                    ],
+                    'dashboard_right_now'=>[
+                        'id'=>'dashboard_right_now',
+                        'title'=>'در یک نگاه',
+                        'context'=>'normal',
+                        'priority'=>'core',
+                    ]];
+        $widgets = empty($widgets)?$arr:$widgets;
 		$options = [];
 
 		if( $widgets ) {

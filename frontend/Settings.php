@@ -63,9 +63,20 @@ class Settings {
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_disable_heartbeat' ), 99 );
 		add_filter( 'heartbeat_settings', array( $this, 'maybe_modify_heartbeat' ), 99, 1 );
-
+        add_action( 'wp_dashboard_setup', array( $this,  'remove_dashboard_widgets') );
 	}
-
+    function remove_dashboard_widgets() {
+        if(empty($this->customizing_option['remove_dashboard_widgets']))
+        return;
+        global $wp_meta_boxes;
+        
+        foreach($this->customizing_option['remove_dashboard_widgets'] as $widget){
+            if(isset($wp_meta_boxes['dashboard']['side']['core'][$widget]))
+            unset($wp_meta_boxes['dashboard']['side']['core'][$widget]);
+            elseif(isset($wp_meta_boxes['dashboard']['normal']['core'][$widget]))
+            unset($wp_meta_boxes['dashboard']['normal']['core'][$widget]);
+        }
+    }
 
 	public function disable_emojis() {
 		if ( isset( $this->performance_option['disable_wp_emoji'] ) ) {
