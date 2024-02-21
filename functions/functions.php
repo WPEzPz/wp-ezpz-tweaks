@@ -60,3 +60,17 @@ function ezpz_tweaks_recursive_sanitize( $array ) {
 
     return $array;
 }
+
+/*function ezpz_tweaks_get_dashboard_widgets(){
+    global $wp_meta_boxes;
+    if(isset($wp_meta_boxes['dashboard']))
+    return $wp_meta_boxes['dashboard'];
+
+    if(!function_exists('wp_dashboard_setup'))
+        include_once(ABSPATH.'/wp-admin/includes/dashboard.php');
+    $metaboxes = $wp_meta_boxes;
+    @wp_dashboard_setup();
+    $widgets = ['dashboard'=>$wp_meta_boxes['plugins']];
+    $wp_meta_boxes = $metaboxes;
+    return $widgets;
+}*/
